@@ -7,7 +7,7 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 
 
-export default function TodoItem({todo, remove}){
+export default function TodoItem({todo, remove, toggle}){
 
     const removeTodo = () => remove(todo.id);
     const labelId = `checkbox-list-label-${todo.id}`;
@@ -24,6 +24,7 @@ export default function TodoItem({todo, remove}){
                         <ListItemButton role={undefined} dense>
                             <ListItemIcon>
                                 <Checkbox
+                                    onChange={toggle}
                                     edge="start"
                                     checked={todo.completed}
                                     tabIndex={-1}
