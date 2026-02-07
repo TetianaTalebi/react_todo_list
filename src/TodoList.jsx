@@ -1,27 +1,36 @@
-import TodoItem from './TodoItem';
-
-import List from '@mui/material/List';
-
+import { useState } from "react";
+import TodoItem from "./TodoItem";
+import List from "@mui/material/List";
 
 // Hard-code 'initialTodos' variable to start with
 const initialTodos = [
-        {id: 1, text: "Walk the dog", completed: true},
-        {id: 2, text: "Feed the cat", completed: true},
-        {id: 3, text: "Do grocery shopping", completed: true},
-        {id: 4, text: "Read the book", completed: true},
-        {id: 5, text: "Go to the gym", completed: false},
+  { id: 1, text: "Walk the dog", completed: true },
+  { id: 2, text: "Feed the cat", completed: true },
+  { id: 3, text: "Do grocery shopping", completed: true },
+  { id: 4, text: "Read the book", completed: true },
+  { id: 5, text: "Go to the gym", completed: false },
 ];
 
+export default function TodoList() {
+  const [todos, setTodos] = useState(initialTodos);
 
-export default function TodoList(){
+  const removeTodo = (id) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((t) => t.id !== id);
+    });
+  };
 
-    return (
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {initialTodos.map((todo) => (<TodoItem key={todo.id} todo={todo} />) 
-        )}
-        </List>
-    );
-
+  return (
+    <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          remove={removeTodo}
+        />
+      ))}
+    </List>
+  );
 }
 
 // import * as React from 'react';
@@ -83,4 +92,3 @@ export default function TodoList(){
 //     </List>
 //   );
 // }
-
