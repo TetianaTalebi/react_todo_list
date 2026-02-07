@@ -1,17 +1,13 @@
+import TodoItem from './TodoItem';
+
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import IconButton from '@mui/material/IconButton';
-import CommentIcon from '@mui/icons-material/Comment';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Checkbox from '@mui/material/Checkbox';
-import ListItemText from '@mui/material/ListItemText';
+
 
 // Hard-code 'initialTodos' variable to start with
 const initialTodos = [
-        {id: 1, text: "Walk the dog", completed: false},
+        {id: 1, text: "Walk the dog", completed: true},
         {id: 2, text: "Feed the cat", completed: true},
-        {id: 3, text: "Do grocery shopping", completed: false},
+        {id: 3, text: "Do grocery shopping", completed: true},
         {id: 4, text: "Read the book", completed: true},
         {id: 5, text: "Go to the gym", completed: false},
 ];
@@ -21,33 +17,8 @@ export default function TodoList(){
 
     return (
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {initialTodos.map((todo) => {
-                const labelId = `checkbox-list-label-${todo.id}`;
-                return (
-                    <ListItem
-                        key={todo.id}
-                        secondaryAction={
-                        <IconButton edge="end" aria-label="comments">
-                            <CommentIcon />
-                        </IconButton>
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton role={undefined} dense>
-                            <ListItemIcon>
-                                <Checkbox
-                                edge="start"
-                                checked={todo.completed}
-                                tabIndex={-1}
-                                disableRipple
-                                inputProps={{ 'aria-labelledby': labelId }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText id={labelId} primary={todo.text} />
-                        </ListItemButton>
-                    </ListItem>
-                );
-            })}
+            {initialTodos.map((todo) => (<TodoItem key={todo.id} todo={todo} />) 
+        )}
         </List>
     );
 
