@@ -33,6 +33,12 @@ export default function TodoList() {
     })
   }
 
+  const addTodo = (text) => {
+    setTodos((prevTodos) => {
+        return [...prevTodos, {id: 8, text: text, completed: false}];
+    });
+  }
+
   return (
     <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       {todos.map((todo) => (
@@ -43,7 +49,7 @@ export default function TodoList() {
           toggle = {()=>toggleTodo(todo.id)}
         />
       ))}
-      <TodoForm />
+      <TodoForm addTodo={addTodo} />
     </List>
   );
 }
