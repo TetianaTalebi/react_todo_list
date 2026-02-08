@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 import TodoForm from "./TodoForm";
 import List from "@mui/material/List";
@@ -14,6 +14,8 @@ const initialTodos = [
 
 export default function TodoList() {
   const [todos, setTodos] = useState(initialTodos);
+
+  useEffect(()=>{localStorage.setItem('todos', JSON.stringify(todos))}, [todos]);
 
   const removeTodo = (id) => {
     setTodos((prevTodos) => {
@@ -38,6 +40,8 @@ export default function TodoList() {
         return [...prevTodos, {id: 8, text: text, completed: false}];
     });
   }
+
+
 
   return (
     <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
