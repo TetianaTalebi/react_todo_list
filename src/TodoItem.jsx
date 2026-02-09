@@ -15,7 +15,7 @@ export default function TodoItem({todo, remove, toggle}){
                 return (
                     <ListItem
                         secondaryAction={
-                        <IconButton edge="end" aria-label="comments" onClick={removeTodo}>
+                        <IconButton edge="end" aria-label="delete" onClick={removeTodo}>
                             <DeleteIcon color='primary'/>
                         </IconButton>
                         }
