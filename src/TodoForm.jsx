@@ -16,8 +16,8 @@ export default function TodoForm({addTodo}) {
   }
 
   return (
-    <ListItem disablePadding>
-        <form onSubmit={handleSubmit}>
+    <ListItem disablePadding >
+        <form onSubmit={handleSubmit} style={{width: '100%'}} >
             <TextField fullWidth
                 id="outlined-basic"
                 label="Add Todo"
