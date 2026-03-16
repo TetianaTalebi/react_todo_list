@@ -1,7 +1,9 @@
 import './App.css'
 import CssBaseline from '@mui/material/CssBaseline';
-import Navbar from './Navbar';
-import TodoList from './TodoList';
+// import Navbar from './Navbar';
+import PermanentDrawer from './PermanentDrawer';
+// import TodoList from './TodoList';
+
 
 function App() {
   
@@ -9,10 +11,12 @@ function App() {
   return (
     <>
         <CssBaseline />
-        <Navbar />
-        <TodoList />
+        {/* <Navbar /> */}
+        <PermanentDrawer />
+        {/* <TodoList /> */}
     </>
   );
 }
 
 export default App
+

@@ -51,12 +51,11 @@ export default function TodoList() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
-        m: 3,
+        flexGrow: 1,
       }}
     >
-      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      <List sx={{ width: "100%", bgcolor: "background.paper", pr: 10, pl: 6 }}>
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}
