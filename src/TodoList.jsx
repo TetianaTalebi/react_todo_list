@@ -4,7 +4,7 @@ import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 
 
-export default function TodoList({todos=[], removeTodo}) {
+export default function TodoList({todos=[], removeTodo, toggleTodo}) {
   
     
 
@@ -29,7 +29,7 @@ export default function TodoList({todos=[], removeTodo}) {
             key={todo.todoId}
             todo={todo}
             remove={removeTodo}
-            // toggle={() => toggleTodo(todo.id)}
+            toggle={() => toggleTodo(todo.todoId)}
           />
         ))}
         {/* <TodoForm addTodo={addTodo} /> */}

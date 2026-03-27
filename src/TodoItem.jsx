@@ -16,21 +16,13 @@ import ListItemText from '@mui/material/ListItemText';
 
 // export default function TodoItem({todo, remove, toggle}){
 
-export default function TodoItem({todo, remove}){
+export default function TodoItem({todo, remove, toggle}){
 
     const removeTodo = () => remove(todo.todoId);
     const labelId = `checkbox-list-label-${todo.todoId}`;
 
                 return (
                     <ListItem
-
-                        // secondaryAction={
-                        // <IconButton edge="end" aria-label="delete">
-                        //     <DeleteIcon color='primary'/>
-                        // </IconButton>
-                        // }
-
-
                         secondaryAction={
                         <IconButton edge="end" aria-label="delete" onClick={removeTodo}>
                             <DeleteIcon color='primary'/>
@@ -41,7 +33,7 @@ export default function TodoItem({todo, remove}){
                         <ListItemButton role={undefined} dense>
                             <ListItemIcon>
                                 <Checkbox
-                                    // onChange={toggle}
+                                    onChange={toggle}
                                     edge="start"
                                     checked={todo.todoCompleted}
                                     tabIndex={-1}

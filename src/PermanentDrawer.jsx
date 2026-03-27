@@ -107,24 +107,30 @@ export default function PermanentDrawer() {
     })
   }
 
+        // [
+        //   { todoId: 1, todoText: "Rain", todoCompleted: false },
+        //   { todoId: 2, todoText: "Snow", todoCompleted: false },
+        //   { todoId: 3, todoText: "Sun", todoCompleted: false },
+        //   { todoId: 4, todoText: "Clouds", todoCompleted: true },
+        // ]
 
-   // const removeTodo = (id) => {
-  //   setTodos((prevTodos) => {
-  //     return prevTodos.filter((t) => t.id !== id);
-  //   });
-  // };
-
-  // const toggleTodo = (id) => {
-  //   setTodos((prevTodos) => {
-  //     return prevTodos.map((todo) => {
-  //       if (todo.id === id) {
-  //         return { ...todo, completed: !todo.completed };
-  //       } else {
-  //         return todo;
-  //       }
-  //     });
-  //   });
-  // };
+  const handleToggleTodo = (id) => {
+    setTodoLists((prevTodoLists) => {
+      return prevTodoLists.map((list) => {
+        if (list.listId === activeListId){
+          const newListContent = list.listContent.map((todo) => {
+            if (todo.todoId === id){
+              return {...todo, todoCompleted: !todo.todoCompleted};
+            } else {
+              return todo;
+            }
+          })
+          return {...list, listContent: newListContent};
+        } 
+        return list;
+      });
+    })
+  }
 
   // const addTodo = (text) => {
   //   setTodos((prevTodos) => {
@@ -134,10 +140,6 @@ export default function PermanentDrawer() {
   //     ];
   //   });
   // };
-
-  
-
-  
 
   return (
     <>
@@ -208,7 +210,7 @@ export default function PermanentDrawer() {
           
           {todoLists.map(list => (
               list.listId === activeListId &&
-                <TodoList todos = {list.listContent} removeTodo = {handleRemoveTodo} />
+                <TodoList todos = {list.listContent} removeTodo = {handleRemoveTodo} toggleTodo = {handleToggleTodo} />
           ))}
           
         </Box>
