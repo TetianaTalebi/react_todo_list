@@ -5,22 +5,32 @@ import CreateIcon from '@mui/icons-material/Create';
 export default function TodoForm({addTodo}) {
   const [text, setText] = useState("");
 
+  const [submitError, setSubmitError] = useState(false);
+
   const handleChange = (e) => {
     return setText(e.target.value);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTodo(text);
-    setText("");
+    if (text.length < 3){
+      setSubmitError(true);
+    } else {
+      setSubmitError(false);
+      addTodo(text);
+      setText("");
+    }
+    
   }
 
   return (
     <ListItem disablePadding >
         <form onSubmit={handleSubmit} style={{width: '100%'}} >
             <TextField fullWidth
-                id="outlined-basic"
-                label="Add Todo"
+                error = {submitError}
+                id={submitError ? "outlined-error-helper-text" : "outlined-basic"}
+                label = {submitError ? "Error" : "Add Todo"}
+                helperText = {submitError ? 'The length of todo text can not be less than 3 characters':''}
                 variant="outlined"
                 value={text}
                 onChange={handleChange}
