@@ -1,0 +1,4 @@
+.crossed-out {
+  text-decoration: line-through dimgray 2px;
+  color: dimgray;
+}

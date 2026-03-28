@@ -41,7 +41,7 @@ export default function TodoItem({todo, remove, toggle}){
                                     inputProps={{ 'aria-labelledby': labelId }}
                                 />
                             </ListItemIcon>
-                            <ListItemText id={labelId} primary={todo.todoText} />
+                            <ListItemText id={labelId} primary={todo.todoText} className={ todo.todoCompleted ? 'crossed-out':''} />
                         </ListItemButton>
                     </ListItem>
                 );
