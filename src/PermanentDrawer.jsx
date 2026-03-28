@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 import { useState } from "react";
 
@@ -77,7 +77,6 @@ const myLists = [
 ];
 
 export default function PermanentDrawer() {
-
   // useEffect(() => {
   //   localStorage.setItem("todos", JSON.stringify(todos));
   // }, [todos]);
@@ -100,34 +99,34 @@ export default function PermanentDrawer() {
   const handleRemoveTodo = (id) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.map((list) => {
-         if (list.listId === activeListId) {
-          const newListContent = list.listContent.filter(todo => todo.todoId !== id );
-          return {...list, listContent: newListContent};
+        if (list.listId === activeListId) {
+          const newListContent = list.listContent.filter(
+            (todo) => todo.todoId !== id,
+          );
+          return { ...list, listContent: newListContent };
         }
         return list;
-      })
-    })
-  }
-
+      });
+    });
+  };
 
   const handleToggleTodo = (id) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.map((list) => {
-        if (list.listId === activeListId){
+        if (list.listId === activeListId) {
           const newListContent = list.listContent.map((todo) => {
-            if (todo.todoId === id){
-              return {...todo, todoCompleted: !todo.todoCompleted};
+            if (todo.todoId === id) {
+              return { ...todo, todoCompleted: !todo.todoCompleted };
             } else {
               return todo;
             }
-          })
-          return {...list, listContent: newListContent};
-        } 
+          });
+          return { ...list, listContent: newListContent };
+        }
         return list;
       });
-    })
-  }
-
+    });
+  };
 
   // {
   //   listId: 1,
@@ -150,46 +149,24 @@ export default function PermanentDrawer() {
 
   // const [activeListId, setActiveListId] = useState(myLists[0].listId);
 
-  
   const handleAddTodo = (text) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.map((list) => {
-        if(list.listId === activeListId){
-          const newListContent = [...list.listContent,{
-            todoId: uuidv4(),
-            todoText: text,
-            todoCompleted: false,
-          }];
-          return {...list, listContent: newListContent};
+        if (list.listId === activeListId) {
+          const newListContent = [
+            ...list.listContent,
+            {
+              todoId: uuidv4(),
+              todoText: text,
+              todoCompleted: false,
+            },
+          ];
+          return { ...list, listContent: newListContent };
         }
         return list;
-      })
-    })
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // const addTodo = (text) => {
-  //   setTodos((prevTodos) => {
-  //     return [
-  //       ...prevTodos,
-  //       { id: crypto.randomUUID(), text: text, completed: false },
-  //     ];
-  //   });
-  // };
+      });
+    });
+  };
 
   return (
     <>
@@ -214,11 +191,17 @@ export default function PermanentDrawer() {
           variant="permanent"
           sx={{
             width: 1 / 4,
-            minWidth: 240,
+            minWidth: {
+              sm: 190,
+              md: 240,
+            },
             flexShrink: 0,
             [`& .MuiDrawer-paper`]: {
               width: 1 / 4,
-              minWidth: 240,
+              minWidth: {
+              sm: 190,
+              md: 240,
+            },
               boxSizing: "border-box",
             },
           }}
@@ -239,9 +222,9 @@ export default function PermanentDrawer() {
                   disablePadding
                   sx={{
                     ...(list.listId === activeListId && {
-                          backgroundColor: "lightgray",
-                          boxShadow: "0px 3px 10px darkgray",
-                        }),
+                      backgroundColor: "lightgray",
+                      boxShadow: "0px 3px 10px darkgray",
+                    }),
                   }}
                 >
                   <ListItemButton
@@ -257,12 +240,18 @@ export default function PermanentDrawer() {
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
           <Toolbar />
-          
-          {todoLists.map(list => (
-              list.listId === activeListId &&
-                <TodoList todos = {list.listContent} removeTodo = {handleRemoveTodo} toggleTodo = {handleToggleTodo} addTodo = {handleAddTodo} />
-          ))}
-          
+
+          {todoLists.map(
+            (list) =>
+              list.listId === activeListId && (
+                <TodoList
+                  todos={list.listContent}
+                  removeTodo={handleRemoveTodo}
+                  toggleTodo={handleToggleTodo}
+                  addTodo={handleAddTodo}
+                />
+              ),
+          )}
         </Box>
       </Box>
     </>
