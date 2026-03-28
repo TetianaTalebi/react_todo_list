@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { useState } from "react";
 
 import TodoList from "./TodoList";
@@ -107,12 +109,6 @@ export default function PermanentDrawer() {
     })
   }
 
-        // [
-        //   { todoId: 1, todoText: "Rain", todoCompleted: false },
-        //   { todoId: 2, todoText: "Snow", todoCompleted: false },
-        //   { todoId: 3, todoText: "Sun", todoCompleted: false },
-        //   { todoId: 4, todoText: "Clouds", todoCompleted: true },
-        // ]
 
   const handleToggleTodo = (id) => {
     setTodoLists((prevTodoLists) => {
@@ -131,6 +127,60 @@ export default function PermanentDrawer() {
       });
     })
   }
+
+
+  // {
+  //   listId: 1,
+  //   listName: "Shopping",
+  //   listIcon: (
+  //     <>
+  //       <ShoppingCartIcon />
+  //     </>
+  //   ),
+  //   listContent: [
+  //     { todoId: 1, todoText: "carrots", todoCompleted: true },
+  //     { todoId: 2, todoText: "tomatoes", todoCompleted: true },
+  //     { todoId: 3, todoText: "milk", todoCompleted: true },
+  //     { todoId: 4, todoText: "potatoes", todoCompleted: true },
+  //     { todoId: 5, todoText: "chicken", todoCompleted: true },
+  //   ],
+  // }
+
+  // const [todoLists, setTodoLists] = useState(myLists);
+
+  // const [activeListId, setActiveListId] = useState(myLists[0].listId);
+
+  
+  const handleAddTodo = (text) => {
+    setTodoLists((prevTodoLists) => {
+      return prevTodoLists.map((list) => {
+        if(list.listId === activeListId){
+          const newListContent = [...list.listContent,{
+            todoId: uuidv4(),
+            todoText: text,
+            todoCompleted: false,
+          }];
+          return {...list, listContent: newListContent};
+        }
+        return list;
+      })
+    })
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // const addTodo = (text) => {
   //   setTodos((prevTodos) => {
@@ -210,7 +260,7 @@ export default function PermanentDrawer() {
           
           {todoLists.map(list => (
               list.listId === activeListId &&
-                <TodoList todos = {list.listContent} removeTodo = {handleRemoveTodo} toggleTodo = {handleToggleTodo} />
+                <TodoList todos = {list.listContent} removeTodo = {handleRemoveTodo} toggleTodo = {handleToggleTodo} addTodo = {handleAddTodo} />
           ))}
           
         </Box>
