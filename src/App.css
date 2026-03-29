@@ -1,4 +1,4 @@
-.crossed-out {
+.crossed-out textarea {
   text-decoration: line-through silver 2px;
   color: silver;
 }

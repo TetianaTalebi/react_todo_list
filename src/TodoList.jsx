@@ -30,6 +30,7 @@ export default function TodoList({
         sx={{
           width: "100%",
           bgcolor: "background.paper",
+          pt: 1,
           pl: { xs: 0, sm: 1, md: 6,  }, 
           // lg: 6, xl: 6
           pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
