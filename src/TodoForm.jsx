@@ -20,7 +20,6 @@ export default function TodoForm({addTodo}) {
       addTodo(text);
       setText("");
     }
-    
   }
 
   return (
@@ -28,7 +27,9 @@ export default function TodoForm({addTodo}) {
         <form onSubmit={handleSubmit} style={{width: '100%'}} >
             <TextField fullWidth
                 error = {submitError}
-                id={submitError ? "outlined-error-helper-text" : "outlined-basic"}
+                id={submitError ? "outlined-error-helper-text" : "outlined-textarea"}
+                placeholder="Please add a new todo"
+                multiline
                 label = {submitError ? "Error" : "Add Todo"}
                 helperText = {submitError ? 'The length of todo text can not be less than 3 characters':''}
                 variant="outlined"
