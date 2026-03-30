@@ -128,6 +128,25 @@ export default function PermanentDrawer() {
     });
   };
 
+  const handleAddTodo = (text) => {
+    setTodoLists((prevTodoLists) => {
+      return prevTodoLists.map((list) => {
+        if (list.listId === activeListId) {
+          const newListContent = [
+            ...list.listContent,
+            {
+              todoId: uuidv4(),
+              todoText: text.trim() || '',
+              todoCompleted: false,
+            },
+          ];
+          return { ...list, listContent: newListContent };
+        }
+        return list;
+      });
+    });
+  };
+
   // {
   //   listId: 1,
   //   listName: "Shopping",
@@ -149,24 +168,24 @@ export default function PermanentDrawer() {
 
   // const [activeListId, setActiveListId] = useState(myLists[0].listId);
 
-  const handleAddTodo = (text) => {
+  const handleReviseTodo = (id, text) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.map((list) => {
-        if (list.listId === activeListId) {
-          const newListContent = [
-            ...list.listContent,
-            {
-              todoId: uuidv4(),
-              todoText: text,
-              todoCompleted: false,
-            },
-          ];
-          return { ...list, listContent: newListContent };
+        if(list.listId === activeListId){
+          const newListContent = list.listContent.map((todo) => {
+            if(todo.todoId === id){
+              return {...todo, todoText: text || ''}
+            } else {
+              return todo;
+            }
+          })
+          return {...list, listContent: newListContent}
         }
         return list;
-      });
-    });
-  };
+      })
+    })
+
+  }
 
   return (
     <>
@@ -248,6 +267,7 @@ export default function PermanentDrawer() {
                   todos={list.listContent}
                   removeTodo={handleRemoveTodo}
                   toggleTodo={handleToggleTodo}
+                  reviseTodo={handleReviseTodo}
                   addTodo={handleAddTodo}
                 />
               ),

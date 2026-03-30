@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -7,14 +7,28 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 
-export default function TodoItem({ todo, remove, toggle }) {
+export default function TodoItem({ todo, remove, toggle, revise}) {
+
   const [isTodoTextValid, setIsTodoTextValid] = useState(true);
 
-  // const handleOnBlur = () => {
-  //   if (todo.todoText.length < 3) {
-  //     setIsTodoTextValid(false);
-  //   }
-  // };
+  const handleIsTodoTextValid = () => {
+    if (todo.todoText.length < 3) {
+      setIsTodoTextValid(false);
+    } else {
+      setIsTodoTextValid(true);
+    }
+  }
+
+  useEffect(handleIsTodoTextValid, [todo.todoText]);
+  
+
+  const handleOnChange = (e) => {
+    revise(todo.todoId, e.target.value);
+  };
+
+  const handleOnBlur = (e) => {
+    revise(todo.todoId, e.target.value.trimEnd());
+  }
 
   const removeTodo = () => remove(todo.todoId);
   const labelId = `checkbox-list-label-${todo.todoId}`;
@@ -74,15 +88,16 @@ export default function TodoItem({ todo, remove, toggle }) {
           helperText={
             isTodoTextValid
               ? ""
-              : "The length of todo text can not be less than 3 characters"
+              : "The todo text can not be less than 3 characters long or empty string"
           }
-          defaultValue={todo.todoText}
+          value={todo.todoText}
           multiline
           variant="standard"
           size="small"
           sx={{ width: "100%" }}
           className={todo.todoCompleted ? "crossed-out" : ""}
-          // onBlur = {handleOnBlur}
+          onChange={handleOnChange}
+          onBlur={handleOnBlur}
         />
       </ListItemButton>
     </ListItem>

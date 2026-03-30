@@ -7,6 +7,7 @@ export default function TodoList({
   todos = [],
   removeTodo,
   toggleTodo,
+  reviseTodo,
   addTodo,
 }) {
   return (
@@ -42,6 +43,8 @@ export default function TodoList({
             todo={todo}
             remove={removeTodo}
             toggle={() => toggleTodo(todo.todoId)}
+            revise={reviseTodo}
+            addTodo={addTodo}
           />
         ))}
         <TodoForm addTodo={addTodo} />
