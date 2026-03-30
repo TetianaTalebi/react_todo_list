@@ -13,11 +13,15 @@ export default function TodoForm({addTodo}) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (text.length < 3){
+    if(text.trim()===""){
       setSubmitError(true);
+      setText("");
+    } else if (text.trim().length < 3){
+      setSubmitError(true);
+      setText(text.trim());
     } else {
       setSubmitError(false);
-      addTodo(text);
+      addTodo(text.trim());
       setText("");
     }
   }
@@ -28,10 +32,10 @@ export default function TodoForm({addTodo}) {
             <TextField fullWidth
                 error = {submitError}
                 id={submitError ? "outlined-error-helper-text" : "outlined-textarea"}
-                placeholder="Please add a new todo"
+                placeholder="Add a new todo"
                 multiline
                 label = {submitError ? "Error" : "Add Todo"}
-                helperText = {submitError ? 'The length of todo text can not be less than 3 characters':''}
+                helperText = {submitError ? 'The todo text can not be less than 3 characters long or empty string':''}
                 variant="outlined"
                 value={text}
                 onChange={handleChange}
