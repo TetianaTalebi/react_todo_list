@@ -8,6 +8,11 @@ export default function TodoForm({addTodo}) {
   const [submitError, setSubmitError] = useState(false);
 
   const handleChange = (e) => {
+    if(e.target.value.length < 3){
+      setSubmitError(true);
+    } else {
+      setSubmitError(false);
+    }
     return setText(e.target.value);
   }
 
@@ -45,7 +50,7 @@ export default function TodoForm({addTodo}) {
                         edge="end"
                         type="submit"
                         >
-                            <CreateIcon color="primary" />
+                            <CreateIcon color={submitError?"error":"primary"} />
                         </IconButton>
                     </InputAdornment>}}
             /> 
