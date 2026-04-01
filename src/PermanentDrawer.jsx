@@ -16,6 +16,9 @@ import ListItemText from "@mui/material/ListItemText";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import UmbrellaIcon from "@mui/icons-material/Umbrella";
+import IconButton from "@mui/material/IconButton";
+import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import Tooltip from "@mui/material/Tooltip";
 
 // const getInitialData = () => {
 //   const data = JSON.parse(localStorage.getItem("todos"));
@@ -136,7 +139,7 @@ export default function PermanentDrawer() {
             ...list.listContent,
             {
               todoId: uuidv4(),
-              todoText: text.trim() || '',
+              todoText: text.trim() || "",
               todoCompleted: false,
             },
           ];
@@ -171,21 +174,20 @@ export default function PermanentDrawer() {
   const handleReviseTodo = (id, text) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.map((list) => {
-        if(list.listId === activeListId){
+        if (list.listId === activeListId) {
           const newListContent = list.listContent.map((todo) => {
-            if(todo.todoId === id){
-              return {...todo, todoText: text || ''}
+            if (todo.todoId === id) {
+              return { ...todo, todoText: text || "" };
             } else {
               return todo;
             }
-          })
-          return {...list, listContent: newListContent}
+          });
+          return { ...list, listContent: newListContent };
         }
         return list;
-      })
-    })
-
-  }
+      });
+    });
+  };
 
   return (
     <>
@@ -204,8 +206,47 @@ export default function PermanentDrawer() {
             >
               React Todos
             </Typography>
+            <div>
+              <Tooltip title="Create new list" arrow>
+                <IconButton size="large" color="inherit">
+                  <AddCircleOutlinedIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
+            </div>
           </Toolbar>
         </AppBar>
+
+        {/* <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+              </Menu>
+            </div> */}
+
         <Drawer
           variant="permanent"
           sx={{
@@ -218,9 +259,9 @@ export default function PermanentDrawer() {
             [`& .MuiDrawer-paper`]: {
               width: 1 / 4,
               minWidth: {
-              sm: 190,
-              md: 240,
-            },
+                sm: 190,
+                md: 240,
+              },
               boxSizing: "border-box",
             },
           }}
