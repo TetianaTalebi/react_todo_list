@@ -94,7 +94,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
           multiline
           variant="standard"
           size="small"
-          sx={{ width: "100%" }}
+          fullWidth
           className={todo.todoCompleted ? "crossed-out" : ""}
           onChange={handleOnChange}
           onBlur={handleOnBlur}
