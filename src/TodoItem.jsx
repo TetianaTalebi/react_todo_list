@@ -27,7 +27,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
   };
 
   const handleOnBlur = (e) => {
-    revise(todo.todoId, e.target.value.trimEnd());
+    revise(todo.todoId, e.target.value.trim());
   }
 
   const removeTodo = () => remove(todo.todoId);
