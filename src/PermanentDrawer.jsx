@@ -20,6 +20,16 @@ import IconButton from "@mui/material/IconButton";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import Tooltip from "@mui/material/Tooltip";
 
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
+import SailingIcon from '@mui/icons-material/Sailing';
+
 // const getInitialData = () => {
 //   const data = JSON.parse(localStorage.getItem("todos"));
 //   if (!data) {
@@ -93,6 +103,20 @@ export default function PermanentDrawer() {
 
   const [activeListId, setActiveListId] = useState(myLists[0].listId);
 
+  // open variable defines whether the dialog window opened or closed
+  // (i.e. the dialog window for creating a new list)
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
   const handleListOnClick = (listId) => {
     setActiveListId(listId);
   };
@@ -150,7 +174,25 @@ export default function PermanentDrawer() {
     });
   };
 
-  // {
+  const handleReviseTodo = (id, text) => {
+    setTodoLists((prevTodoLists) => {
+      return prevTodoLists.map((list) => {
+        if (list.listId === activeListId) {
+          const newListContent = list.listContent.map((todo) => {
+            if (todo.todoId === id) {
+              return { ...todo, todoText: text || "" };
+            } else {
+              return todo;
+            }
+          });
+          return { ...list, listContent: newListContent };
+        }
+        return list;
+      });
+    });
+  };
+
+   // {
   //   listId: 1,
   //   listName: "Shopping",
   //   listIcon: (
@@ -171,23 +213,23 @@ export default function PermanentDrawer() {
 
   // const [activeListId, setActiveListId] = useState(myLists[0].listId);
 
-  const handleReviseTodo = (id, text) => {
-    setTodoLists((prevTodoLists) => {
-      return prevTodoLists.map((list) => {
-        if (list.listId === activeListId) {
-          const newListContent = list.listContent.map((todo) => {
-            if (todo.todoId === id) {
-              return { ...todo, todoText: text || "" };
-            } else {
-              return todo;
-            }
-          });
-          return { ...list, listContent: newListContent };
-        }
-        return list;
-      });
+
+  const handleCreateNewList = (listName, ListIcon) => {
+    setTodoLists((prevTodoLists)  => {
+      const newTodoList = {
+        listId: uuidv4(),
+        listName: listName,
+        listIcon: (
+          <>
+            <ListIcon />
+          </>
+        ),
+        listContent: [],
+      };
+      return [...prevTodoLists, newTodoList];
     });
-  };
+    setOpen(false);
+  }
 
   return (
     <>
@@ -208,44 +250,46 @@ export default function PermanentDrawer() {
             </Typography>
             <div>
               <Tooltip title="Create new list" arrow>
-                <IconButton size="large" color="inherit">
+                <IconButton size="large" color="inherit" onClick={handleClickOpen}>
                   <AddCircleOutlinedIcon fontSize="large" />
                 </IconButton>
               </Tooltip>
+
+
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Create a new list</DialogTitle>
+                {/* <DialogContent>
+                  <DialogContentText>
+                    To subscribe to this website, please enter your email address here. We
+                    will send updates occasionally.
+                  </DialogContentText>
+                  <form onSubmit={handleSubmit} id="subscription-form">
+                    <TextField
+                      autoFocus
+                      required
+                      margin="dense"
+                      id="name"
+                      name="email"
+                      label="Email Address"
+                      type="email"
+                      fullWidth
+                      variant="standard"
+                    />
+                  </form>
+                </DialogContent> */}
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button onClick={() => handleCreateNewList('newList', SailingIcon)}>Create</Button>
+                  {/* <Button type="submit" form="subscription-form">
+                    Subscribe
+                  </Button> */}
+                </DialogActions>
+              </Dialog>
+
+
             </div>
           </Toolbar>
         </AppBar>
-
-        {/* <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
-            </div> */}
 
         <Drawer
           variant="permanent"
@@ -318,3 +362,72 @@ export default function PermanentDrawer() {
     </>
   );
 }
+
+// *********************************************************************************************
+
+// import * as React from 'react';
+// import Button from '@mui/material/Button';
+// import TextField from '@mui/material/TextField';
+// import Dialog from '@mui/material/Dialog';
+// import DialogActions from '@mui/material/DialogActions';
+// import DialogContent from '@mui/material/DialogContent';
+// import DialogContentText from '@mui/material/DialogContentText';
+// import DialogTitle from '@mui/material/DialogTitle';
+
+// export default function FormDialog() {
+//   const [open, setOpen] = React.useState(false);
+
+//   const handleClickOpen = () => {
+//     setOpen(true);
+//   };
+
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
+
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const formData = new FormData(event.currentTarget);
+  //   const formJson = Object.fromEntries((formData as any).entries());
+  //   const email = formJson.email;
+  //   console.log(email);
+  //   handleClose();
+  // };
+
+  // return (
+  //   <React.Fragment>
+  //     <Button variant="outlined" onClick={handleClickOpen}>
+  //       Open form dialog
+  //     </Button>
+      // <Dialog open={open} onClose={handleClose}>
+      //   <DialogTitle>Subscribe</DialogTitle>
+      //   <DialogContent>
+      //     <DialogContentText>
+      //       To subscribe to this website, please enter your email address here. We
+      //       will send updates occasionally.
+      //     </DialogContentText>
+      //     <form onSubmit={handleSubmit} id="subscription-form">
+      //       <TextField
+      //         autoFocus
+      //         required
+      //         margin="dense"
+      //         id="name"
+      //         name="email"
+      //         label="Email Address"
+      //         type="email"
+      //         fullWidth
+      //         variant="standard"
+      //       />
+      //     </form>
+      //   </DialogContent>
+      //   <DialogActions>
+      //     <Button onClick={handleClose}>Cancel</Button>
+      //     <Button type="submit" form="subscription-form">
+      //       Subscribe
+      //     </Button>
+      //   </DialogActions>
+      // </Dialog>
+//     </React.Fragment>
+//   );
+// }
+
