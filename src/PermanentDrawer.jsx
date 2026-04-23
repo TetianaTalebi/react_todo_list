@@ -215,9 +215,10 @@ export default function PermanentDrawer() {
 
 
   const handleCreateNewList = (listName, ListIcon) => {
+    const newListId = uuidv4();
     setTodoLists((prevTodoLists)  => {
       const newTodoList = {
-        listId: uuidv4(),
+        listId: newListId,
         listName: listName,
         listIcon: (
           <>
@@ -228,6 +229,7 @@ export default function PermanentDrawer() {
       };
       return [...prevTodoLists, newTodoList];
     });
+    setActiveListId(newListId);
     setOpen(false);
   }
 
