@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {ListItem, TextField, InputAdornment, IconButton} from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 
 export default function TodoForm({addTodo}) {
+
   const [text, setText] = useState("");
 
   const [submitError, setSubmitError] = useState(false);
+
+  const myRefs = useRef({
+    textFieldDOMElement: null,
+    textFieldCursorStart: null
+  });
 
   const handleChange = (e) => {
     if(e.target.value.length < 3){
@@ -16,8 +22,7 @@ export default function TodoForm({addTodo}) {
     return setText(e.target.value);
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if(text.trim()===""){
       setSubmitError(true);
       setText("");
@@ -31,10 +36,41 @@ export default function TodoForm({addTodo}) {
     }
   }
 
+  const handleSubmitWithForm = (e) => {
+    e.preventDefault();
+    handleSubmit();
+  }
+
+  useEffect(()=>{
+    if (myRefs.current.textFieldCursorStart){
+      const start = myRefs.current.textFieldCursorStart;
+      myRefs.current.textFieldCursorStart = null;
+      myRefs.current.textFieldDOMElement.setSelectionRange(start+1, start+1);
+    }
+  }, [text]);
+
+  const handleKeyDown = (ev) => {
+    if((ev.key === 'Enter')&&(ev.altKey === false)){
+      ev.preventDefault();
+      handleSubmit();
+    }
+    if((ev.key === 'Enter')&&(ev.altKey === true)){
+      const start = myRefs.current.textFieldDOMElement.selectionStart;
+      const end = myRefs.current.textFieldDOMElement.selectionEnd;
+      myRefs.current.textFieldCursorStart = start;
+
+      setText(prevText => {
+        const newText = prevText.substring(0, start) + '\n' + prevText.substring(end);
+        return newText;
+      });
+    } 
+  }
+
   return (
     <ListItem disablePadding >
-        <form onSubmit={handleSubmit} style={{width: '100%'}} >
+        <form onSubmit={handleSubmitWithForm} style={{width: '100%'}} >
             <TextField fullWidth
+                inputRef={(el)=>{myRefs.current.textFieldDOMElement = el}}
                 error = {submitError}
                 id={submitError ? "outlined-error-helper-text" : "outlined-textarea"}
                 placeholder="Add a new todo"
@@ -44,6 +80,7 @@ export default function TodoForm({addTodo}) {
                 variant="outlined"
                 value={text}
                 onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 InputProps = {{endAdornment:<InputAdornment position="end">
                         <IconButton
                         aria-label="create todo"
