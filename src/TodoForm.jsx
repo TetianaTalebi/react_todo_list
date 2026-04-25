@@ -11,11 +11,6 @@ export default function TodoForm({addTodo}) {
 
   const [myRefs, setCursor, setTextWithAlt] = useCursorPosition();
 
-  // const myRefs = useRef({
-  //   textFieldDOMElement: null,
-  //   textFieldCursorStart: null
-  // });
-
   const handleChange = (e) => {
     if(e.target.value.length < 3){
       setSubmitError(true);
@@ -44,14 +39,6 @@ export default function TodoForm({addTodo}) {
     handleSubmit();
   }
 
-  // useEffect(()=>{
-  //   if (myRefs.current.textFieldCursorStart){
-  //     const start = myRefs.current.textFieldCursorStart;
-  //     myRefs.current.textFieldCursorStart = null;
-  //     myRefs.current.textFieldDOMElement.setSelectionRange(start+1, start+1);
-  //   }
-  // }, [text]);
-
   useEffect(setCursor, [text]);
 
   const handleKeyDown = (ev) => {
@@ -61,14 +48,6 @@ export default function TodoForm({addTodo}) {
     }
     if((ev.key === 'Enter')&&(ev.altKey === true)){
      
-      // setText(prevText => {
-      //   const start = myRefs.current.textFieldDOMElement.selectionStart;
-      //   const end = myRefs.current.textFieldDOMElement.selectionEnd;
-      //   myRefs.current.textFieldCursorStart = start;
-      //   const newText = prevText.substring(0, start) + '\n' + prevText.substring(end);
-      //   return newText;
-      // });
-
       setText(prevText => {
         return setTextWithAlt(prevText);
       });
