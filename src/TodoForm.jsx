@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import {ListItem, TextField, InputAdornment, IconButton} from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
+import useCursorPosition from "./hooks/useCursorPosition";
 
 export default function TodoForm({addTodo}) {
 
@@ -8,10 +9,12 @@ export default function TodoForm({addTodo}) {
 
   const [submitError, setSubmitError] = useState(false);
 
-  const myRefs = useRef({
-    textFieldDOMElement: null,
-    textFieldCursorStart: null
-  });
+  const [myRefs, setCursor, setTextWithAlt] = useCursorPosition();
+
+  // const myRefs = useRef({
+  //   textFieldDOMElement: null,
+  //   textFieldCursorStart: null
+  // });
 
   const handleChange = (e) => {
     if(e.target.value.length < 3){
@@ -41,13 +44,15 @@ export default function TodoForm({addTodo}) {
     handleSubmit();
   }
 
-  useEffect(()=>{
-    if (myRefs.current.textFieldCursorStart){
-      const start = myRefs.current.textFieldCursorStart;
-      myRefs.current.textFieldCursorStart = null;
-      myRefs.current.textFieldDOMElement.setSelectionRange(start+1, start+1);
-    }
-  }, [text]);
+  // useEffect(()=>{
+  //   if (myRefs.current.textFieldCursorStart){
+  //     const start = myRefs.current.textFieldCursorStart;
+  //     myRefs.current.textFieldCursorStart = null;
+  //     myRefs.current.textFieldDOMElement.setSelectionRange(start+1, start+1);
+  //   }
+  // }, [text]);
+
+  useEffect(setCursor, [text]);
 
   const handleKeyDown = (ev) => {
     if((ev.key === 'Enter')&&(ev.altKey === false)){
@@ -55,13 +60,17 @@ export default function TodoForm({addTodo}) {
       handleSubmit();
     }
     if((ev.key === 'Enter')&&(ev.altKey === true)){
-      const start = myRefs.current.textFieldDOMElement.selectionStart;
-      const end = myRefs.current.textFieldDOMElement.selectionEnd;
-      myRefs.current.textFieldCursorStart = start;
+     
+      // setText(prevText => {
+      //   const start = myRefs.current.textFieldDOMElement.selectionStart;
+      //   const end = myRefs.current.textFieldDOMElement.selectionEnd;
+      //   myRefs.current.textFieldCursorStart = start;
+      //   const newText = prevText.substring(0, start) + '\n' + prevText.substring(end);
+      //   return newText;
+      // });
 
       setText(prevText => {
-        const newText = prevText.substring(0, start) + '\n' + prevText.substring(end);
-        return newText;
+        return setTextWithAlt(prevText);
       });
     } 
   }
