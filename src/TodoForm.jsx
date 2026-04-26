@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {ListItem, TextField, InputAdornment, IconButton} from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import useCursorPosition from "./hooks/useCursorPosition";

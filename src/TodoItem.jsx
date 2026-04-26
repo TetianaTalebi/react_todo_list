@@ -7,9 +7,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 
+import useCursorPosition from "./hooks/useCursorPosition";
+
 export default function TodoItem({ todo, remove, toggle, revise}) {
 
   const [isTodoTextValid, setIsTodoTextValid] = useState(true);
+
+  const [myRefs, setCursor, setTextWithAlt] = useCursorPosition();
 
   const handleIsTodoTextValid = () => {
     if (todo.todoText.length < 3) {
@@ -19,9 +23,11 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
     }
   }
 
-  useEffect(handleIsTodoTextValid, [todo.todoText]);
+  useEffect(()=>{
+    setCursor();
+    handleIsTodoTextValid();
+  }, [todo.todoText]);
   
-
   const handleOnChange = (e) => {
     revise(todo.todoId, e.target.value);
   };
@@ -32,6 +38,16 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
 
   const removeTodo = () => remove(todo.todoId);
   const labelId = `checkbox-list-label-${todo.todoId}`;
+
+  const handleKeyDown = (ev) => {
+    if((ev.key === 'Enter')&&(ev.altKey === false)){
+      ev.preventDefault();
+      handleOnBlur(ev);
+    }
+    if((ev.key === 'Enter')&&(ev.altKey === true)){
+      revise(todo.todoId, setTextWithAlt(todo.todoText));
+    } 
+  }
 
   return (
     <ListItem
@@ -54,31 +70,9 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
             inputProps={{ "aria-labelledby": labelId }}
           />
         </ListItemIcon>
-        {/* <ListItemText
-          id={labelId}
-          primary={todo.todoText}
-          className={todo.todoCompleted ? "crossed-out" : ""}
-          - sx={{ overflowWrap: "break-word", wordWrap: "break-word" }}
-        /> */}
-
-        {/* <TextField
-          - id="standard-textarea"
-          label="Multiline Placeholder"
-          - placeholder="Placeholder"
-          - multiline
-          - variant="standard"
-        /> */}
-
-        {/* <TextField
-             - error
-            - id="standard-error-helper-text"
-            - label="Error"
-            - defaultValue="Hello World"
-            - helperText="Incorrect entry."
-            - variant="standard"
-          /> */}
-
+        
         <TextField
+          inputRef={(el)=>{myRefs.current.textFieldDOMElement = el}}
           error={!isTodoTextValid}
           disabled={todo.todoCompleted ? true : false}
           label={isTodoTextValid ? "" : "Error"}
@@ -97,6 +91,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
           fullWidth
           className={todo.todoCompleted ? "crossed-out" : ""}
           onChange={handleOnChange}
+          onKeyDown={handleKeyDown}
           onBlur={handleOnBlur}
         />
       </ListItemButton>
@@ -104,20 +99,3 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
   );
 }
 
-// <ListItemText id={labelId}>
-//   <TextField
-//     onClick={e => e.stopPropagation()}
-//     onChange={event => {
-//       setOriginalListItems({
-//         ...originalListItems,
-//         [id]: event.target.value,
-//       });
-//     }}
-//     onBlur={event => {
-//       void updateItem(id, event.target.value);
-//     }}
-//     value={originalListItems[id] ?? ''}
-//     size="small"
-//     variant="standard"
-//   />
-// </ListItemText>
