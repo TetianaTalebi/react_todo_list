@@ -233,6 +233,11 @@ export default function PermanentDrawer() {
     setOpen(false);
   }
 
+  const handleSubmitNewListForm = (e) => {
+    e.preventDefault();
+    handleCreateNewList('newList', SailingIcon);
+  }
+
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -260,13 +265,12 @@ export default function PermanentDrawer() {
 
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Create a new list</DialogTitle>
-                {/* <DialogContent>
+                <DialogContent>
                   <DialogContentText>
-                    To subscribe to this website, please enter your email address here. We
-                    will send updates occasionally.
+                    To create a new list, enter a name and choose an icon using keywords.
                   </DialogContentText>
-                  <form onSubmit={handleSubmit} id="subscription-form">
-                    <TextField
+                  <form onSubmit={handleSubmitNewListForm} id="new-list-form">
+                    {/* <TextField
                       autoFocus
                       required
                       margin="dense"
@@ -276,15 +280,14 @@ export default function PermanentDrawer() {
                       type="email"
                       fullWidth
                       variant="standard"
-                    />
+                    /> */}
                   </form>
-                </DialogContent> */}
+                </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
-                  <Button onClick={() => handleCreateNewList('newList', SailingIcon)}>Create</Button>
-                  {/* <Button type="submit" form="subscription-form">
-                    Subscribe
-                  </Button> */}
+                  <Button type="submit" form="new-list-form">
+                    Create
+                  </Button>
                 </DialogActions>
               </Dialog>
 
