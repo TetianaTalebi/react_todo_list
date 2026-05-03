@@ -1,7 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-
 import { useState } from "react";
-
 import TodoList from "./TodoList";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -108,12 +106,17 @@ export default function PermanentDrawer() {
 
   const [open, setOpen] = useState(false);
 
+  const [newListName, setNewListName] = useState("");
+
+  const [submitNewListError, setSubmitNewListError] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setNewListName("");
   };
 
 
@@ -214,6 +217,16 @@ export default function PermanentDrawer() {
   // const [activeListId, setActiveListId] = useState(myLists[0].listId);
 
 
+  // const [newListName, setNewListName] = useState("");
+
+  // const [submitNewListError, setSubmitNewListError] = useState(false);
+  
+
+  const handleNewListNameChange = (e) => {
+    setNewListName(e.target.value);
+  }
+
+
   const handleCreateNewList = (listName, ListIcon) => {
     const newListId = uuidv4();
     setTodoLists((prevTodoLists)  => {
@@ -231,11 +244,12 @@ export default function PermanentDrawer() {
     });
     setActiveListId(newListId);
     setOpen(false);
+    setNewListName("");
   }
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
-    handleCreateNewList('newList', SailingIcon);
+    handleCreateNewList(newListName, SailingIcon);
   }
 
   return (
@@ -262,25 +276,46 @@ export default function PermanentDrawer() {
                 </IconButton>
               </Tooltip>
 
-
-              <Dialog open={open} onClose={handleClose}>
+              <Dialog open={open} onClose={handleClose} disableAutoFocus>
                 <DialogTitle>Create a new list</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
                     To create a new list, enter a name and choose an icon using keywords.
                   </DialogContentText>
                   <form onSubmit={handleSubmitNewListForm} id="new-list-form">
-                    {/* <TextField
-                      autoFocus
-                      required
+                    <TextField
+                      // required
                       margin="dense"
-                      id="name"
-                      name="email"
-                      label="Email Address"
-                      type="email"
                       fullWidth
+                      // error="true"
                       variant="standard"
-                    /> */}
+                      label="List Name"
+                      type="text"
+                      placeholder="Create a new list"
+                      value = {newListName}
+                      onChange = {handleNewListNameChange}
+                    />
+
+                      {/* <TextField
+                        error
+                        id="standard-error"
+                        label="Error"
+                        defaultValue="Hello World"
+                        +variant="standard"
+                      /> */}
+
+                      {/* <TextField fullWidth
+                          
+                          error = {submitError}
+                          id={submitError ? "outlined-error-helper-text" : "outlined-textarea"}
+                          +placeholder="Add a new todo"
+                          label = {submitError ? "Error" : "Add Todo"}
+                          helperText = {submitError ? 'The todo text can not be less than 3 characters long or empty string':''}
+                          +variant="outlined"
+                          value={text}
+                          onChange={handleChange}
+                        
+                      />  */}
                   </form>
                 </DialogContent>
                 <DialogActions>
