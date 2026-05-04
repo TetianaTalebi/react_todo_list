@@ -7,7 +7,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 
-import useCursorPosition from "./hooks/useCursorPosition";
+import useCursorPosition from "../hooks/useCursorPosition.js";
 
 export default function TodoItem({ todo, remove, toggle, revise}) {
 
