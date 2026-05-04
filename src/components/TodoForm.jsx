@@ -11,6 +11,8 @@ export default function TodoForm({addTodo}) {
 
   const [myRefs, setCursor, setTextWithAlt] = useCursorPosition();
 
+  useEffect(setCursor, [text]);
+
   const handleChange = (e) => {
     if(e.target.value.length < 3){
       setSubmitError(true);
@@ -38,8 +40,6 @@ export default function TodoForm({addTodo}) {
     e.preventDefault();
     handleSubmit();
   }
-
-  useEffect(setCursor, [text]);
 
   const handleKeyDown = (ev) => {
     if((ev.key === 'Enter')&&(ev.altKey === false)){
