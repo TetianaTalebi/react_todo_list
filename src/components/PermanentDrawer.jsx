@@ -312,7 +312,7 @@ export default function PermanentDrawer() {
                     type="submit"
                     form="new-list-form"
                     color={isNewListNameValid ? "primary" : "error"}
-                    disabled = {!isNewListNameValid}
+                    disabled = {!isNewListNameValid || newListName === ""}
                   >
                     Create
                   </Button>

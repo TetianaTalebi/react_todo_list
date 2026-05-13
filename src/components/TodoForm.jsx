@@ -73,7 +73,7 @@ export default function TodoForm({ addTodo }) {
                   aria-label="create todo"
                   edge="end"
                   type="submit"
-                  disabled={!isTodoFormValid}
+                  disabled={!isTodoFormValid || text === ""}
                 >
                   <CreateIcon color={isTodoFormValid ? "primary" : "error"} />
                 </IconButton>
