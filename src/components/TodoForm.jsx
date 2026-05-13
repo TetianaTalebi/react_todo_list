@@ -32,7 +32,7 @@ export default function TodoForm({ addTodo }) {
   const handleKeyDown = (ev) => {
     if (ev.key === "Enter" && ev.altKey === false) {
       ev.preventDefault();
-      if (isTodoFormValid) {
+      if (isTodoFormValid && text !== "") {
           addTodo(text);
           resetForm();
       }
