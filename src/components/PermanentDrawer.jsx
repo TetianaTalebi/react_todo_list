@@ -1,5 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
+
+import useDataValidation from "../hooks/useDataValidation.js";
+import {isNewListNameValidUtils} from "../utils/utils.js";
+
 import TodoList from "./TodoList";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -106,9 +110,8 @@ export default function PermanentDrawer() {
 
   const [open, setOpen] = useState(false);
 
-  const [newListName, setNewListName] = useState("");
 
-  const [submitNewListError, setSubmitNewListError] = useState(false);
+  const {text: newListName, isValid: isNewListNameValid, handleOnChange: handleNewListNameOnChange, resetInitialText: resetNewListFormText} = useDataValidation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -212,21 +215,6 @@ export default function PermanentDrawer() {
   //   ],
   // }
 
-  // const [todoLists, setTodoLists] = useState(myLists);
-
-  // const [activeListId, setActiveListId] = useState(myLists[0].listId);
-
-
-  // const [newListName, setNewListName] = useState("");
-
-  // const [submitNewListError, setSubmitNewListError] = useState(false);
-  
-
-  const handleNewListNameChange = (e) => {
-    setNewListName(e.target.value);
-  }
-
-
   const handleCreateNewList = (listName, ListIcon) => {
     const newListId = uuidv4();
     setTodoLists((prevTodoLists)  => {
@@ -244,7 +232,7 @@ export default function PermanentDrawer() {
     });
     setActiveListId(newListId);
     setOpen(false);
-    setNewListName("");
+    resetNewListFormText();
   }
 
   const handleSubmitNewListForm = (e) => {
@@ -280,42 +268,24 @@ export default function PermanentDrawer() {
                 <DialogTitle>Create a new list</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    To create a new list, enter a name and choose an icon using keywords.
+                    Create a new list by entering a list name and selecting an icon with keywords.
                   </DialogContentText>
                   <form onSubmit={handleSubmitNewListForm} id="new-list-form">
                     <TextField
-                      // required
                       margin="dense"
                       fullWidth
-                      // error="true"
+                      error={!isNewListNameValid}
+                      id={isNewListNameValid ? "outlined-textarea" : "outlined-error-helper-text"}
+                      helperText = {isNewListNameValid ? '' : 'The list name can not be less than 3 characters long or empty string'}
+
                       variant="standard"
-                      label="List Name"
+                      label={isNewListNameValid ? "List Name" : "Error"}
                       type="text"
-                      placeholder="Create a new list"
+                      placeholder="New list name"
                       value = {newListName}
-                      onChange = {handleNewListNameChange}
+                      onChange = {(e) => handleNewListNameOnChange(e, isNewListNameValidUtils)}
                     />
 
-                      {/* <TextField
-                        error
-                        id="standard-error"
-                        label="Error"
-                        defaultValue="Hello World"
-                        +variant="standard"
-                      /> */}
-
-                      {/* <TextField fullWidth
-                          
-                          error = {submitError}
-                          id={submitError ? "outlined-error-helper-text" : "outlined-textarea"}
-                          +placeholder="Add a new todo"
-                          label = {submitError ? "Error" : "Add Todo"}
-                          helperText = {submitError ? 'The todo text can not be less than 3 characters long or empty string':''}
-                          +variant="outlined"
-                          value={text}
-                          onChange={handleChange}
-                        
-                      />  */}
                   </form>
                 </DialogContent>
                 <DialogActions>
