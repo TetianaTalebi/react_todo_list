@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+
+import { isTodoValidUtils } from "../utils/utils.js"
+
 import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,17 +18,17 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
 
   const [myRefs, setCursor, setTextWithAlt] = useCursorPosition();
 
-  const handleIsTodoTextValid = () => {
-    if (todo.todoText.length < 3) {
-      setIsTodoTextValid(false);
-    } else {
+  const handleIsTodoTextValid = (myText, myValidationLogic) => {
+    if(myValidationLogic(myText)){
       setIsTodoTextValid(true);
+    } else {
+      setIsTodoTextValid(false);
     }
   }
 
   useEffect(()=>{
     setCursor();
-    handleIsTodoTextValid();
+    handleIsTodoTextValid(todo.todoText, isTodoValidUtils);
   }, [todo.todoText]);
   
   const handleOnChange = (e) => {
