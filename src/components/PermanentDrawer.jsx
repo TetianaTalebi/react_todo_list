@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 
 import useDataValidation from "../hooks/useDataValidation.js";
-import {isNewListNameValidUtils} from "../utils/utils.js";
+import { isNewListNameValidUtils } from "../utils/utils.js";
 
 import TodoList from "./TodoList";
 import Box from "@mui/material/Box";
@@ -22,15 +22,15 @@ import IconButton from "@mui/material/IconButton";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import Tooltip from "@mui/material/Tooltip";
 
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
-import SailingIcon from '@mui/icons-material/Sailing';
+import SailingIcon from "@mui/icons-material/Sailing";
 
 // const getInitialData = () => {
 //   const data = JSON.parse(localStorage.getItem("todos"));
@@ -110,8 +110,13 @@ export default function PermanentDrawer() {
 
   const [open, setOpen] = useState(false);
 
-
-  const {text: newListName, isValid: isNewListNameValid, handleOnChange: handleNewListNameOnChange, resetInitialText: resetNewListFormText} = useDataValidation();
+  const {
+    text: newListName,
+    isValid: isNewListNameValid,
+    handleOnChange: handleNewListNameOnChange,
+    resetInitialText: resetNewListFormText,
+    resetIsValid: resetNewListFormValid,
+  } = useDataValidation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -119,9 +124,9 @@ export default function PermanentDrawer() {
 
   const handleClose = () => {
     setOpen(false);
-    setNewListName("");
+    resetNewListFormText();
+    resetNewListFormValid();
   };
-
 
   const handleListOnClick = (listId) => {
     setActiveListId(listId);
@@ -198,7 +203,7 @@ export default function PermanentDrawer() {
     });
   };
 
-   // {
+  // {
   //   listId: 1,
   //   listName: "Shopping",
   //   listIcon: (
@@ -217,7 +222,7 @@ export default function PermanentDrawer() {
 
   const handleCreateNewList = (listName, ListIcon) => {
     const newListId = uuidv4();
-    setTodoLists((prevTodoLists)  => {
+    setTodoLists((prevTodoLists) => {
       const newTodoList = {
         listId: newListId,
         listName: listName,
@@ -233,12 +238,12 @@ export default function PermanentDrawer() {
     setActiveListId(newListId);
     setOpen(false);
     resetNewListFormText();
-  }
+  };
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
     handleCreateNewList(newListName, SailingIcon);
-  }
+  };
 
   return (
     <>
@@ -259,7 +264,11 @@ export default function PermanentDrawer() {
             </Typography>
             <div>
               <Tooltip title="Create new list" arrow>
-                <IconButton size="large" color="inherit" onClick={handleClickOpen}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={handleClickOpen}
+                >
                   <AddCircleOutlinedIcon fontSize="large" />
                 </IconButton>
               </Tooltip>
@@ -268,35 +277,47 @@ export default function PermanentDrawer() {
                 <DialogTitle>Create a new list</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    Create a new list by entering a list name and selecting an icon with keywords.
+                    Create a new list by entering a list name and selecting an
+                    icon with keywords.
                   </DialogContentText>
                   <form onSubmit={handleSubmitNewListForm} id="new-list-form">
                     <TextField
                       margin="dense"
                       fullWidth
                       error={!isNewListNameValid}
-                      id={isNewListNameValid ? "outlined-textarea" : "outlined-error-helper-text"}
-                      helperText = {isNewListNameValid ? '' : 'The list name can not be less than 3 characters long or empty string'}
-
+                      id={
+                        isNewListNameValid
+                          ? "outlined-textarea"
+                          : "outlined-error-helper-text"
+                      }
+                      helperText={
+                        isNewListNameValid
+                          ? ""
+                          : "The list name must contain between 3 and 30 characters and cannot be an empty string."
+                      }
                       variant="standard"
                       label={isNewListNameValid ? "List Name" : "Error"}
                       type="text"
                       placeholder="New list name"
-                      value = {newListName}
-                      onChange = {(e) => handleNewListNameOnChange(e, isNewListNameValidUtils)}
+                      value={newListName}
+                      onChange={(e) =>
+                        handleNewListNameOnChange(e, isNewListNameValidUtils)
+                      }
                     />
-
                   </form>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
-                  <Button type="submit" form="new-list-form">
+                  <Button
+                    type="submit"
+                    form="new-list-form"
+                    color={isNewListNameValid ? "primary" : "error"}
+                    disabled = {!isNewListNameValid}
+                  >
                     Create
                   </Button>
                 </DialogActions>
               </Dialog>
-
-
             </div>
           </Toolbar>
         </AppBar>
@@ -395,49 +416,48 @@ export default function PermanentDrawer() {
 //     setOpen(false);
 //   };
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const formData = new FormData(event.currentTarget);
-  //   const formJson = Object.fromEntries((formData as any).entries());
-  //   const email = formJson.email;
-  //   console.log(email);
-  //   handleClose();
-  // };
+// const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+//   event.preventDefault();
+//   const formData = new FormData(event.currentTarget);
+//   const formJson = Object.fromEntries((formData as any).entries());
+//   const email = formJson.email;
+//   console.log(email);
+//   handleClose();
+// };
 
-  // return (
-  //   <React.Fragment>
-  //     <Button variant="outlined" onClick={handleClickOpen}>
-  //       Open form dialog
-  //     </Button>
-      // <Dialog open={open} onClose={handleClose}>
-      //   <DialogTitle>Subscribe</DialogTitle>
-      //   <DialogContent>
-      //     <DialogContentText>
-      //       To subscribe to this website, please enter your email address here. We
-      //       will send updates occasionally.
-      //     </DialogContentText>
-      //     <form onSubmit={handleSubmit} id="subscription-form">
-      //       <TextField
-      //         autoFocus
-      //         required
-      //         margin="dense"
-      //         id="name"
-      //         name="email"
-      //         label="Email Address"
-      //         type="email"
-      //         fullWidth
-      //         variant="standard"
-      //       />
-      //     </form>
-      //   </DialogContent>
-      //   <DialogActions>
-      //     <Button onClick={handleClose}>Cancel</Button>
-      //     <Button type="submit" form="subscription-form">
-      //       Subscribe
-      //     </Button>
-      //   </DialogActions>
-      // </Dialog>
+// return (
+//   <React.Fragment>
+//     <Button variant="outlined" onClick={handleClickOpen}>
+//       Open form dialog
+//     </Button>
+// <Dialog open={open} onClose={handleClose}>
+//   <DialogTitle>Subscribe</DialogTitle>
+//   <DialogContent>
+//     <DialogContentText>
+//       To subscribe to this website, please enter your email address here. We
+//       will send updates occasionally.
+//     </DialogContentText>
+//     <form onSubmit={handleSubmit} id="subscription-form">
+//       <TextField
+//         autoFocus
+//         required
+//         margin="dense"
+//         id="name"
+//         name="email"
+//         label="Email Address"
+//         type="email"
+//         fullWidth
+//         variant="standard"
+//       />
+//     </form>
+//   </DialogContent>
+//   <DialogActions>
+//     <Button onClick={handleClose}>Cancel</Button>
+//     <Button type="submit" form="subscription-form">
+//       Subscribe
+//     </Button>
+//   </DialogActions>
+// </Dialog>
 //     </React.Fragment>
 //   );
 // }
-
