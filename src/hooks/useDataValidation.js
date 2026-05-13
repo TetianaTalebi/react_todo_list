@@ -15,8 +15,10 @@ export default function useDataValidation(initialText=""){
         }
     }
 
-    const resetInitialText = () => setText(initialText);
+    const resetInitialText = (initialText = "") => setText(initialText);
 
-    return {text, isValid, handleOnChange, resetInitialText};
+    const resetIsValid = () => setIsValid(true);
+
+    return {text, isValid, handleOnChange, resetInitialText, resetIsValid};
 
 }
