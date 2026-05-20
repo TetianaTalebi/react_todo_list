@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 
-import useDataValidation from "../hooks/useDataValidation.js";
-import { isNewListNameValidUtils } from "../utils/utils.js";
+import NewListDialog from "./NewListDialog.jsx";
+
+import { muiIconsNames } from "../constants/constants.js";
 
 import TodoList from "./TodoList";
 import Box from "@mui/material/Box";
@@ -22,15 +23,7 @@ import IconButton from "@mui/material/IconButton";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import Tooltip from "@mui/material/Tooltip";
 
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-
-import SailingIcon from "@mui/icons-material/Sailing";
+// import * as Icons from "@mui/icons-material";
 
 // const getInitialData = () => {
 //   const data = JSON.parse(localStorage.getItem("todos"));
@@ -110,22 +103,12 @@ export default function PermanentDrawer() {
 
   const [open, setOpen] = useState(false);
 
-  const {
-    text: newListName,
-    isValid: isNewListNameValid,
-    handleOnChange: handleNewListNameOnChange,
-    resetInitialText: resetNewListFormText,
-    resetIsValid: resetNewListFormValid,
-  } = useDataValidation();
-
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    resetNewListFormText();
-    resetNewListFormValid();
   };
 
   const handleListOnClick = (listId) => {
@@ -236,14 +219,9 @@ export default function PermanentDrawer() {
       return [...prevTodoLists, newTodoList];
     });
     setActiveListId(newListId);
-    setOpen(false);
-    resetNewListFormText();
   };
 
-  const handleSubmitNewListForm = (e) => {
-    e.preventDefault();
-    handleCreateNewList(newListName, SailingIcon);
-  };
+  
 
   return (
     <>
@@ -273,51 +251,11 @@ export default function PermanentDrawer() {
                 </IconButton>
               </Tooltip>
 
-              <Dialog open={open} onClose={handleClose} disableAutoFocus>
-                <DialogTitle>Create a new list</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Create a new list by entering a list name and selecting an
-                    icon with keywords.
-                  </DialogContentText>
-                  <form onSubmit={handleSubmitNewListForm} id="new-list-form">
-                    <TextField
-                      margin="dense"
-                      fullWidth
-                      error={!isNewListNameValid}
-                      id={
-                        isNewListNameValid
-                          ? "outlined-textarea"
-                          : "outlined-error-helper-text"
-                      }
-                      helperText={
-                        isNewListNameValid
-                          ? ""
-                          : "The list name must contain between 3 and 30 characters and cannot be an empty string."
-                      }
-                      variant="standard"
-                      label={isNewListNameValid ? "List Name" : "Error"}
-                      type="text"
-                      placeholder="New list name"
-                      value={newListName}
-                      onChange={(e) =>
-                        handleNewListNameOnChange(e, isNewListNameValidUtils)
-                      }
-                    />
-                  </form>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  <Button
-                    type="submit"
-                    form="new-list-form"
-                    color={isNewListNameValid ? "primary" : "error"}
-                    disabled = {!isNewListNameValid || newListName === ""}
-                  >
-                    Create
-                  </Button>
-                </DialogActions>
-              </Dialog>
+              <NewListDialog
+                open={open}
+                onClose={handleClose}
+                addNewList={handleCreateNewList}
+              />
             </div>
           </Toolbar>
         </AppBar>
@@ -394,70 +332,3 @@ export default function PermanentDrawer() {
   );
 }
 
-// *********************************************************************************************
-
-// import * as React from 'react';
-// import Button from '@mui/material/Button';
-// import TextField from '@mui/material/TextField';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-
-// export default function FormDialog() {
-//   const [open, setOpen] = React.useState(false);
-
-//   const handleClickOpen = () => {
-//     setOpen(true);
-//   };
-
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
-
-// const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-//   event.preventDefault();
-//   const formData = new FormData(event.currentTarget);
-//   const formJson = Object.fromEntries((formData as any).entries());
-//   const email = formJson.email;
-//   console.log(email);
-//   handleClose();
-// };
-
-// return (
-//   <React.Fragment>
-//     <Button variant="outlined" onClick={handleClickOpen}>
-//       Open form dialog
-//     </Button>
-// <Dialog open={open} onClose={handleClose}>
-//   <DialogTitle>Subscribe</DialogTitle>
-//   <DialogContent>
-//     <DialogContentText>
-//       To subscribe to this website, please enter your email address here. We
-//       will send updates occasionally.
-//     </DialogContentText>
-//     <form onSubmit={handleSubmit} id="subscription-form">
-//       <TextField
-//         autoFocus
-//         required
-//         margin="dense"
-//         id="name"
-//         name="email"
-//         label="Email Address"
-//         type="email"
-//         fullWidth
-//         variant="standard"
-//       />
-//     </form>
-//   </DialogContent>
-//   <DialogActions>
-//     <Button onClick={handleClose}>Cancel</Button>
-//     <Button type="submit" form="subscription-form">
-//       Subscribe
-//     </Button>
-//   </DialogActions>
-// </Dialog>
-//     </React.Fragment>
-//   );
-// }
