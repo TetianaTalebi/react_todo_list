@@ -32,7 +32,7 @@ export default function TodoForm({ addTodo }) {
   const handleKeyDown = (ev) => {
     if (ev.key === "Enter" && ev.altKey === false) {
       ev.preventDefault();
-      if (isTodoFormValid) {
+      if (isTodoFormValid && text !== "") {
           addTodo(text);
           resetForm();
       }
@@ -73,7 +73,7 @@ export default function TodoForm({ addTodo }) {
                   aria-label="create todo"
                   edge="end"
                   type="submit"
-                  disabled={!isTodoFormValid}
+                  disabled={!isTodoFormValid || text === ""}
                 >
                   <CreateIcon color={isTodoFormValid ? "primary" : "error"} />
                 </IconButton>
