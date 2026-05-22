@@ -26,23 +26,30 @@ export default function NewListDialog({ open, onClose, addNewList }) {
     resetIsValid: resetNewListFormValid,
   } = useDataValidation();
 
+  const handleKeyWordsOnChange = (e) => {
+    setKeyWords(e.target.value);
+  }
+
+  const resetKeyWordsFormText = () => {
+    setKeyWords("");
+  }
+
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
     addNewList(newListName, SailingIcon);
     onClose();
     resetNewListFormText();
+    resetKeyWordsFormText();
   };
 
   const handleDialogClose = () => {
     onClose();
     resetNewListFormText();
+    resetKeyWordsFormText();
     resetNewListFormValid();
   };
 
-  const handleKeyWordsOnChange = (e) => {
-    setKeyWords(e.target.value);
-    console.log(keyWords);
-  }
+  
 
   return (
     <>
