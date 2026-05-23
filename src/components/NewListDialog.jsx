@@ -11,7 +11,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import SailingIcon from "@mui/icons-material/Sailing";
 import TextField from "@mui/material/TextField";
-import { lightBlue } from "@mui/material/colors";
+
+import { muiIconsKeyWords0_400 } from "../constants/constants.js";
+
+// const matchedIconsArray = [];
 
 export default function NewListDialog({ open, onClose, addNewList }) {
 
@@ -36,6 +39,7 @@ export default function NewListDialog({ open, onClose, addNewList }) {
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
+    findIconsByKeyWords(keyWords);
     addNewList(newListName, SailingIcon);
     onClose();
     resetNewListFormText();
@@ -49,8 +53,41 @@ export default function NewListDialog({ open, onClose, addNewList }) {
     resetNewListFormValid();
   };
 
-  
+  // {
+  //   iconName: "Abc",
+  //   keyWords: ["alphabet", "text input", "typing", "letters", "keyboard", "language", "font", "text editor", "character set", "writing"]
+  // },
 
+  const findIconsByKeyWords = (keyWordsString) => {
+    const matchedIconsArray = [];
+
+    // Trim keyWordsString and replace one or multiple spaces with a pipe "|"
+    let keyWordsStringRevised = keyWordsString.replace(/[^a-zA-Z\s]/g, "").trim().replace(/\s+/g, "|");
+
+    // Turn myString into a regular expression that is used for finding matching icons
+    let myRegexString = "\\b(" + keyWordsStringRevised + ")\\b";
+    const keyWordsRegex = new RegExp(myRegexString, "i");
+    // console.log(keyWordsRegex);
+
+    // Loop over keyword arrays for each iconName
+    // and find the iconNames whose keywords match a user's keywords
+    for (let icon of muiIconsKeyWords0_400){
+      for(let iconKeyWord of icon.keyWords){
+        if(keyWordsRegex.test(iconKeyWord)){
+          // Push each matched iconName into matchedIconsArray
+          matchedIconsArray.push(icon.iconName);
+        }
+      }
+    }
+    // console.log(matchedIconsArray);
+
+    // Remove dublicates form matchedIconsArray
+    const matchedIconsArrayFinalResult = [...new Set(matchedIconsArray)];
+    console.log(matchedIconsArrayFinalResult);
+    return matchedIconsArrayFinalResult;
+  }
+
+  
   return (
     <>
       <Dialog
