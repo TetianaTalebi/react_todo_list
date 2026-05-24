@@ -12,9 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import SailingIcon from "@mui/icons-material/Sailing";
 import TextField from "@mui/material/TextField";
 
-import { muiIconsKeyWords0_400 } from "../constants/constants.js";
-
-// const matchedIconsArray = [];
+import { muiIconsKeyWords0_800 } from "../constants/constants.js";
 
 export default function NewListDialog({ open, onClose, addNewList }) {
 
@@ -29,9 +27,50 @@ export default function NewListDialog({ open, onClose, addNewList }) {
     resetIsValid: resetNewListFormValid,
   } = useDataValidation();
 
+   const findIconsByKeyWords = (keyWordsString) => {
+    const matchedIconsArray = [];
+
+    // Clean keywords string
+    let keyWordsStringCleaned = keyWordsString.replace(/[^a-zA-Z\s]/g, "").trim();
+
+    // Search for matched icons only if the cleaned keywords string is longer or equal 3 characters
+    if(keyWordsStringCleaned.length>=3){
+
+        // Replace one or multiple spaces with a pipe "|"
+        let keyWordsStringRevised = keyWordsStringCleaned.replace(/\s+/g, "|");
+
+        // Turn myString into a regular expression that is used for finding matching icons
+        let myRegexString = "\\b(" + keyWordsStringRevised + ")\\b";
+        const keyWordsRegex = new RegExp(myRegexString, "i");
+        // console.log(keyWordsRegex);
+
+        // Loop over keyword arrays for each iconName
+        // and find the iconNames whose keywords match a user's keywords
+        for (let icon of muiIconsKeyWords0_800){
+          for(let iconKeyWord of icon.keyWords){
+            if(keyWordsRegex.test(iconKeyWord)){
+              // Push each matched iconName into matchedIconsArray
+              matchedIconsArray.push(icon.iconName);
+            }
+          }
+        }
+        // console.log(matchedIconsArray);
+
+        // Remove dublicates form matchedIconsArray
+        const matchedIconsArrayFinalResult = [...new Set(matchedIconsArray)];
+        // console.log(matchedIconsArrayFinalResult);
+        return matchedIconsArrayFinalResult;
+        } 
+        else 
+        { return []}
+  }
+
   const handleKeyWordsOnChange = (e) => {
     setKeyWords(e.target.value);
   }
+
+  const arrayOfIcons30 = findIconsByKeyWords(keyWords).slice(0,30);
+  console.log(arrayOfIcons30);
 
   const resetKeyWordsFormText = () => {
     setKeyWords("");
@@ -53,39 +92,8 @@ export default function NewListDialog({ open, onClose, addNewList }) {
     resetNewListFormValid();
   };
 
-  // {
-  //   iconName: "Abc",
-  //   keyWords: ["alphabet", "text input", "typing", "letters", "keyboard", "language", "font", "text editor", "character set", "writing"]
-  // },
-
-  const findIconsByKeyWords = (keyWordsString) => {
-    const matchedIconsArray = [];
-
-    // Trim keyWordsString and replace one or multiple spaces with a pipe "|"
-    let keyWordsStringRevised = keyWordsString.replace(/[^a-zA-Z\s]/g, "").trim().replace(/\s+/g, "|");
-
-    // Turn myString into a regular expression that is used for finding matching icons
-    let myRegexString = "\\b(" + keyWordsStringRevised + ")\\b";
-    const keyWordsRegex = new RegExp(myRegexString, "i");
-    // console.log(keyWordsRegex);
-
-    // Loop over keyword arrays for each iconName
-    // and find the iconNames whose keywords match a user's keywords
-    for (let icon of muiIconsKeyWords0_400){
-      for(let iconKeyWord of icon.keyWords){
-        if(keyWordsRegex.test(iconKeyWord)){
-          // Push each matched iconName into matchedIconsArray
-          matchedIconsArray.push(icon.iconName);
-        }
-      }
-    }
-    // console.log(matchedIconsArray);
-
-    // Remove dublicates form matchedIconsArray
-    const matchedIconsArrayFinalResult = [...new Set(matchedIconsArray)];
-    console.log(matchedIconsArrayFinalResult);
-    return matchedIconsArrayFinalResult;
-  }
+  
+ 
 
   
   return (
