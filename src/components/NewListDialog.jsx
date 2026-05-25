@@ -1,23 +1,30 @@
+import { v4 as uuidv4 } from "uuid";
+
 import { useState } from "react";
 
 import useDataValidation from "../hooks/useDataValidation.js";
 import { isNewListNameValidUtils } from "../utils/utils.js";
 
+import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Grid from '@mui/material/Grid';
 import SailingIcon from "@mui/icons-material/Sailing";
 import TextField from "@mui/material/TextField";
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import { muiIconsKeyWords0_800 } from "../constants/constants.js";
+import { muiIconsKeyWords0_1200 } from "../constants/constants.js";
 
 export default function NewListDialog({ open, onClose, addNewList }) {
 
   // keyWords is a string
   const [keyWords, setKeyWords] = useState("");
+
+  const [newListIcon, setNewListIcon] = useState("SailingIcon");
 
   const {
     text: newListName,
@@ -46,7 +53,7 @@ export default function NewListDialog({ open, onClose, addNewList }) {
 
         // Loop over keyword arrays for each iconName
         // and find the iconNames whose keywords match a user's keywords
-        for (let icon of muiIconsKeyWords0_800){
+        for (let icon of muiIconsKeyWords0_1200){
           for(let iconKeyWord of icon.keyWords){
             if(keyWordsRegex.test(iconKeyWord)){
               // Push each matched iconName into matchedIconsArray
@@ -69,8 +76,9 @@ export default function NewListDialog({ open, onClose, addNewList }) {
     setKeyWords(e.target.value);
   }
 
-  const arrayOfIcons30 = findIconsByKeyWords(keyWords).slice(0,30);
-  console.log(arrayOfIcons30);
+  // arrayOfIcons36 contains the last 36 icon names from the total matched result
+  const arrayOfIcons36 = findIconsByKeyWords(keyWords).slice(-36);
+  console.log(arrayOfIcons36);
 
   const resetKeyWordsFormText = () => {
     setKeyWords("");
@@ -78,7 +86,7 @@ export default function NewListDialog({ open, onClose, addNewList }) {
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
-    findIconsByKeyWords(keyWords);
+    // findIconsByKeyWords(keyWords);
     addNewList(newListName, SailingIcon);
     onClose();
     resetNewListFormText();
@@ -92,10 +100,6 @@ export default function NewListDialog({ open, onClose, addNewList }) {
     resetNewListFormValid();
   };
 
-  
- 
-
-  
   return (
     <>
       <Dialog
@@ -140,6 +144,30 @@ export default function NewListDialog({ open, onClose, addNewList }) {
               value={keyWords}
               onChange={handleKeyWordsOnChange}
             />
+            <Box sx={{flexGrow: 1, marginY: 2}}>
+              <ToggleButtonGroup 
+                value={newListIcon}
+                exclusive
+                // onChange={handleNewListIcon}
+                aria-label="new list icon">
+
+              </ToggleButtonGroup>
+
+
+
+
+              {/* <Grid container spacing={1}>
+                { arrayOfIcons36.map((iconName) => (
+                  // <GridItem key={uuidv4()} size={{md:1}} iconName={iconName} />
+                  // <Grid size={{md: 1}}>
+                  //   <IconButton>
+                  //     <SailingIcon/>
+                  //   </IconButton>
+                  // </Grid>
+                ))
+                }
+              </Grid> */}
+            </Box>
           </form>
         </DialogContent>
         <DialogActions>
@@ -157,3 +185,62 @@ export default function NewListDialog({ open, onClose, addNewList }) {
     </>
   );
 }
+
+// import * as React from 'react';
+// import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+// import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+// import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+// import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+// import ToggleButton from '@mui/material/ToggleButton';
+// import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
+// export default function ToggleButtons() {
+//   const [alignment, setAlignment] = React.useState<string | null>('left');
+
+//   const handleAlignment = (
+//     event: React.MouseEvent<HTMLElement>,
+//     newAlignment: string | null,
+//   ) => {
+//     setAlignment(newAlignment);
+//   };
+
+//   return (
+//     <ToggleButtonGroup
+//       value={alignment}
+//       exclusive
+//       onChange={handleAlignment}
+//       aria-label="text alignment"
+//     >
+//       <ToggleButton value="left" aria-label="left aligned">
+//         <FormatAlignLeftIcon />
+//       </ToggleButton>
+//       <ToggleButton value="center" aria-label="centered">
+//         <FormatAlignCenterIcon />
+//       </ToggleButton>
+//       <ToggleButton value="right" aria-label="right aligned">
+//         <FormatAlignRightIcon />
+//       </ToggleButton>
+//       <ToggleButton value="justify" aria-label="justified" disabled>
+//         <FormatAlignJustifyIcon />
+//       </ToggleButton>
+//     </ToggleButtonGroup>
+//   );
+// }
+// 8888888888888888888888888888888888888888888888888888888888888888888888
+
+    // <Box sx={{ flexGrow: 1 }}>
+    //   <Grid container spacing={2}>
+    //     <Grid size={{ xs: 6, md: 8 }}>
+    //       <Item>xs=6 md=8</Item>
+    //     </Grid>
+    //     <Grid size={{ xs: 6, md: 4 }}>
+    //       <Item>xs=6 md=4</Item>
+    //     </Grid>
+    //     <Grid size={{ xs: 6, md: 4 }}>
+    //       <Item>xs=6 md=4</Item>
+    //     </Grid>
+    //     <Grid size={{ xs: 6, md: 8 }}>
+    //       <Item>xs=6 md=8</Item>
+    //     </Grid>
+    //   </Grid>
+    // </Box>
