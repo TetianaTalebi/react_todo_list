@@ -5,22 +5,22 @@ import { useState } from "react";
 import useDataValidation from "../hooks/useDataValidation.js";
 import { isNewListNameValidUtils } from "../utils/utils.js";
 
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 import SailingIcon from "@mui/icons-material/Sailing";
 import TextField from "@mui/material/TextField";
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 import { muiIconsKeyWords0_1200 } from "../constants/constants.js";
 
 export default function NewListDialog({ open, onClose, addNewList }) {
-
   // keyWords is a string
   const [keyWords, setKeyWords] = useState("");
 
@@ -34,55 +34,59 @@ export default function NewListDialog({ open, onClose, addNewList }) {
     resetIsValid: resetNewListFormValid,
   } = useDataValidation();
 
-   const findIconsByKeyWords = (keyWordsString) => {
+  const findIconsByKeyWords = (keyWordsString) => {
     const matchedIconsArray = [];
 
     // Clean keywords string
-    let keyWordsStringCleaned = keyWordsString.replace(/[^a-zA-Z\s]/g, "").trim();
+    let keyWordsStringCleaned = keyWordsString
+      .replace(/[^a-zA-Z\s]/g, "")
+      .trim();
 
     // Search for matched icons only if the cleaned keywords string is longer or equal 3 characters
-    if(keyWordsStringCleaned.length>=3){
+    if (keyWordsStringCleaned.length >= 3) {
+      // Replace one or multiple spaces with a pipe "|"
+      let keyWordsStringRevised = keyWordsStringCleaned.replace(/\s+/g, "|");
 
-        // Replace one or multiple spaces with a pipe "|"
-        let keyWordsStringRevised = keyWordsStringCleaned.replace(/\s+/g, "|");
+      // Turn myString into a regular expression that is used for finding matching icons
+      let myRegexString = "\\b(" + keyWordsStringRevised + ")\\b";
+      const keyWordsRegex = new RegExp(myRegexString, "i");
+      // console.log(keyWordsRegex);
 
-        // Turn myString into a regular expression that is used for finding matching icons
-        let myRegexString = "\\b(" + keyWordsStringRevised + ")\\b";
-        const keyWordsRegex = new RegExp(myRegexString, "i");
-        // console.log(keyWordsRegex);
-
-        // Loop over keyword arrays for each iconName
-        // and find the iconNames whose keywords match a user's keywords
-        for (let icon of muiIconsKeyWords0_1200){
-          for(let iconKeyWord of icon.keyWords){
-            if(keyWordsRegex.test(iconKeyWord)){
-              // Push each matched iconName into matchedIconsArray
-              matchedIconsArray.push(icon.iconName);
-            }
+      // Loop over keyword arrays for each iconName
+      // and find the iconNames whose keywords match a user's keywords
+      for (let icon of muiIconsKeyWords0_1200) {
+        for (let iconKeyWord of icon.keyWords) {
+          if (keyWordsRegex.test(iconKeyWord)) {
+            // Push each matched iconName into matchedIconsArray
+            matchedIconsArray.push(icon.iconName);
           }
         }
-        // console.log(matchedIconsArray);
+      }
+      // console.log(matchedIconsArray);
 
-        // Remove dublicates form matchedIconsArray
-        const matchedIconsArrayFinalResult = [...new Set(matchedIconsArray)];
-        // console.log(matchedIconsArrayFinalResult);
-        return matchedIconsArrayFinalResult;
-        } 
-        else 
-        { return []}
-  }
+      // Remove dublicates form matchedIconsArray
+      const matchedIconsArrayFinalResult = [...new Set(matchedIconsArray)];
+      // console.log(matchedIconsArrayFinalResult);
+      return matchedIconsArrayFinalResult;
+    } else {
+      return [];
+    }
+  };
 
   const handleKeyWordsOnChange = (e) => {
     setKeyWords(e.target.value);
-  }
+  };
 
   // arrayOfIcons36 contains the last 36 icon names from the total matched result
-  const arrayOfIcons36 = findIconsByKeyWords(keyWords).slice(-36);
+  // const arrayOfIcons36 = findIconsByKeyWords(keyWords).slice(-36);
+  // console.log(arrayOfIcons36);
+
+  const arrayOfIcons36 = findIconsByKeyWords(keyWords);
   console.log(arrayOfIcons36);
 
   const resetKeyWordsFormText = () => {
     setKeyWords("");
-  }
+  };
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
@@ -102,11 +106,7 @@ export default function NewListDialog({ open, onClose, addNewList }) {
 
   return (
     <>
-      <Dialog
-        open={open}
-        onClose={handleDialogClose}
-        disableAutoFocus
-      >
+      <Dialog open={open} onClose={handleDialogClose} disableAutoFocus>
         <DialogTitle>Create a new list</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -144,31 +144,30 @@ export default function NewListDialog({ open, onClose, addNewList }) {
               value={keyWords}
               onChange={handleKeyWordsOnChange}
             />
-            <Box sx={{flexGrow: 1, marginY: 2}}>
-              <ToggleButtonGroup 
+            <Box sx={{ flexGrow: 1, marginY: 2 }}>
+              <ToggleButtonGroup
                 value={newListIcon}
                 exclusive
                 // onChange={handleNewListIcon}
-                aria-label="new list icon">
-                  <Grid container spacing={1}>
-
-                  </Grid>
+                aria-label="new list icon"
+                sx={{ width: "100%" }}
+              >
+                <Grid container spacing={1} sx={{ width: "100%", margin: 0 }}>
+                  {arrayOfIcons36.map((IconNameItem) => (
+                    <Grid key={uuidv4()} size={{ md: 1 }}>
+                      <ToggleButton
+                        value={IconNameItem}
+                        aria-label={IconNameItem}
+                      >
+                        <SailingIcon />
+                      </ToggleButton>
+                    </Grid>
+                  ))}
+                </Grid>
               </ToggleButtonGroup>
 
+              {/* <GridItem key={uuidv4()} size={{md:1}} iconName={iconNameItem}/> */}
 
-
-
-              {/* <Grid container spacing={1}>
-                { arrayOfIcons36.map((iconName) => (
-                  // <GridItem key={uuidv4()} size={{md:1}} iconName={iconName} />
-                  // <Grid size={{md: 1}}>
-                  //   <IconButton>
-                  //     <SailingIcon/>
-                  //   </IconButton>
-                  // </Grid>
-                ))
-                }
-              </Grid> */}
             </Box>
           </form>
         </DialogContent>
@@ -230,19 +229,19 @@ export default function NewListDialog({ open, onClose, addNewList }) {
 // }
 // 8888888888888888888888888888888888888888888888888888888888888888888888
 
-    // <Box sx={{ flexGrow: 1 }}>
-    //   <Grid container spacing={2}>
-    //     <Grid size={{ xs: 6, md: 8 }}>
-    //       <Item>xs=6 md=8</Item>
-    //     </Grid>
-    //     <Grid size={{ xs: 6, md: 4 }}>
-    //       <Item>xs=6 md=4</Item>
-    //     </Grid>
-    //     <Grid size={{ xs: 6, md: 4 }}>
-    //       <Item>xs=6 md=4</Item>
-    //     </Grid>
-    //     <Grid size={{ xs: 6, md: 8 }}>
-    //       <Item>xs=6 md=8</Item>
-    //     </Grid>
-    //   </Grid>
-    // </Box>
+// <Box sx={{ flexGrow: 1 }}>
+//   <Grid container spacing={2}>
+//     <Grid size={{ xs: 6, md: 8 }}>
+//       <Item>xs=6 md=8</Item>
+//     </Grid>
+//     <Grid size={{ xs: 6, md: 4 }}>
+//       <Item>xs=6 md=4</Item>
+//     </Grid>
+//     <Grid size={{ xs: 6, md: 4 }}>
+//       <Item>xs=6 md=4</Item>
+//     </Grid>
+//     <Grid size={{ xs: 6, md: 8 }}>
+//       <Item>xs=6 md=8</Item>
+//     </Grid>
+//   </Grid>
+// </Box>
