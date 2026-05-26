@@ -85,6 +85,10 @@ export default function NewListDialog({ open, onClose, addNewList }) {
   const arrayOfIcons36 = findIconsByKeyWords(keyWords);
   console.log(arrayOfIcons36);
 
+  const handleNewListIcon = (e, newListIconName) => {
+    setNewListIcon(newListIconName);
+  }
+
   const resetKeyWordsFormText = () => {
     setKeyWords("");
   };
@@ -149,7 +153,7 @@ export default function NewListDialog({ open, onClose, addNewList }) {
               <ToggleButtonGroup
                 value={newListIcon}
                 exclusive
-                // onChange={handleNewListIcon}
+                onChange={handleNewListIcon}
                 aria-label="new list icon"
                 sx={{ width: "100%" }}
               >
@@ -190,12 +194,9 @@ export default function NewListDialog({ open, onClose, addNewList }) {
 // import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 // export default function ToggleButtons() {
-//   const [alignment, setAlignment] = React.useState<string | null>('left');
+//   const [alignment, setAlignment] = React.useState('left');
 
-//   const handleAlignment = (
-//     event: React.MouseEvent<HTMLElement>,
-//     newAlignment: string | null,
-//   ) => {
+//   const handleAlignment = (event, newAlignment) => {
 //     setAlignment(newAlignment);
 //   };
 
@@ -221,6 +222,7 @@ export default function NewListDialog({ open, onClose, addNewList }) {
 //     </ToggleButtonGroup>
 //   );
 // }
+
 // 8888888888888888888888888888888888888888888888888888888888888888888888
 
 // <Box sx={{ flexGrow: 1 }}>
