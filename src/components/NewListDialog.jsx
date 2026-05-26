@@ -150,7 +150,9 @@ export default function NewListDialog({ open, onClose, addNewList }) {
                 exclusive
                 // onChange={handleNewListIcon}
                 aria-label="new list icon">
+                  <Grid container spacing={1}>
 
+                  </Grid>
               </ToggleButtonGroup>
 
 
