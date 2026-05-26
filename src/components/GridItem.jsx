@@ -1,18 +1,19 @@
 
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import SailingIcon from "@mui/icons-material/Sailing";
+import ToggleButton from "@mui/material/ToggleButton";
 
-
-
-export default function GridItem({size=1, iconName="SailingIcon"}){
+export default function GridItem({size=1, value="SailingIcon"}){
 
     return(
             <>
                 <Grid size={size}>
-                    <IconButton>
-                      <SailingIcon/>
-                    </IconButton>
+                      <ToggleButton
+                        value={value}
+                        aria-label={value}
+                      >
+                        <SailingIcon />
+                      </ToggleButton>
                 </Grid>
             
             </>

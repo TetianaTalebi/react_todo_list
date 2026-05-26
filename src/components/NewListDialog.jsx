@@ -13,6 +13,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
+import GridItem from "./GridItem.jsx";
 import SailingIcon from "@mui/icons-material/Sailing";
 import TextField from "@mui/material/TextField";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -153,20 +154,13 @@ export default function NewListDialog({ open, onClose, addNewList }) {
                 sx={{ width: "100%" }}
               >
                 <Grid container spacing={1} sx={{ width: "100%", margin: 0 }}>
-                  {arrayOfIcons36.map((IconNameItem) => (
-                    <Grid key={uuidv4()} size={{ md: 1 }}>
-                      <ToggleButton
-                        value={IconNameItem}
-                        aria-label={IconNameItem}
-                      >
-                        <SailingIcon />
-                      </ToggleButton>
-                    </Grid>
+                  {arrayOfIcons36.map((iconNameItem) => (
+
+                    <GridItem key={uuidv4()} size={{md:1}} value={iconNameItem}/>
+
                   ))}
                 </Grid>
               </ToggleButtonGroup>
-
-              {/* <GridItem key={uuidv4()} size={{md:1}} iconName={iconNameItem}/> */}
 
             </Box>
           </form>
