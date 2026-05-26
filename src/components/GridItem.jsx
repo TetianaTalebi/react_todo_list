@@ -1,7 +1,9 @@
 
+import DynamicIcon from './DynamicIcon';
 import Grid from '@mui/material/Grid';
 import SailingIcon from "@mui/icons-material/Sailing";
 import ToggleButton from "@mui/material/ToggleButton";
+
 
 export default function GridItem({size=1, value="SailingIcon"}){
 
@@ -12,7 +14,8 @@ export default function GridItem({size=1, value="SailingIcon"}){
                         value={value}
                         aria-label={value}
                       >
-                        <SailingIcon />
+                        <DynamicIcon value={value}/>
+                        {/* <SailingIcon /> */}
                       </ToggleButton>
                 </Grid>
             
