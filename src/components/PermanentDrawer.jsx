@@ -16,14 +16,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
-import UmbrellaIcon from "@mui/icons-material/Umbrella";
 import IconButton from "@mui/material/IconButton";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import Tooltip from "@mui/material/Tooltip";
 
-// import * as Icons from "@mui/icons-material";
+import * as AllMuiIcons from "@mui/icons-material";
 
 // const getInitialData = () => {
 //   const data = JSON.parse(localStorage.getItem("todos"));
@@ -41,7 +37,7 @@ const myLists = [
     listName: "Shopping",
     listIcon: (
       <>
-        <ShoppingCartIcon />
+        < AllMuiIcons.ShoppingCart />
       </>
     ),
     listContent: [
@@ -57,7 +53,7 @@ const myLists = [
     listName: "Garden",
     listIcon: (
       <>
-        <LocalFloristIcon />
+        < AllMuiIcons.LocalFlorist />
       </>
     ),
     listContent: [
@@ -71,7 +67,7 @@ const myLists = [
     listName: "Weather",
     listIcon: (
       <>
-        <UmbrellaIcon />
+        < AllMuiIcons.Umbrella />
       </>
     ),
 
@@ -88,6 +84,15 @@ export default function PermanentDrawer() {
   // useEffect(() => {
   //   localStorage.setItem("todos", JSON.stringify(todos));
   // }, [todos]);
+
+  // muiIconsNames.length = 2183
+  // muiIconsKeyWords0_400.length = 400
+
+  // const myNewArray800_1200 = muiIconsNames.slice(800, 1200);
+
+  // console.log(myNewArray800_1200.length);
+
+  // console.log(JSON.stringify(myNewArray800_1200));
 
   // This state manages all todo lists and their contents
 
@@ -247,11 +252,12 @@ export default function PermanentDrawer() {
                   color="inherit"
                   onClick={handleClickOpen}
                 >
-                  <AddCircleOutlinedIcon fontSize="large" />
+                  <AllMuiIcons.AddCircleOutlined fontSize="large" />
                 </IconButton>
               </Tooltip>
 
               <NewListDialog
+                AllMuiIcons={AllMuiIcons}
                 open={open}
                 onClose={handleClose}
                 addNewList={handleCreateNewList}
@@ -323,6 +329,7 @@ export default function PermanentDrawer() {
                   toggleTodo={handleToggleTodo}
                   reviseTodo={handleReviseTodo}
                   addTodo={handleAddTodo}
+                  AllMuiIcons={AllMuiIcons}
                 />
               ),
           )}

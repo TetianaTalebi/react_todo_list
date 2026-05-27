@@ -9,6 +9,7 @@ export default function TodoList({
   toggleTodo,
   reviseTodo,
   addTodo,
+  AllMuiIcons,
 }) {
   return (
     <Box
@@ -45,6 +46,7 @@ export default function TodoList({
             toggle={() => toggleTodo(todo.todoId)}
             revise={reviseTodo}
             addTodo={addTodo}
+            AllMuiIcons={AllMuiIcons}
           />
         ))}
         <TodoForm addTodo={addTodo} />

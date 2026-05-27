@@ -21,7 +21,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 import { muiIconsKeyWords0_1200 } from "../constants/constants.js";
 
-export default function NewListDialog({ open, onClose, addNewList }) {
+export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }) {
   // keyWords is a string
   const [keyWords, setKeyWords] = useState("");
 
@@ -160,7 +160,7 @@ export default function NewListDialog({ open, onClose, addNewList }) {
                 <Grid container spacing={1} sx={{ width: "100%", margin: 0 }}>
                   {arrayOfIcons36.map((iconNameItem) => (
 
-                    <GridItem key={uuidv4()} size={{md:1}} value={iconNameItem}/>
+                    <GridItem key={uuidv4()} size={{md:1}} value={iconNameItem} AllMuiIcons={AllMuiIcons}/>
 
                   ))}
                 </Grid>
