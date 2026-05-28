@@ -24,7 +24,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
   // keyWords is a string
   const [keyWords, setKeyWords] = useState("");
 
-  const [newListIcon, setNewListIcon] = useState("Sailing");
+  const [newListIcon, setNewListIcon] = useState("Checklist");
 
   const {
     text: newListName,
