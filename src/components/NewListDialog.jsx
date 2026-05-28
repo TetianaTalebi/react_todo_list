@@ -14,18 +14,17 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import GridItem from "./GridItem.jsx";
-import SailingIcon from "@mui/icons-material/Sailing";
 import TextField from "@mui/material/TextField";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-import { muiIconsKeyWords0_1200 } from "../constants/constants.js";
+import { muiIconsKeyWords0_1600 } from "../constants/constants.js";
 
 export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }) {
   // keyWords is a string
   const [keyWords, setKeyWords] = useState("");
 
-  const [newListIcon, setNewListIcon] = useState("SailingIcon");
+  const [newListIcon, setNewListIcon] = useState("Sailing");
 
   const {
     text: newListName,
@@ -55,7 +54,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
 
       // Loop over keyword arrays for each iconName
       // and find the iconNames whose keywords match a user's keywords
-      for (let icon of muiIconsKeyWords0_1200) {
+      for (let icon of muiIconsKeyWords0_1600) {
         for (let iconKeyWord of icon.keyWords) {
           if (keyWordsRegex.test(iconKeyWord)) {
             // Push each matched iconName into matchedIconsArray
@@ -95,8 +94,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
-    // findIconsByKeyWords(keyWords);
-    addNewList(newListName, SailingIcon);
+    addNewList(newListName, AllMuiIcons[newListIcon]);
     onClose();
     resetNewListFormText();
     resetKeyWordsFormText();
@@ -160,7 +158,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
                 <Grid container spacing={1} sx={{ width: "100%", margin: 0 }}>
                   {arrayOfIcons36.map((iconNameItem) => (
 
-                    <GridItem key={uuidv4()} size={{md:1}} value={iconNameItem} AllMuiIcons={AllMuiIcons}/>
+                    <GridItem key={uuidv4()} size={{md:2}} value={iconNameItem} AllMuiIcons={AllMuiIcons}/>
 
                   ))}
                 </Grid>
