@@ -48,7 +48,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
       let keyWordsStringRevised = keyWordsStringCleaned.replace(/\s+/g, "|");
 
       // Turn myString into a regular expression that is used for finding matching icons
-      let myRegexString = "\\b(" + keyWordsStringRevised + ")\\b";
+      let myRegexString = "\\b(" + keyWordsStringRevised + ")(e?s)?\\b";
       const keyWordsRegex = new RegExp(myRegexString, "i");
       // console.log(keyWordsRegex);
 
