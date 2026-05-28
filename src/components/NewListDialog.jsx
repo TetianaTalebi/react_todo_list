@@ -92,12 +92,17 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
     setKeyWords("");
   };
 
+  const resetNewListIcon = () => {
+    setNewListIcon("Checklist");
+  }
+
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
     addNewList(newListName, AllMuiIcons[newListIcon]);
     onClose();
     resetNewListFormText();
     resetKeyWordsFormText();
+    resetNewListIcon();
   };
 
   const handleDialogClose = () => {
