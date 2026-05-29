@@ -34,48 +34,53 @@ import * as AllMuiIcons from "@mui/icons-material";
 const myLists = [
   {
     listId: 1,
-    listName: "Shopping",
+    listName: "Healthy Grocery Shopping",
     listIcon: (
       <>
         < AllMuiIcons.ShoppingCart />
       </>
     ),
     listContent: [
-      { todoId: 1, todoText: "carrots", todoCompleted: true },
-      { todoId: 2, todoText: "tomatoes", todoCompleted: true },
-      { todoId: 3, todoText: "milk", todoCompleted: true },
-      { todoId: 4, todoText: "potatoes", todoCompleted: true },
-      { todoId: 5, todoText: "chicken", todoCompleted: true },
+      { todoId: 1, todoText: "Buy fresh spinach", todoCompleted: false },
+      { todoId: 2, todoText: "Get blueberries and bananas", todoCompleted: true },
+      { todoId: 3, todoText: "Purchase salmon fillets", todoCompleted: true },
+      { todoId: 4, todoText: "Buy almonds and mixed nuts", todoCompleted: false },
+      { todoId: 5, todoText: "Pick up Greek yogurt", todoCompleted: false },
+      { todoId: 6, todoText: "Get whole grain bread", todoCompleted: true },
     ],
   },
   {
     listId: 2,
-    listName: "Garden",
+    listName: "Yoga & Fitness Routine",
     listIcon: (
       <>
         < AllMuiIcons.LocalFlorist />
       </>
     ),
     listContent: [
-      { todoId: 1, todoText: "Water flowers", todoCompleted: true },
-      { todoId: 2, todoText: "Mow the lawn", todoCompleted: true },
-      { todoId: 3, todoText: "Water trees", todoCompleted: false },
+      { todoId: 1, todoText: "Morning stretching session", todoCompleted: true },
+      { todoId: 2, todoText: "Practice Sun Salutation", todoCompleted: true },
+      { todoId: 3, todoText: "Complete 30-minute yoga flow", todoCompleted: false },
+      { todoId: 4, todoText: "Work on breathing exercises", todoCompleted: false },
+      { todoId: 5, todoText: "Go for a light evening walk", todoCompleted: true },
+      { todoId: 6, todoText: "Drink enough water after workout", todoCompleted: false },
     ],
   },
   {
     listId: 3,
-    listName: "Weather",
+    listName: "Toronto Travel Checklist",
     listIcon: (
       <>
-        < AllMuiIcons.Umbrella />
+        < AllMuiIcons.LocationCity />
       </>
     ),
 
     listContent: [
-      { todoId: 1, todoText: "Rain", todoCompleted: false },
-      { todoId: 2, todoText: "Snow", todoCompleted: false },
-      { todoId: 3, todoText: "Sun", todoCompleted: false },
-      { todoId: 4, todoText: "Clouds", todoCompleted: true },
+      { todoId: 1, todoText: "Visit the CN Tower", todoCompleted: false },
+      { todoId: 2, todoText: "Explore Royal Ontario Museum", todoCompleted: true },
+      { todoId: 3, todoText: "Walk around the Distillery Historic District", todoCompleted: true },
+      { todoId: 4, todoText: "Visit Toronto Islands", todoCompleted: false },
+      { todoId: 5, todoText: "Try local food at St. Lawrence Market", todoCompleted: true },
     ],
   },
 ];
@@ -88,11 +93,11 @@ export default function PermanentDrawer() {
   // muiIconsNames.length = 2183
   // muiIconsKeyWords0_400.length = 400
 
-  // const myNewArray800_1200 = muiIconsNames.slice(800, 1200);
+  // const myNewArray1200_1600 = muiIconsNames.slice(1200, 1600);
 
-  // console.log(myNewArray800_1200.length);
+  // console.log(myNewArray1200_1600.length);
 
-  // console.log(JSON.stringify(myNewArray800_1200));
+  // console.log(JSON.stringify(myNewArray1200_1600));
 
   // This state manages all todo lists and their contents
 

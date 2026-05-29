@@ -1,14 +1,13 @@
 
-import SailingIcon from "@mui/icons-material/Sailing";
-
-export default function DynamicIcon({value="SailingIcon", AllMuiIcons}){
+export default function DynamicIcon({value, AllMuiIcons}){
 
      const DynamicComponent = AllMuiIcons[value];
-     
+
   return (
     <>
 
-      < DynamicComponent />
+      < DynamicComponent color="primary" sx={{ fontSize: 40 }} />
+      {/* < DynamicComponent color="primary" size="large" /> */}
     
     </>
   );
