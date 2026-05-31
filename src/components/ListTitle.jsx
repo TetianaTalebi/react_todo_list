@@ -5,8 +5,12 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+
+
 
 export default function ListTitle({ listId, listName, listIcon }) {
+
   return (
     <ListItem
       secondaryAction={
@@ -16,15 +20,15 @@ export default function ListTitle({ listId, listName, listIcon }) {
       }
     >
       <ListItemAvatar>
-        <Avatar>
-          <DeleteIcon />
+        <Avatar sx={{ width: 70, height: 70, margin: 3, bgcolor: 'primary.main'}}>
+          <EmojiEmotionsIcon sx={{ fontSize: 40 }} />
         </Avatar>
       </ListItemAvatar>
       <ListItemText
         disableTypography
         primary={
           <Typography
-            sx={{ mt: 4, mb: 2, fontWeight: "bold" }}
+            sx={{ mt: 4, mb: 2, fontWeight: "bold"}}
             variant="h4"
             component="h1"
             color="primary"
