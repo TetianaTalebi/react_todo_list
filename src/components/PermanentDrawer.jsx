@@ -41,12 +41,14 @@ const myLists = [
       </>
     ),
     listContent: [
-      { todoId: 1, todoText: "Buy fresh spinach", todoCompleted: false },
-      { todoId: 2, todoText: "Get blueberries and bananas", todoCompleted: true },
-      { todoId: 3, todoText: "Purchase salmon fillets", todoCompleted: true },
-      { todoId: 4, todoText: "Buy almonds and mixed nuts", todoCompleted: false },
-      { todoId: 5, todoText: "Pick up Greek yogurt", todoCompleted: false },
-      { todoId: 6, todoText: "Get whole grain bread", todoCompleted: true },
+      { todoId: 11, todoText: "Buy fresh spinach", todoCompleted: false },
+      { todoId: 12, todoText: "Get blueberries and bananas", todoCompleted: true },
+      { todoId: 13, todoText: "Purchase salmon fillets", todoCompleted: true },
+      { todoId: 14, todoText: "Buy almonds and mixed nuts", todoCompleted: false },
+      { todoId: 15, todoText: "Pick up Greek yogurt", todoCompleted: false },
+      { todoId: 16, todoText: "Get whole grain bread", todoCompleted: true },
+      { todoId: 17, todoText: "Buy avocados", todoCompleted: true },
+      { todoId: 18, todoText: "Get broccoli and carrots", todoCompleted: true },
     ],
   },
   {
@@ -58,12 +60,12 @@ const myLists = [
       </>
     ),
     listContent: [
-      { todoId: 1, todoText: "Morning stretching session", todoCompleted: true },
-      { todoId: 2, todoText: "Practice Sun Salutation", todoCompleted: true },
-      { todoId: 3, todoText: "Complete 30-minute yoga flow", todoCompleted: false },
-      { todoId: 4, todoText: "Work on breathing exercises", todoCompleted: false },
-      { todoId: 5, todoText: "Go for a light evening walk", todoCompleted: true },
-      { todoId: 6, todoText: "Drink enough water after workout", todoCompleted: false },
+      { todoId: 21, todoText: "Morning stretching session", todoCompleted: true },
+      { todoId: 22, todoText: "Practice Sun Salutation", todoCompleted: true },
+      { todoId: 23, todoText: "Complete 30-minute yoga flow", todoCompleted: false },
+      { todoId: 24, todoText: "Work on breathing exercises", todoCompleted: false },
+      { todoId: 25, todoText: "Go for a light evening walk", todoCompleted: true },
+      { todoId: 26, todoText: "Drink enough water after workout", todoCompleted: false },
     ],
   },
   {
@@ -76,11 +78,11 @@ const myLists = [
     ),
 
     listContent: [
-      { todoId: 1, todoText: "Visit the CN Tower", todoCompleted: false },
-      { todoId: 2, todoText: "Explore Royal Ontario Museum", todoCompleted: true },
-      { todoId: 3, todoText: "Walk around the Distillery Historic District", todoCompleted: true },
-      { todoId: 4, todoText: "Visit Toronto Islands", todoCompleted: false },
-      { todoId: 5, todoText: "Try local food at St. Lawrence Market", todoCompleted: true },
+      { todoId: 31, todoText: "Visit the CN Tower", todoCompleted: false },
+      { todoId: 32, todoText: "Explore Royal Ontario Museum", todoCompleted: true },
+      { todoId: 33, todoText: "Walk around the Distillery Historic District", todoCompleted: true },
+      { todoId: 34, todoText: "Visit Toronto Islands", todoCompleted: false },
+      { todoId: 35, todoText: "Try local food at St. Lawrence Market", todoCompleted: true },
     ],
   },
 ];
@@ -325,10 +327,32 @@ export default function PermanentDrawer() {
         <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
           <Toolbar />
 
+  {/* // {
+  //   listId: 1,
+  //   listName: "Shopping",
+  //   listIcon: (
+  //     <>
+  //       <ShoppingCartIcon />
+  //     </>
+  //   ),
+  //   listContent: [
+  //     { todoId: 1, todoText: "carrots", todoCompleted: true },
+  //     { todoId: 2, todoText: "tomatoes", todoCompleted: true },
+  //     { todoId: 3, todoText: "milk", todoCompleted: true },
+  //     { todoId: 4, todoText: "potatoes", todoCompleted: true },
+  //     { todoId: 5, todoText: "chicken", todoCompleted: true },
+  //   ],
+  // } */}
+
           {todoLists.map(
             (list) =>
               list.listId === activeListId && (
                 <TodoList
+                
+                  listId = {list.listId}
+                  listName = {list.listName}
+                  listIcon = {list.listIcon}
+
                   todos={list.listContent}
                   removeTodo={handleRemoveTodo}
                   toggleTodo={handleToggleTodo}

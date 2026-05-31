@@ -1610,7 +1610,7 @@ const myNewArray1200_1600 = [
   "SaveAs",
 ];
 
-export const muiIconsKeyWords0_1600 = [
+export const MUI_ICONS_KEY_WORDS_0_1600 = [
   {
     iconName: "Abc",
     keyWords: [
