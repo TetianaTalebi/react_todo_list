@@ -18,7 +18,7 @@ import TextField from "@mui/material/TextField";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-import { muiIconsKeyWords0_1600 } from "../constants/constants.js";
+import { MUI_ICONS_KEY_WORDS_0_1600 } from "../constants/constants.js";
 
 export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }) {
   // keyWords is a string
@@ -54,7 +54,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
 
       // Loop over keyword arrays for each iconName
       // and find the iconNames whose keywords match a user's keywords
-      for (let icon of muiIconsKeyWords0_1600) {
+      for (let icon of MUI_ICONS_KEY_WORDS_0_1600) {
         for (let iconKeyWord of icon.keyWords) {
           if (keyWordsRegex.test(iconKeyWord)) {
             // Push each matched iconName into matchedIconsArray
