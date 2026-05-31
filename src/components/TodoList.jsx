@@ -3,6 +3,8 @@ import TodoForm from "./TodoForm";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 
+import ListTitle from "./ListTitle";
+
 export default function TodoList({
   listId,
   listName,
@@ -36,11 +38,13 @@ export default function TodoList({
           width: "100%",
           bgcolor: "background.paper",
           pt: 1,
-          pl: { xs: 0, sm: 1, md: 6,  }, 
+          pl: { xs: 0, sm: 1, md: 6 },
           // lg: 6, xl: 6
           pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
         }}
       >
+        <ListTitle listId={listId} listName={listName} listIcon={listIcon} />
+
         {todos.map((todo) => (
           <TodoItem
             key={todo.todoId}
