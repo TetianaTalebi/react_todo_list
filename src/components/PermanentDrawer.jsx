@@ -325,10 +325,32 @@ export default function PermanentDrawer() {
         <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
           <Toolbar />
 
+  {/* // {
+  //   listId: 1,
+  //   listName: "Shopping",
+  //   listIcon: (
+  //     <>
+  //       <ShoppingCartIcon />
+  //     </>
+  //   ),
+  //   listContent: [
+  //     { todoId: 1, todoText: "carrots", todoCompleted: true },
+  //     { todoId: 2, todoText: "tomatoes", todoCompleted: true },
+  //     { todoId: 3, todoText: "milk", todoCompleted: true },
+  //     { todoId: 4, todoText: "potatoes", todoCompleted: true },
+  //     { todoId: 5, todoText: "chicken", todoCompleted: true },
+  //   ],
+  // } */}
+
           {todoLists.map(
             (list) =>
               list.listId === activeListId && (
                 <TodoList
+
+                  listId = {list.listId}
+                  listName = {list.listName}
+                  listIcon = {list.listIcon}
+
                   todos={list.listContent}
                   removeTodo={handleRemoveTodo}
                   toggleTodo={handleToggleTodo}

@@ -4,6 +4,9 @@ import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 
 export default function TodoList({
+  listId,
+  listName,
+  listIcon,
   todos = [],
   removeTodo,
   toggleTodo,
