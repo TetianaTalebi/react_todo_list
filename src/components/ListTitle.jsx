@@ -4,12 +4,19 @@ import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import SvgIcon from '@mui/material/SvgIcon';
 import DeleteIcon from "@mui/icons-material/Delete";
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 
 
+export default function ListTitle({ listId, listName, ListIconElement }) {
 
-export default function ListTitle({ listId, listName, listIcon }) {
+  // Turn ListIconElement into CurrentListIcon function component 
+  // in order we will be able to use <.../> syntax in return() part and pass sx prop
+
+  // Wrap ListIconElement with SvgIcon for inheriting the sx prop
+
+  const CurrentListIcon = (props) => (<SvgIcon {...props}>{ListIconElement}</SvgIcon>);
 
   return (
     <ListItem
@@ -21,7 +28,7 @@ export default function ListTitle({ listId, listName, listIcon }) {
     >
       <ListItemAvatar>
         <Avatar sx={{ width: 70, height: 70, margin: 3, bgcolor: 'primary.main'}}>
-          <EmojiEmotionsIcon sx={{ fontSize: 40 }} />
+          <CurrentListIcon sx={{ fontSize: 40 }} />
         </Avatar>
       </ListItemAvatar>
       <ListItemText

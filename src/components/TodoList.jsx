@@ -8,7 +8,7 @@ import ListTitle from "./ListTitle";
 export default function TodoList({
   listId,
   listName,
-  listIcon,
+  ListIconElement,
   todos = [],
   removeTodo,
   toggleTodo,
@@ -43,7 +43,7 @@ export default function TodoList({
           pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
         }}
       >
-        <ListTitle listId={listId} listName={listName} listIcon={listIcon} />
+        <ListTitle listId={listId} listName={listName} ListIconElement={ListIconElement} />
 
         {todos.map((todo) => (
           <TodoItem

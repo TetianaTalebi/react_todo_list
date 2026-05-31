@@ -334,7 +334,7 @@ export default function PermanentDrawer() {
                 
                   listId = {list.listId}
                   listName = {list.listName}
-                  ListIconComponent = {list.listIcon}
+                  ListIconElement = {list.listIcon}
 
                   todos={list.listContent}
                   removeTodo={handleRemoveTodo}
