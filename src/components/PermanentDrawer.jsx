@@ -47,6 +47,8 @@ const myLists = [
       { todoId: 4, todoText: "Buy almonds and mixed nuts", todoCompleted: false },
       { todoId: 5, todoText: "Pick up Greek yogurt", todoCompleted: false },
       { todoId: 6, todoText: "Get whole grain bread", todoCompleted: true },
+      { todoId: 7, todoText: "Buy avocados", todoCompleted: true },
+      { todoId: 8, todoText: "Get broccoli and carrots", todoCompleted: true },
     ],
   },
   {
@@ -346,7 +348,7 @@ export default function PermanentDrawer() {
             (list) =>
               list.listId === activeListId && (
                 <TodoList
-
+                
                   listId = {list.listId}
                   listName = {list.listName}
                   listIcon = {list.listIcon}
