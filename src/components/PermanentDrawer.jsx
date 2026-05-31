@@ -208,11 +208,7 @@ export default function PermanentDrawer() {
       const newTodoList = {
         listId: newListId,
         listName: listName,
-        listIcon: (
-          <>
-            <ListIcon />
-          </>
-        ),
+        listIcon: <ListIcon />,
         listContent: [],
       };
       return [...prevTodoLists, newTodoList];
@@ -338,7 +334,7 @@ export default function PermanentDrawer() {
                 
                   listId = {list.listId}
                   listName = {list.listName}
-                  listIcon = {list.listIcon}
+                  ListIconComponent = {list.listIcon}
 
                   todos={list.listContent}
                   removeTodo={handleRemoveTodo}
