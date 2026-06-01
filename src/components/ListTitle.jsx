@@ -5,8 +5,9 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import SvgIcon from '@mui/material/SvgIcon';
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import Tooltip from '@mui/material/Tooltip';
 
 
 export default function ListTitle({ listId, listName, ListIconElement }) {
@@ -21,9 +22,11 @@ export default function ListTitle({ listId, listName, ListIconElement }) {
   return (
     <ListItem
       secondaryAction={
-        <IconButton edge="end" aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Delete List">
+          <IconButton edge="end" aria-label="delete">
+            <DeleteSweepIcon color="primary" fontSize="large" />
+          </IconButton>
+        </Tooltip>
       }
     >
       <ListItemAvatar>
