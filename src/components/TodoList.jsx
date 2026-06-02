@@ -8,13 +8,12 @@ import ListTitle from "./ListTitle";
 export default function TodoList({
   listId,
   listName,
-  listIcon,
+  ListIconElement,
   todos = [],
   removeTodo,
   toggleTodo,
   reviseTodo,
-  addTodo,
-  AllMuiIcons,
+  addTodo
 }) {
   return (
     <Box
@@ -43,7 +42,7 @@ export default function TodoList({
           pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
         }}
       >
-        <ListTitle listId={listId} listName={listName} listIcon={listIcon} />
+        <ListTitle listId={listId} listName={listName} ListIconElement={ListIconElement} />
 
         {todos.map((todo) => (
           <TodoItem
@@ -53,7 +52,6 @@ export default function TodoList({
             toggle={() => toggleTodo(todo.todoId)}
             revise={reviseTodo}
             addTodo={addTodo}
-            AllMuiIcons={AllMuiIcons}
           />
         ))}
         <TodoForm addTodo={addTodo} />

@@ -4,24 +4,34 @@ import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import DeleteIcon from "@mui/icons-material/Delete";
+import SvgIcon from '@mui/material/SvgIcon';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import Tooltip from '@mui/material/Tooltip';
 
 
+export default function ListTitle({ listId, listName, ListIconElement }) {
 
-export default function ListTitle({ listId, listName, listIcon }) {
+  // Turn ListIconElement into CurrentListIcon function component 
+  // in order we will be able to use <.../> syntax in return() part and pass sx prop
+
+  // Wrap ListIconElement with SvgIcon for inheriting the sx prop
+
+  const CurrentListIcon = (props) => (<SvgIcon {...props}>{ListIconElement}</SvgIcon>);
 
   return (
     <ListItem
       secondaryAction={
-        <IconButton edge="end" aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Delete List" placement="right" arrow>
+          <IconButton edge="end" aria-label="delete">
+            <DeleteSweepIcon color="primary" fontSize="large" />
+          </IconButton>
+        </Tooltip>
       }
     >
       <ListItemAvatar>
         <Avatar sx={{ width: 70, height: 70, margin: 3, bgcolor: 'primary.main'}}>
-          <EmojiEmotionsIcon sx={{ fontSize: 40 }} />
+          <CurrentListIcon sx={{ fontSize: 40 }} />
         </Avatar>
       </ListItemAvatar>
       <ListItemText

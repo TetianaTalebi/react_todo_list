@@ -35,11 +35,7 @@ const myLists = [
   {
     listId: 1,
     listName: "Healthy Grocery Shopping",
-    listIcon: (
-      <>
-        < AllMuiIcons.ShoppingCart />
-      </>
-    ),
+    listIcon: < AllMuiIcons.ShoppingCart />,
     listContent: [
       { todoId: 11, todoText: "Buy fresh spinach", todoCompleted: false },
       { todoId: 12, todoText: "Get blueberries and bananas", todoCompleted: true },
@@ -54,11 +50,7 @@ const myLists = [
   {
     listId: 2,
     listName: "Yoga & Fitness Routine",
-    listIcon: (
-      <>
-        < AllMuiIcons.LocalFlorist />
-      </>
-    ),
+    listIcon: < AllMuiIcons.LocalFlorist />,
     listContent: [
       { todoId: 21, todoText: "Morning stretching session", todoCompleted: true },
       { todoId: 22, todoText: "Practice Sun Salutation", todoCompleted: true },
@@ -71,12 +63,7 @@ const myLists = [
   {
     listId: 3,
     listName: "Toronto Travel Checklist",
-    listIcon: (
-      <>
-        < AllMuiIcons.LocationCity />
-      </>
-    ),
-
+    listIcon: < AllMuiIcons.LocationCity />,
     listContent: [
       { todoId: 31, todoText: "Visit the CN Tower", todoCompleted: false },
       { todoId: 32, todoText: "Explore Royal Ontario Museum", todoCompleted: true },
@@ -221,11 +208,7 @@ export default function PermanentDrawer() {
       const newTodoList = {
         listId: newListId,
         listName: listName,
-        listIcon: (
-          <>
-            <ListIcon />
-          </>
-        ),
+        listIcon: <ListIcon />,
         listContent: [],
       };
       return [...prevTodoLists, newTodoList];
@@ -351,7 +334,7 @@ export default function PermanentDrawer() {
                 
                   listId = {list.listId}
                   listName = {list.listName}
-                  listIcon = {list.listIcon}
+                  ListIconElement = {list.listIcon}
 
                   todos={list.listContent}
                   removeTodo={handleRemoveTodo}
