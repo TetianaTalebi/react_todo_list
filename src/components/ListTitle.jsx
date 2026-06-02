@@ -10,7 +10,7 @@ import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import Tooltip from '@mui/material/Tooltip';
 
 
-export default function ListTitle({ listId, listName, ListIconElement }) {
+export default function ListTitle({ listId, listName, ListIconElement, deleteList }) {
 
   // Turn ListIconElement into CurrentListIcon function component 
   // in order we will be able to use <.../> syntax in return() part and pass sx prop
@@ -23,7 +23,7 @@ export default function ListTitle({ listId, listName, ListIconElement }) {
     <ListItem
       secondaryAction={
         <Tooltip title="Delete List" placement="right" arrow>
-          <IconButton edge="end" aria-label="delete">
+          <IconButton edge="end" aria-label="delete" onClick={() => deleteList(listId, listName)}>
             <DeleteSweepIcon color="primary" fontSize="large" />
           </IconButton>
         </Tooltip>

@@ -202,6 +202,12 @@ export default function PermanentDrawer() {
   //   ],
   // }
 
+  const handleDeleteList = (listKey, listName) => {
+    setTodoLists((prevTodoLists) => {
+      return prevTodoLists.filter((list) => list.listId !== listKey);
+    });
+  };
+
   const handleCreateNewList = (listName, ListIcon) => {
     const newListId = uuidv4();
     setTodoLists((prevTodoLists) => {
@@ -335,6 +341,8 @@ export default function PermanentDrawer() {
                   listId = {list.listId}
                   listName = {list.listName}
                   ListIconElement = {list.listIcon}
+
+                  deleteList={handleDeleteList}
 
                   todos={list.listContent}
                   removeTodo={handleRemoveTodo}
