@@ -9,6 +9,7 @@ export default function TodoList({
   listId,
   listName,
   ListIconElement,
+  deleteList,
   todos = [],
   removeTodo,
   toggleTodo,
@@ -42,7 +43,7 @@ export default function TodoList({
           pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
         }}
       >
-        <ListTitle listId={listId} listName={listName} ListIconElement={ListIconElement} />
+        <ListTitle listId={listId} listName={listName} ListIconElement={ListIconElement} deleteList={deleteList} />
 
         {todos.map((todo) => (
           <TodoItem
