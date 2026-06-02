@@ -4,15 +4,16 @@ import { isTodoValidUtils } from "../utils/utils.js"
 
 import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
-// import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
+import Tooltip from '@mui/material/Tooltip';
 
 import useCursorPosition from "../hooks/useCursorPosition.js";
 
-export default function TodoItem({ todo, remove, toggle, revise, AllMuiIcons}) {
+export default function TodoItem({ todo, remove, toggle, revise}) {
 
   const [isTodoTextValid, setIsTodoTextValid] = useState(true);
 
@@ -55,9 +56,11 @@ export default function TodoItem({ todo, remove, toggle, revise, AllMuiIcons}) {
   return (
     <ListItem
       secondaryAction={
-        <IconButton edge="end" aria-label="delete" onClick={removeTodo}>
-          < AllMuiIcons.Delete color="primary" />
-        </IconButton>
+        <Tooltip title="Delete Todo" placement="right" arrow>
+          <IconButton edge="end" aria-label="delete" onClick={removeTodo}>
+            < DeleteIcon color="primary" />
+          </IconButton>
+        </Tooltip>
       }
       disablePadding
     >

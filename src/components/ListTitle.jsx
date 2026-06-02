@@ -22,7 +22,7 @@ export default function ListTitle({ listId, listName, ListIconElement }) {
   return (
     <ListItem
       secondaryAction={
-        <Tooltip title="Delete List">
+        <Tooltip title="Delete List" placement="right" arrow>
           <IconButton edge="end" aria-label="delete">
             <DeleteSweepIcon color="primary" fontSize="large" />
           </IconButton>
