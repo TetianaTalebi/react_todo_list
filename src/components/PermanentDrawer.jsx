@@ -82,11 +82,11 @@ export default function PermanentDrawer() {
   // muiIconsNames.length = 2183
   // muiIconsKeyWords0_400.length = 400
 
-  // const myNewArray1200_1600 = muiIconsNames.slice(1200, 1600);
+  // const myNewArray1600_2000 = muiIconsNames.slice(1600, 2000);
 
-  // console.log(myNewArray1200_1600.length);
+  // console.log(myNewArray1600_2000.length);
 
-  // console.log(JSON.stringify(myNewArray1200_1600));
+  // console.log(JSON.stringify(myNewArray1600_2000));
 
   // This state manages all todo lists and their contents
 
