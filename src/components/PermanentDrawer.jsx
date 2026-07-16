@@ -3,8 +3,6 @@ import { useState } from "react";
 
 import NewListDialog from "./NewListDialog.jsx";
 
-import { muiIconsNames } from "../constants/constants.js";
-
 import TodoList from "./TodoList";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -79,15 +77,7 @@ export default function PermanentDrawer() {
   //   localStorage.setItem("todos", JSON.stringify(todos));
   // }, [todos]);
 
-  // muiIconsNames.length = 2183
-  // muiIconsKeyWords0_400.length = 400
-
-  // const myNewArray1600_2000 = muiIconsNames.slice(1600, 2000);
-
-  // console.log(myNewArray1600_2000.length);
-
-  // console.log(JSON.stringify(myNewArray1600_2000));
-
+  
   // This state manages all todo lists and their contents
 
   const [todoLists, setTodoLists] = useState(myLists);
