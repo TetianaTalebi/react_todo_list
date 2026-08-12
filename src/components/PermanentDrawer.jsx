@@ -254,22 +254,22 @@ export default function PermanentDrawer() {
 
         <Drawer
           variant="permanent"
-          sx={{
-            width: 1 / 4,
-            minWidth: {
-              sm: 190,
-              md: 240,
-            },
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: 1 / 4,
-              minWidth: {
-                sm: 190,
-                md: 240,
-              },
-              boxSizing: "border-box",
-            },
-          }}
+          // sx={{
+          //   width: 1 / 4,
+          //   minWidth: {
+          //     sm: 190,
+          //     md: 240,
+          //   },
+          //   flexShrink: 0,
+          //   [`& .MuiDrawer-paper`]: {
+          //     width: 1 / 4,
+          //     minWidth: {
+          //       sm: 190,
+          //       md: 240,
+          //     },
+          //     boxSizing: "border-box",
+          //   },
+          // }}
           slotProps={{
             paper: {
               sx: {
