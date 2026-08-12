@@ -38,7 +38,7 @@ export default function ListTitle({ listId, listName, ListIconElement, deleteLis
         disableTypography
         primary={
           <Typography
-            sx={{ mt: 4, mb: 2, fontWeight: "bold"}}
+            sx={{ mt: 4, mb: 2, mr: 5, fontWeight: "bold"}}
             variant="h4"
             component="h1"
             color="primary"
