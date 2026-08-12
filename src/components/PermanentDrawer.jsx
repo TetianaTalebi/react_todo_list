@@ -16,6 +16,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import Grid from "@mui/material/Grid";
 
 import * as AllMuiIcons from "@mui/icons-material";
 
@@ -33,12 +34,20 @@ const myLists = [
   {
     listId: 1,
     listName: "Healthy Grocery Shopping",
-    listIcon: < AllMuiIcons.ShoppingCart />,
+    listIcon: <AllMuiIcons.ShoppingCart />,
     listContent: [
       { todoId: 11, todoText: "Buy fresh spinach", todoCompleted: false },
-      { todoId: 12, todoText: "Get blueberries and bananas", todoCompleted: true },
+      {
+        todoId: 12,
+        todoText: "Get blueberries and bananas",
+        todoCompleted: true,
+      },
       { todoId: 13, todoText: "Purchase salmon fillets", todoCompleted: true },
-      { todoId: 14, todoText: "Buy almonds and mixed nuts", todoCompleted: false },
+      {
+        todoId: 14,
+        todoText: "Buy almonds and mixed nuts",
+        todoCompleted: false,
+      },
       { todoId: 15, todoText: "Pick up Greek yogurt", todoCompleted: false },
       { todoId: 16, todoText: "Get whole grain bread", todoCompleted: true },
       { todoId: 17, todoText: "Buy avocados", todoCompleted: true },
@@ -48,26 +57,58 @@ const myLists = [
   {
     listId: 2,
     listName: "Yoga & Fitness Routine",
-    listIcon: < AllMuiIcons.LocalFlorist />,
+    listIcon: <AllMuiIcons.LocalFlorist />,
     listContent: [
-      { todoId: 21, todoText: "Morning stretching session", todoCompleted: true },
+      {
+        todoId: 21,
+        todoText: "Morning stretching session",
+        todoCompleted: true,
+      },
       { todoId: 22, todoText: "Practice Sun Salutation", todoCompleted: true },
-      { todoId: 23, todoText: "Complete 30-minute yoga flow", todoCompleted: false },
-      { todoId: 24, todoText: "Work on breathing exercises", todoCompleted: false },
-      { todoId: 25, todoText: "Go for a light evening walk", todoCompleted: true },
-      { todoId: 26, todoText: "Drink enough water after workout", todoCompleted: false },
+      {
+        todoId: 23,
+        todoText: "Complete 30-minute yoga flow",
+        todoCompleted: false,
+      },
+      {
+        todoId: 24,
+        todoText: "Work on breathing exercises",
+        todoCompleted: false,
+      },
+      {
+        todoId: 25,
+        todoText: "Go for a light evening walk",
+        todoCompleted: true,
+      },
+      {
+        todoId: 26,
+        todoText: "Drink enough water after workout",
+        todoCompleted: false,
+      },
     ],
   },
   {
     listId: 3,
     listName: "Toronto Travel Checklist",
-    listIcon: < AllMuiIcons.LocationCity />,
+    listIcon: <AllMuiIcons.LocationCity />,
     listContent: [
       { todoId: 31, todoText: "Visit the CN Tower", todoCompleted: false },
-      { todoId: 32, todoText: "Explore Royal Ontario Museum", todoCompleted: true },
-      { todoId: 33, todoText: "Walk around the Distillery Historic District", todoCompleted: true },
+      {
+        todoId: 32,
+        todoText: "Explore Royal Ontario Museum",
+        todoCompleted: true,
+      },
+      {
+        todoId: 33,
+        todoText: "Walk around the Distillery Historic District",
+        todoCompleted: true,
+      },
       { todoId: 34, todoText: "Visit Toronto Islands", todoCompleted: false },
-      { todoId: 35, todoText: "Try local food at St. Lawrence Market", todoCompleted: true },
+      {
+        todoId: 35,
+        todoText: "Try local food at St. Lawrence Market",
+        todoCompleted: true,
+      },
     ],
   },
 ];
@@ -77,7 +118,6 @@ export default function PermanentDrawer() {
   //   localStorage.setItem("todos", JSON.stringify(todos));
   // }, [todos]);
 
-  
   // This state manages all todo lists and their contents
 
   const [todoLists, setTodoLists] = useState(myLists);
@@ -212,140 +252,168 @@ export default function PermanentDrawer() {
     setActiveListId(newListId);
   };
 
-  
-
   return (
     <>
       <Box sx={{ display: "flex" }}>
-        <AppBar
-          elevation={8}
-          position="fixed"
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        >
-          <Toolbar>
-            <Typography
-              sx={{ flexGrow: 1, fontWeight: 500, textAlign: "start" }}
-              variant="h4"
-              noWrap
-              component="div"
-            >
-              React Todos
-            </Typography>
-            <div>
-              <Tooltip title="Create new list" arrow>
-                <IconButton
-                  size="large"
-                  color="inherit"
-                  onClick={handleClickOpen}
-                >
-                  <AllMuiIcons.AddCircleOutlined fontSize="large" />
-                </IconButton>
-              </Tooltip>
-
-              <NewListDialog
-                AllMuiIcons={AllMuiIcons}
-                open={open}
-                onClose={handleClose}
-                addNewList={handleCreateNewList}
-              />
-            </div>
-          </Toolbar>
-        </AppBar>
-
-        <Drawer
-          variant="permanent"
-          // sx={{
-          //   width: 1 / 4,
-          //   minWidth: {
-          //     sm: 190,
-          //     md: 240,
-          //   },
-          //   flexShrink: 0,
-          //   [`& .MuiDrawer-paper`]: {
-          //     width: 1 / 4,
-          //     minWidth: {
-          //       sm: 190,
-          //       md: 240,
-          //     },
-          //     boxSizing: "border-box",
-          //   },
-          // }}
-          slotProps={{
-            paper: {
-              sx: {
-                boxShadow: 4,
-              },
-            },
-          }}
-        >
-          <Toolbar />
-          <Box sx={{ overflow: "auto" }}>
-            <List>
-              {todoLists.map((list) => (
-                <ListItem
-                  key={list.listId}
-                  disablePadding
-                  sx={{
-                    ...(list.listId === activeListId && {
-                      backgroundColor: "lightgray",
-                      boxShadow: "0px 3px 10px darkgray",
-                    }),
-                  }}
-                >
-                  <ListItemButton
-                    onClick={() => handleListOnClick(list.listId)}
+        <Grid container sx={{ minHeight: "100vh", width: "100%" }}>
+          <AppBar
+            elevation={8}
+            position="fixed"
+            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          >
+            <Toolbar>
+              <Typography
+                sx={{ flexGrow: 1, fontWeight: 500, textAlign: "start" }}
+                variant="h4"
+                noWrap
+                component="div"
+              >
+                React Todos
+              </Typography>
+              <div>
+                <Tooltip title="Create new list" arrow>
+                  <IconButton
+                    size="large"
+                    color="inherit"
+                    onClick={handleClickOpen}
                   >
-                    <ListItemIcon>{list.listIcon}</ListItemIcon>
-                    <ListItemText primary={list.listName} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
-          <Toolbar />
+                    <AllMuiIcons.AddCircleOutlined fontSize="large" />
+                  </IconButton>
+                </Tooltip>
 
-  {/* // {
-  //   listId: 1,
-  //   listName: "Shopping",
-  //   listIcon: (
-  //     <>
-  //       <ShoppingCartIcon />
-  //     </>
-  //   ),
-  //   listContent: [
-  //     { todoId: 1, todoText: "carrots", todoCompleted: true },
-  //     { todoId: 2, todoText: "tomatoes", todoCompleted: true },
-  //     { todoId: 3, todoText: "milk", todoCompleted: true },
-  //     { todoId: 4, todoText: "potatoes", todoCompleted: true },
-  //     { todoId: 5, todoText: "chicken", todoCompleted: true },
-  //   ],
-  // } */}
-
-          {todoLists.map(
-            (list) =>
-              list.listId === activeListId && (
-                <TodoList
-                
-                  listId = {list.listId}
-                  listName = {list.listName}
-                  ListIconElement = {list.listIcon}
-
-                  deleteList={handleDeleteList}
-
-                  todos={list.listContent}
-                  removeTodo={handleRemoveTodo}
-                  toggleTodo={handleToggleTodo}
-                  reviseTodo={handleReviseTodo}
-                  addTodo={handleAddTodo}
+                <NewListDialog
                   AllMuiIcons={AllMuiIcons}
+                  open={open}
+                  onClose={handleClose}
+                  addNewList={handleCreateNewList}
                 />
-              ),
-          )}
-        </Box>
+              </div>
+            </Toolbar>
+          </AppBar>
+
+          <Grid item>
+            {/* <Drawer
+                variant="permanent"
+                // sx={{
+                //   width: 1 / 4,
+                //   minWidth: {
+                //     sm: 190,
+                //     md: 240,
+                //   },
+                //   flexShrink: 0,
+                //   [`& .MuiDrawer-paper`]: {
+                //     width: 1 / 4,
+                //     minWidth: {
+                //       sm: 190,
+                //       md: 240,
+                //     },
+                //     boxSizing: "border-box",
+                //   },
+                // }}
+                slotProps={{
+                  paper: {
+                    sx: {
+                      boxShadow: 4,
+                    },
+                  },
+                }}
+              > */}
+            <Toolbar />
+            <Box sx={{ overflow: "auto" }}>
+              <List>
+                {todoLists.map((list) => (
+                  <ListItem
+                    key={list.listId}
+                    disablePadding
+                    sx={{
+                      ...(list.listId === activeListId && {
+                        backgroundColor: "lightgray",
+                        boxShadow: "0px 3px 10px darkgray",
+                      }),
+                    }}
+                  >
+                    <ListItemButton
+                      onClick={() => handleListOnClick(list.listId)}
+                    >
+                      <ListItemIcon>{list.listIcon}</ListItemIcon>
+                      <ListItemText primary={list.listName} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+            {/* </Drawer> */}
+          </Grid>
+
+          <Grid item>
+            <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
+              <Toolbar />
+
+              {/* // {
+        //   listId: 1,
+        //   listName: "Shopping",
+        //   listIcon: (
+        //     <>
+        //       <ShoppingCartIcon />
+        //     </>
+        //   ),
+        //   listContent: [
+        //     { todoId: 1, todoText: "carrots", todoCompleted: true },
+        //     { todoId: 2, todoText: "tomatoes", todoCompleted: true },
+        //     { todoId: 3, todoText: "milk", todoCompleted: true },
+        //     { todoId: 4, todoText: "potatoes", todoCompleted: true },
+        //     { todoId: 5, todoText: "chicken", todoCompleted: true },
+        //   ],
+        // } */}
+
+              {todoLists.map(
+                (list) =>
+                  list.listId === activeListId && (
+                    <TodoList
+                      listId={list.listId}
+                      listName={list.listName}
+                      ListIconElement={list.listIcon}
+                      deleteList={handleDeleteList}
+                      todos={list.listContent}
+                      removeTodo={handleRemoveTodo}
+                      toggleTodo={handleToggleTodo}
+                      reviseTodo={handleReviseTodo}
+                      addTodo={handleAddTodo}
+                      AllMuiIcons={AllMuiIcons}
+                    />
+                  ),
+              )}
+            </Box>
+          </Grid>
+
+          {/* Page footer: */}
+          <Grid item size={12}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                bgcolor: "primary.main",
+                color: "white",
+                width: "100%", 
+                height: "100%", 
+              }}
+            >
+              <Typography
+                sx={{ fontWeight: 400, textAlign: "center" }}
+                variant="h8"
+                noWrap
+                component="div"
+              >
+                &copy; 2026 Tetiana Talebi
+              </Typography>
+            </Box>
+          </Grid>
+
+          {/* Closing tag of the Grid container: */}
+        </Grid>
       </Box>
     </>
   );
 }
-
