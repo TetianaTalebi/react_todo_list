@@ -291,7 +291,7 @@ export default function PermanentDrawer() {
             </Toolbar>
           </AppBar>
 
-          <Grid item>
+          <Grid size={{ md: 3 }}>
             {/* <Drawer
                 variant="permanent"
                 // sx={{
@@ -345,7 +345,7 @@ export default function PermanentDrawer() {
             {/* </Drawer> */}
           </Grid>
 
-          <Grid item>
+          <Grid size={{ md: 9 }}>
             <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
               <Toolbar />
 
@@ -387,7 +387,7 @@ export default function PermanentDrawer() {
           </Grid>
 
           {/* Page footer: */}
-          <Grid item size={12} sx={{height: 60}}>
+          <Grid size={12} sx={{height: 60}}>
             <Box
               sx={{
                 display: "flex",
