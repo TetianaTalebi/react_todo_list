@@ -5,6 +5,9 @@ import { useState } from "react";
 
 import NewListDialog from "./NewListDialog.jsx";
 
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+
 import TodoList from "./TodoList";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -256,8 +259,15 @@ export default function PermanentDrawer() {
 
   return (
     <>
-      <Box sx={{ display: "flex", minHeight: '100vh' }}>
-        <Grid container sx={{ minHeight: "100vh", width: "100%", alignContent: "space-between"}}>
+      <Box sx={{ display: "flex", minHeight: "100vh" }}>
+        <Grid
+          container
+          sx={{
+            minHeight: "100vh",
+            width: "100%",
+            alignContent: "space-between",
+          }}
+        >
           <AppBar
             elevation={8}
             position="fixed"
@@ -331,15 +341,23 @@ export default function PermanentDrawer() {
                       ...(list.listId === activeListId && {
                         backgroundColor: "lightgray",
                         boxShadow: "0px 3px 10px darkgray",
-                      }), 
+                      }),
                     }}
                   >
                     <ListItemButton
                       onClick={() => handleListOnClick(list.listId)}
-                      sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",}}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
                     >
                       <ListItemIcon>{list.listIcon}</ListItemIcon>
-                      <ListItemText primary={list.listName} sx={{display: { xs: 'none', md: 'inline' }}}/>
+                      <ListItemText
+                        primary={list.listName}
+                        sx={{ display: { xs: "none", md: "inline" } }}
+                      />
                     </ListItemButton>
                   </ListItem>
                 ))}
@@ -390,7 +408,7 @@ export default function PermanentDrawer() {
           </Grid>
 
           {/* Page footer: */}
-          <Grid size={12} sx={{height: 60}}>
+          <Grid size={12} sx={{ height: 200, pt: 5, }}>
             <Box
               sx={{
                 display: "flex",
@@ -399,17 +417,41 @@ export default function PermanentDrawer() {
                 alignItems: "center",
                 bgcolor: "primary.main",
                 color: "white",
-                width: "100%", 
-                height: "100%", 
+                width: "100%",
+                height: "100%",
               }}
             >
               <Typography
-                sx={{ fontWeight: 400, textAlign: "center" }}
-                variant="h8"
-                noWrap
+                sx={{
+                  fontWeight: 400,
+                  textAlign: "center",
+                  whiteSpace: "pre-line",
+                  pt: 2,
+                }}
                 component="div"
+                variant="body1"
               >
-                &copy; 2026 Tetiana Talebi
+                {`\u00A9 2026 Tetiana Talebi\nFull-Stack Web Developer\n`}
+
+                <IconButton
+                  size="small"
+                  component="a"
+                  href="https://github.com/TetianaTalebi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <GitHubIcon sx={{ color: "common.white" }} />
+                </IconButton>
+
+                <IconButton
+                  size="small"
+                  component="a"
+                  href="https://www.linkedin.com/in/tetianatalebi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <LinkedInIcon sx={{ color: "common.white" }} />
+                </IconButton>
               </Typography>
             </Box>
           </Grid>
