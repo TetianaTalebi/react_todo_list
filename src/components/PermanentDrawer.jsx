@@ -12,7 +12,6 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import TodoList from "./TodoList";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
@@ -308,32 +307,6 @@ export default function PermanentDrawer() {
           </AppBar>
 
           <Grid size={{ xs: 1, sm: 2, md: 3 }}>
-            {/* <Drawer
-                variant="permanent"
-                // sx={{
-                //   width: 1 / 4,
-                //   minWidth: {
-                //     sm: 190,
-                //     md: 240,
-                //   },
-                //   flexShrink: 0,
-                //   [`& .MuiDrawer-paper`]: {
-                //     width: 1 / 4,
-                //     minWidth: {
-                //       sm: 190,
-                //       md: 240,
-                //     },
-                //     boxSizing: "border-box",
-                //   },
-                // }}
-                slotProps={{
-                  paper: {
-                    sx: {
-                      boxShadow: 4,
-                    },
-                  },
-                }}
-              > */}
             <Toolbar />
             <Box sx={{ overflow: "auto" }}>
               <List>
@@ -367,7 +340,6 @@ export default function PermanentDrawer() {
                 ))}
               </List>
             </Box>
-            {/* </Drawer> */}
           </Grid>
 
           <Grid size={{ xs: 11, sm: 10, md: 9 }}>
