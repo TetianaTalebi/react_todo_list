@@ -408,7 +408,7 @@ export default function PermanentDrawer() {
           </Grid>
 
           {/* Page footer: */}
-          <Grid size={12} sx={{ height: 200, pt: 5, }}>
+          <Grid size={12} sx={{ height: 200, pt: 5 }}>
             <Box
               sx={{
                 display: "flex",
@@ -433,25 +433,37 @@ export default function PermanentDrawer() {
               >
                 {`\u00A9 2026 Tetiana Talebi\nFull-Stack Web Developer\n`}
 
-                <IconButton
-                  size="small"
-                  component="a"
-                  href="https://github.com/TetianaTalebi"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Tooltip
+                  title="https://github.com/TetianaTalebi"
+                  placement="top"
+                  arrow
                 >
-                  <GitHubIcon sx={{ color: "common.white" }} />
-                </IconButton>
+                  <IconButton
+                    size="small"
+                    component="a"
+                    href="https://github.com/TetianaTalebi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <GitHubIcon sx={{ color: "common.white" }} />
+                  </IconButton>
+                </Tooltip>
 
-                <IconButton
-                  size="small"
-                  component="a"
-                  href="https://www.linkedin.com/in/tetianatalebi"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Tooltip
+                  title="https://linkedin.com/in/tetianatalebi"
+                  placement="top"
+                  arrow
                 >
-                  <LinkedInIcon sx={{ color: "common.white" }} />
-                </IconButton>
+                  <IconButton
+                    size="small"
+                    component="a"
+                    href="https://linkedin.com/in/tetianatalebi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LinkedInIcon sx={{ color: "common.white" }} />
+                  </IconButton>
+                </Tooltip>
               </Typography>
             </Box>
           </Grid>
