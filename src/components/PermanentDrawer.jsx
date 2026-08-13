@@ -254,8 +254,8 @@ export default function PermanentDrawer() {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
-        <Grid container sx={{ minHeight: "100vh", width: "100%" }}>
+      <Box sx={{ display: "flex", minHeight: '100vh' }}>
+        <Grid container sx={{ minHeight: "100vh", width: "100%", alignContent: "space-between"}}>
           <AppBar
             elevation={8}
             position="fixed"
@@ -387,7 +387,7 @@ export default function PermanentDrawer() {
           </Grid>
 
           {/* Page footer: */}
-          <Grid item size={12}>
+          <Grid item size={12} sx={{height: 60}}>
             <Box
               sx={{
                 display: "flex",
