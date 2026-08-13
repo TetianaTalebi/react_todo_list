@@ -1,3 +1,5 @@
+import "./PermanentDrawer.css";
+
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 
@@ -291,7 +293,7 @@ export default function PermanentDrawer() {
             </Toolbar>
           </AppBar>
 
-          <Grid size={{ md: 3 }}>
+          <Grid size={{ xs: 1, sm: 2, md: 3 }}>
             {/* <Drawer
                 variant="permanent"
                 // sx={{
@@ -329,14 +331,15 @@ export default function PermanentDrawer() {
                       ...(list.listId === activeListId && {
                         backgroundColor: "lightgray",
                         boxShadow: "0px 3px 10px darkgray",
-                      }),
+                      }), 
                     }}
                   >
                     <ListItemButton
                       onClick={() => handleListOnClick(list.listId)}
+                      sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",}}
                     >
                       <ListItemIcon>{list.listIcon}</ListItemIcon>
-                      <ListItemText primary={list.listName} />
+                      <ListItemText primary={list.listName} sx={{display: { xs: 'none', md: 'inline' }}}/>
                     </ListItemButton>
                   </ListItem>
                 ))}
@@ -345,7 +348,7 @@ export default function PermanentDrawer() {
             {/* </Drawer> */}
           </Grid>
 
-          <Grid size={{ md: 9 }}>
+          <Grid size={{ xs: 11, sm: 10, md: 9 }}>
             <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
               <Toolbar />
 
