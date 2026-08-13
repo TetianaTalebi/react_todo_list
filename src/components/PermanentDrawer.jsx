@@ -3,6 +3,8 @@ import "./PermanentDrawer.css";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 
+import CustomizedTooltip from "./CustomizedTooltip.jsx";
+
 import NewListDialog from "./NewListDialog.jsx";
 
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -20,7 +22,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+
 import Grid from "@mui/material/Grid";
 
 import * as AllMuiIcons from "@mui/icons-material";
@@ -148,6 +150,8 @@ export default function PermanentDrawer() {
   const handleListOnClick = (listId) => {
     setActiveListId(listId);
   };
+
+  
 
   // Remove todo for the currently active list
 
@@ -283,7 +287,7 @@ export default function PermanentDrawer() {
                 React Todos
               </Typography>
               <div>
-                <Tooltip title="Create new list" arrow>
+                <CustomizedTooltip title="Create new list" arrow>
                   <IconButton
                     size="large"
                     color="inherit"
@@ -291,7 +295,7 @@ export default function PermanentDrawer() {
                   >
                     <AllMuiIcons.AddCircleOutlined fontSize="large" />
                   </IconButton>
-                </Tooltip>
+                </CustomizedTooltip>
 
                 <NewListDialog
                   AllMuiIcons={AllMuiIcons}
@@ -433,7 +437,7 @@ export default function PermanentDrawer() {
               >
                 {`\u00A9 2026 Tetiana Talebi\nFull-Stack Web Developer\n`}
 
-                <Tooltip
+                <CustomizedTooltip
                   title="https://github.com/TetianaTalebi"
                   placement="top"
                   arrow
@@ -447,9 +451,9 @@ export default function PermanentDrawer() {
                   >
                     <GitHubIcon sx={{ color: "common.white" }} />
                   </IconButton>
-                </Tooltip>
+                </CustomizedTooltip>
 
-                <Tooltip
+                <CustomizedTooltip
                   title="https://linkedin.com/in/tetianatalebi"
                   placement="top"
                   arrow
@@ -463,7 +467,7 @@ export default function PermanentDrawer() {
                   >
                     <LinkedInIcon sx={{ color: "common.white" }} />
                   </IconButton>
-                </Tooltip>
+                </CustomizedTooltip>
               </Typography>
             </Box>
           </Grid>

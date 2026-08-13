@@ -7,7 +7,8 @@ import Typography from "@mui/material/Typography";
 import SvgIcon from '@mui/material/SvgIcon';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import Tooltip from '@mui/material/Tooltip';
+
+import CustomizedTooltip from "./CustomizedTooltip.jsx";
 
 
 export default function ListTitle({ listId, listName, ListIconElement, deleteList }) {
@@ -22,11 +23,11 @@ export default function ListTitle({ listId, listName, ListIconElement, deleteLis
   return (
     <ListItem
       secondaryAction={
-        <Tooltip title="Delete List" placement="right" arrow>
+        <CustomizedTooltip title="Delete List" placement="right" arrow>
           <IconButton edge="end" aria-label="delete" onClick={() => deleteList(listId, listName)}>
             <DeleteSweepIcon color="primary" fontSize="large" />
           </IconButton>
-        </Tooltip>
+        </CustomizedTooltip>
       }
     >
       <ListItemAvatar>

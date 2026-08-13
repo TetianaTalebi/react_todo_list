@@ -9,7 +9,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
-import Tooltip from '@mui/material/Tooltip';
+
+import CustomizedTooltip from "./CustomizedTooltip.jsx";
 
 import useCursorPosition from "../hooks/useCursorPosition.js";
 
@@ -56,11 +57,11 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
   return (
     <ListItem
       secondaryAction={
-        <Tooltip title="Delete Todo" placement="right" arrow>
+        <CustomizedTooltip title="Delete Todo" placement="right" arrow>
           <IconButton edge="end" aria-label="delete" onClick={removeTodo}>
             < DeleteIcon color="primary" />
           </IconButton>
-        </Tooltip>
+        </CustomizedTooltip>
       }
       disablePadding
     >
