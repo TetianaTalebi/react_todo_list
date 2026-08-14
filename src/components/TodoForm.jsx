@@ -8,6 +8,8 @@ import useCursorPosition from "../hooks/useCursorPosition.js";
 
 import { isTodoValidUtils } from "../utils/utils.js";
 
+import CustomizedTooltip from "./CustomizedTooltip.jsx";
+
 export default function TodoForm({ addTodo }) {
   
   const {
@@ -69,14 +71,20 @@ export default function TodoForm({ addTodo }) {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="create todo"
-                  edge="end"
-                  type="submit"
-                  disabled={!isTodoFormValid || text === ""}
-                >
-                  <CreateIcon color={isTodoFormValid ? "primary" : "error"} />
-                </IconButton>
+
+                <CustomizedTooltip title="Create todo (Enter)" placement="right" arrow>
+                  <span>
+                    <IconButton
+                      aria-label="create todo"
+                      edge="end"
+                      type="submit"
+                      disabled={!isTodoFormValid || text === ""}
+                    >
+                      <CreateIcon color={isTodoFormValid ? "primary" : "error"} />
+                    </IconButton>
+                  </span>
+                </CustomizedTooltip>
+
               </InputAdornment>
             ),
           }}
@@ -85,3 +93,19 @@ export default function TodoForm({ addTodo }) {
     </ListItem>
   );
 }
+
+{/* <CustomizedTooltip
+                  title="https://linkedin.com/in/tetianatalebi"
+                  placement="top"
+                  arrow
+                >
+                  <IconButton
+                    size="small"
+                    component="a"
+                    href="https://linkedin.com/in/tetianatalebi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LinkedInIcon sx={{ color: "common.white" }} />
+                  </IconButton>
+                </CustomizedTooltip> */}
