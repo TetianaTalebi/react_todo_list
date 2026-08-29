@@ -1,6 +1,6 @@
 import { Dexie } from "dexie";
 
-const db = new Dexie("TodoListsDatabase");
+export const db = new Dexie("TodoListsDatabase");
 
 db.version(1).stores({
   todoLists: "listId, listName",
@@ -148,4 +148,3 @@ db.open().catch((err) => {
   console.error("Failed to open database:", err);
 });
 
-export default db;
