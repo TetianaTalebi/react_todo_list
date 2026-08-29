@@ -22,6 +22,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 
+import { useLiveQuery } from "dexie-react-hooks";
+import {db} from "../services/db.js";
+
 import Grid from "@mui/material/Grid";
 
 import * as AllMuiIcons from "@mui/icons-material";
@@ -137,6 +140,22 @@ export default function PermanentDrawer() {
   // (i.e. the dialog window for creating a new list)
 
   const [open, setOpen] = useState(false);
+
+  const data = useLiveQuery( async () => {
+    const todoListsInDB = await db.todoLists.toArray();
+    const todosInDB = await db.todos.toArray();
+    return { todoListsInDB, todosInDB };
+  });
+
+//   const data = useLiveQuery(async () => {
+//   const users = await db.users.toArray();
+//   const posts = await db.posts.toArray();
+//   return { users, posts };
+// });
+  console.log("My lists");
+  console.log(data?.todoListsInDB);
+  console.log("My todos");
+  console.log(data?.todosInDB);
 
   const handleClickOpen = () => {
     setOpen(true);
