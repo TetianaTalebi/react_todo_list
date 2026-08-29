@@ -150,8 +150,6 @@ export default function PermanentDrawer() {
     setActiveListId(listId);
   };
 
-  
-
   // Remove todo for the currently active list
 
   const handleRemoveTodo = (id) => {
