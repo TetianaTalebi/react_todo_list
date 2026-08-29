@@ -238,7 +238,7 @@ export default function PermanentDrawer() {
   //   ],
   // }
 
-  const handleDeleteList = (listKey, listName) => {
+  const handleDeleteList = (listKey) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.filter((list) => list.listId !== listKey);
     });
