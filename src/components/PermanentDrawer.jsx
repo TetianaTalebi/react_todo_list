@@ -23,9 +23,12 @@ import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 
 import { useLiveQuery } from "dexie-react-hooks";
-import {db} from "../services/db.js";
+import { db } from "../services/db.js";
 
 import Grid from "@mui/material/Grid";
+
+import DynamicIcon from "./DynamicIcon.jsx";
+import { grey } from '@mui/material/colors';
 
 import * as AllMuiIcons from "@mui/icons-material";
 
@@ -141,17 +144,17 @@ export default function PermanentDrawer() {
 
   const [open, setOpen] = useState(false);
 
-  const data = useLiveQuery( async () => {
+  const data = useLiveQuery(async () => {
     const todoListsInDB = await db.todoLists.toArray();
     const todosInDB = await db.todos.toArray();
     return { todoListsInDB, todosInDB };
   });
 
-//   const data = useLiveQuery(async () => {
-//   const users = await db.users.toArray();
-//   const posts = await db.posts.toArray();
-//   return { users, posts };
-// });
+  //   const data = useLiveQuery(async () => {
+  //   const users = await db.users.toArray();
+  //   const posts = await db.posts.toArray();
+  //   return { users, posts };
+  // });
   console.log("My lists");
   console.log(data?.todoListsInDB);
   console.log("My todos");
@@ -327,7 +330,44 @@ export default function PermanentDrawer() {
             <Toolbar />
             <Box sx={{ overflow: "auto" }}>
               <List>
-                {todoLists.map((list) => (
+                {data?.todoListsInDB.map((list) => (
+                  <ListItem
+                    key={list.listId}
+                    disablePadding
+                    sx={{
+                      ...(list.listId === activeListId && {
+                        backgroundColor: "lightgray",
+                        boxShadow: "0px 3px 10px darkgray",
+                      }),
+                    }}
+                  >
+                    <ListItemButton
+                      onClick={() => handleListOnClick(list.listId)}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <ListItemIcon>
+                        <DynamicIcon
+                          value={list.listIconName}
+                          AllMuiIcons={AllMuiIcons}
+                          iconFontSize={24}
+                          iconColor={grey[700]}
+                        />
+                      </ListItemIcon>
+
+                      <ListItemText
+                        primary={list.listName}
+                        sx={{ display: { xs: "none", md: "inline" } }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+
+                {/* {todoLists.map((list) => (
                   <ListItem
                     key={list.listId}
                     disablePadding
@@ -354,7 +394,7 @@ export default function PermanentDrawer() {
                       />
                     </ListItemButton>
                   </ListItem>
-                ))}
+                ))} */}
               </List>
             </Box>
           </Grid>
