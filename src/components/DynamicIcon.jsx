@@ -1,12 +1,12 @@
 
-export default function DynamicIcon({value, AllMuiIcons}){
+export default function DynamicIcon({value, AllMuiIcons, iconFontSize=40, iconColor="primary.main"}){
 
      const DynamicComponent = AllMuiIcons[value];
 
   return (
     <>
 
-      < DynamicComponent color="primary" sx={{ fontSize: 40 }} />
+      < DynamicComponent sx={{ color: iconColor, fontSize: iconFontSize }} />
       {/* < DynamicComponent color="primary" size="large" /> */}
     
     </>
