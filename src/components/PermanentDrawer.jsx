@@ -132,10 +132,24 @@ export default function PermanentDrawer() {
 
   // This state manages all todo lists and their contents
 
+  const data = useLiveQuery(async () => {
+    const todoListsInDB = await db.todoLists.toArray();
+    const todosInDB = await db.todos.toArray();
+    return { todoListsInDB, todosInDB };
+  });
+
+  // console.log("My lists");
+  // console.log(data?.todoListsInDB);
+  // console.log("My todos");
+  // console.log(data?.todosInDB);
+  console.log(data?.todoListsInDB?.[0]?.listId);
+
   const [todoLists, setTodoLists] = useState(myLists);
 
   // This state defines which list is active at present moment
   // By default the first list in myLists object is active (e.g. when the app loads the first time)
+
+  // const [activeListId, setActiveListId] = useState(data?.todoListsInDB?.[0]?.listId);
 
   const [activeListId, setActiveListId] = useState(myLists[0].listId);
 
@@ -144,21 +158,7 @@ export default function PermanentDrawer() {
 
   const [open, setOpen] = useState(false);
 
-  const data = useLiveQuery(async () => {
-    const todoListsInDB = await db.todoLists.toArray();
-    const todosInDB = await db.todos.toArray();
-    return { todoListsInDB, todosInDB };
-  });
-
-  //   const data = useLiveQuery(async () => {
-  //   const users = await db.users.toArray();
-  //   const posts = await db.posts.toArray();
-  //   return { users, posts };
-  // });
-  console.log("My lists");
-  console.log(data?.todoListsInDB);
-  console.log("My todos");
-  console.log(data?.todosInDB);
+  
 
   const handleClickOpen = () => {
     setOpen(true);
