@@ -125,33 +125,21 @@ const myLists = [
   },
 ];
 
-export default function PermanentDrawer() {
+export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   // useEffect(() => {
   //   localStorage.setItem("todos", JSON.stringify(todos));
   // }, [todos]);
 
   // This state manages all todo lists and their contents
 
-  const data = useLiveQuery(async () => {
-    const todoListsInDB = await db.todoLists.toArray();
-    const todosInDB = await db.todos.toArray();
-    return { todoListsInDB, todosInDB };
-  });
-
-  // console.log("My lists");
-  // console.log(data?.todoListsInDB);
-  // console.log("My todos");
-  // console.log(data?.todosInDB);
-  console.log(data?.todoListsInDB?.[0]?.listId);
-
   const [todoLists, setTodoLists] = useState(myLists);
 
   // This state defines which list is active at present moment
   // By default the first list in myLists object is active (e.g. when the app loads the first time)
 
-  // const [activeListId, setActiveListId] = useState(data?.todoListsInDB?.[0]?.listId);
+  // const [activeListId, setActiveListId] = useState(myLists[0].listId);
 
-  const [activeListId, setActiveListId] = useState(myLists[0].listId);
+  const [activeListId, setActiveListId] = useState(todoListsFromIndexedDB[0].listId);
 
   // open variable defines whether the dialog window opened or closed
   // (i.e. the dialog window for creating a new list)
@@ -159,7 +147,6 @@ export default function PermanentDrawer() {
   const [open, setOpen] = useState(false);
 
   
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -330,7 +317,8 @@ export default function PermanentDrawer() {
             <Toolbar />
             <Box sx={{ overflow: "auto" }}>
               <List>
-                {data?.todoListsInDB.map((list) => (
+                {todoListsFromIndexedDB.map((list) => (
+                // {data?.todoListsInDB.map((list) => (
                   <ListItem
                     key={list.listId}
                     disablePadding
