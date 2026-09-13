@@ -230,23 +230,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     });
   };
 
-  // {
-  //   listId: 1,
-  //   listName: "Shopping",
-  //   listIcon: (
-  //     <>
-  //       <ShoppingCartIcon />
-  //     </>
-  //   ),
-  //   listContent: [
-  //     { todoId: 1, todoText: "carrots", todoCompleted: true },
-  //     { todoId: 2, todoText: "tomatoes", todoCompleted: true },
-  //     { todoId: 3, todoText: "milk", todoCompleted: true },
-  //     { todoId: 4, todoText: "potatoes", todoCompleted: true },
-  //     { todoId: 5, todoText: "chicken", todoCompleted: true },
-  //   ],
-  // }
-
   const handleDeleteList = (listKey) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.filter((list) => list.listId !== listKey);
@@ -318,7 +301,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             <Box sx={{ overflow: "auto" }}>
               <List>
                 {todoListsFromIndexedDB.map((list) => (
-                // {data?.todoListsInDB.map((list) => (
+               
                   <ListItem
                     key={list.listId}
                     disablePadding
@@ -355,34 +338,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                   </ListItem>
                 ))}
 
-                {/* {todoLists.map((list) => (
-                  <ListItem
-                    key={list.listId}
-                    disablePadding
-                    sx={{
-                      ...(list.listId === activeListId && {
-                        backgroundColor: "lightgray",
-                        boxShadow: "0px 3px 10px darkgray",
-                      }),
-                    }}
-                  >
-                    <ListItemButton
-                      onClick={() => handleListOnClick(list.listId)}
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <ListItemIcon>{list.listIcon}</ListItemIcon>
-                      <ListItemText
-                        primary={list.listName}
-                        sx={{ display: { xs: "none", md: "inline" } }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                ))} */}
               </List>
             </Box>
           </Grid>
@@ -390,23 +345,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
           <Grid size={{ xs: 11, sm: 10, md: 9 }}>
             <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
               <Toolbar />
-
-              {/* // {
-        //   listId: 1,
-        //   listName: "Shopping",
-        //   listIcon: (
-        //     <>
-        //       <ShoppingCartIcon />
-        //     </>
-        //   ),
-        //   listContent: [
-        //     { todoId: 1, todoText: "carrots", todoCompleted: true },
-        //     { todoId: 2, todoText: "tomatoes", todoCompleted: true },
-        //     { todoId: 3, todoText: "milk", todoCompleted: true },
-        //     { todoId: 4, todoText: "potatoes", todoCompleted: true },
-        //     { todoId: 5, todoText: "chicken", todoCompleted: true },
-        //   ],
-        // } */}
 
               {todoLists.map(
                 (list) =>
