@@ -8,20 +8,14 @@ import PermanentDrawer from "./PermanentDrawer";
 export default function PermanentDrawerWrapper() {
   const data = useLiveQuery(async () => {
     const todoListsInDB = await db.todoLists.toArray();
-    // const todosInDB = await db.todos.toArray();
-    // return { todoListsInDB, todosInDB };
     return { todoListsInDB };
   });
-
-  // console.log(data?.todosInDB);
-  // console.log(data?.todoListsInDB?.[0]?.listId);
 
   return (
     <>
       {data && (
         <PermanentDrawer
           todoListsFromIndexedDB={data?.todoListsInDB}
-          // todosFromIndexedDB={data?.todosInDB}
         />
       )}
     </>

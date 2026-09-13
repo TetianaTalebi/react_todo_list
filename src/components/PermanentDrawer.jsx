@@ -137,8 +137,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   // This state defines which list is active at present moment
   // By default the first list in myLists object is active (e.g. when the app loads the first time)
 
-  // const [activeListId, setActiveListId] = useState(myLists[0].listId);
-
   const [activeListId, setActiveListId] = useState(
     todoListsFromIndexedDB[0].listId,
   );
@@ -149,8 +147,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     () => db.todoLists.get(activeListId),
     [activeListId],
   );
-
-  // console.log(currentListFromIndexedDB?.listIconName);
 
   // Fetch todos from the IndexedDB that belong to the current active List
 
