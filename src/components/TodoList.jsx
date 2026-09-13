@@ -8,13 +8,14 @@ import ListTitle from "./ListTitle";
 export default function TodoList({
   listId,
   listName,
-  ListIconElement,
+  listIconName,
   deleteList,
   todos = [],
   removeTodo,
   toggleTodo,
   reviseTodo,
-  addTodo
+  addTodo,
+  AllMuiIcons,
 }) {
   return (
     <Box
@@ -34,16 +35,22 @@ export default function TodoList({
 
       {/* xs (0px), sm (600px), md (900px), lg (1200px), and xl (1536px) */}
       <List
-        // sx={{
-        //   width: "100%",
-        //   bgcolor: "background.paper",
-        //   pt: 1,
-        //   pl: { xs: 0, sm: 1, md: 6 },
-        //   // lg: 6, xl: 6
-        //   pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
-        // }}
+      // sx={{
+      //   width: "100%",
+      //   bgcolor: "background.paper",
+      //   pt: 1,
+      //   pl: { xs: 0, sm: 1, md: 6 },
+      //   // lg: 6, xl: 6
+      //   pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
+      // }}
       >
-        <ListTitle listId={listId} listName={listName} ListIconElement={ListIconElement} deleteList={deleteList} />
+        <ListTitle
+          listId={listId}
+          listName={listName}
+          listIconName={listIconName}
+          deleteList={deleteList}
+          AllMuiIcons={AllMuiIcons}
+        />
 
         {todos.map((todo) => (
           <TodoItem

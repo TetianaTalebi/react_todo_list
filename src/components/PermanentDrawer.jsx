@@ -28,7 +28,7 @@ import { db } from "../services/db.js";
 import Grid from "@mui/material/Grid";
 
 import DynamicIcon from "./DynamicIcon.jsx";
-import { grey } from '@mui/material/colors';
+import { grey } from "@mui/material/colors";
 
 import * as AllMuiIcons from "@mui/icons-material";
 
@@ -48,13 +48,13 @@ const myLists = [
     listName: "Healthy Grocery Shopping",
     listIcon: <AllMuiIcons.ShoppingCart />,
     listContent: [
-      { todoId: 11, todoText: "Buy fresh spinach", todoCompleted: false },
-      {
-        todoId: 12,
-        todoText: "Get blueberries and bananas",
-        todoCompleted: true,
-      },
-      { todoId: 13, todoText: "Purchase salmon fillets", todoCompleted: true },
+      // { todoId: 11, todoText: "Buy fresh spinach", todoCompleted: false },
+      // {
+      //   todoId: 12,
+      //   todoText: "Get blueberries and bananas",
+      //   todoCompleted: true,
+      // },
+      // { todoId: 13, todoText: "Purchase salmon fillets", todoCompleted: true },
       {
         todoId: 14,
         todoText: "Buy almonds and mixed nuts",
@@ -139,14 +139,31 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
   // const [activeListId, setActiveListId] = useState(myLists[0].listId);
 
-  const [activeListId, setActiveListId] = useState(todoListsFromIndexedDB[0].listId);
+  const [activeListId, setActiveListId] = useState(
+    todoListsFromIndexedDB[0].listId,
+  );
+
+  // Fetch a list data from the IndexedDB that belongs to the currently active list
+
+  const currentListFromIndexedDB = useLiveQuery(
+    () => db.todoLists.get(activeListId),
+    [activeListId],
+  );
+
+  // console.log(currentListFromIndexedDB?.listIconName);
+
+  // Fetch todos from the IndexedDB that belong to the current active List
+
+  const currentTodosFromIndexedDB = useLiveQuery(
+    () => db.todos.where({ todoListId: activeListId }).toArray(),
+    [activeListId],
+  );
 
   // open variable defines whether the dialog window opened or closed
   // (i.e. the dialog window for creating a new list)
 
   const [open, setOpen] = useState(false);
 
-  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -301,7 +318,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             <Box sx={{ overflow: "auto" }}>
               <List>
                 {todoListsFromIndexedDB.map((list) => (
-               
                   <ListItem
                     key={list.listId}
                     disablePadding
@@ -337,32 +353,45 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                     </ListItemButton>
                   </ListItem>
                 ))}
-
               </List>
             </Box>
           </Grid>
+
+   {/*        
+  // currentListFromIndexedDB
+  // {
+  //     listId: 1,
+  //     listName: "Healthy Grocery Shopping",
+  //     listIconName: "ShoppingCart",
+  //   },
+
+  // currentTodosFromIndexedDB
+  // {
+    //   todoId: 11,
+    //   todoListId: 1,
+    //   todoText: "Buy fresh spinach",
+    //   todoCompleted: false,
+    // },
+    */}
 
           <Grid size={{ xs: 11, sm: 10, md: 9 }}>
             <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
               <Toolbar />
 
-              {todoLists.map(
-                (list) =>
-                  list.listId === activeListId && (
-                    <TodoList
-                      listId={list.listId}
-                      listName={list.listName}
-                      ListIconElement={list.listIcon}
+                <TodoList
+                      listId={currentListFromIndexedDB?.listId}
+                      listName={currentListFromIndexedDB?.listName}
+                      listIconName={currentListFromIndexedDB?.listIconName}
+
                       deleteList={handleDeleteList}
-                      todos={list.listContent}
+                      todos={currentTodosFromIndexedDB ?? []}
                       removeTodo={handleRemoveTodo}
                       toggleTodo={handleToggleTodo}
                       reviseTodo={handleReviseTodo}
                       addTodo={handleAddTodo}
                       AllMuiIcons={AllMuiIcons}
                     />
-                  ),
-              )}
+
             </Box>
           </Grid>
 
@@ -433,3 +462,21 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     </>
   );
 }
+
+ {/* {todoLists.map(
+                (list) =>
+                  list.listId === activeListId && (
+                    <TodoList
+                      listId={list.listId}
+                      listName={list.listName}
+                      ListIconElement={list.listIcon}
+                      deleteList={handleDeleteList}
+                      todos={list.listContent}
+                      removeTodo={handleRemoveTodo}
+                      toggleTodo={handleToggleTodo}
+                      reviseTodo={handleReviseTodo}
+                      addTodo={handleAddTodo}
+                      AllMuiIcons={AllMuiIcons}
+                    />
+                  ),
+              )}  */}
