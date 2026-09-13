@@ -6,7 +6,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import SvgIcon from '@mui/material/SvgIcon';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 
 import CustomizedTooltip from "./CustomizedTooltip.jsx";
 
@@ -52,31 +51,4 @@ export default function ListTitle({ listId, listName, ListIconElement, deleteLis
   );
 }
 
-{
-  /* <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-            Avatar with text and icon
-          </Typography>
-          
-            
-              
-                <ListItem
-                  secondaryAction={
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Single-line item"
-                    secondary={secondary ? 'Secondary text' : null}
-                  />
-                </ListItem>
-              
-            
-           */
-}
+

@@ -7,7 +7,6 @@ export default function DynamicIcon({value, AllMuiIcons, iconFontSize=40, iconCo
     <>
 
       < DynamicComponent sx={{ color: iconColor, fontSize: iconFontSize }} />
-      {/* < DynamicComponent color="primary" size="large" /> */}
     
     </>
   );
