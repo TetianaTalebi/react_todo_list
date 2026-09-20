@@ -22,8 +22,10 @@ export default function TodoList({
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
         flexGrow: 1,
+        width: "100%",
       }}
     >
       {/* [
@@ -35,14 +37,14 @@ export default function TodoList({
 
       {/* xs (0px), sm (600px), md (900px), lg (1200px), and xl (1536px) */}
       <List
-      // sx={{
-      //   width: "100%",
-      //   bgcolor: "background.paper",
-      //   pt: 1,
-      //   pl: { xs: 0, sm: 1, md: 6 },
-      //   // lg: 6, xl: 6
-      //   pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
-      // }}
+      sx={{
+        width: "100%",
+        bgcolor: "background.paper",
+        // pt: 1,
+        // pl: { xs: 0, sm: 1, md: 6 },
+        // // lg: 6, xl: 6
+        // pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
+      }}
       >
         <ListTitle
           listId={listId}

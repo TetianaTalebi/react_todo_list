@@ -265,7 +265,12 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
   return (
     <>
-      <Box sx={{ display: "flex", minHeight: "100vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          minHeight: "100vh",
+        }}
+      >
         <Grid
           container
           sx={{
@@ -311,7 +316,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
           <Grid size={{ xs: 1, sm: 2, md: 3 }}>
             <Toolbar />
-            <Box sx={{ overflow: "auto" }}>
+            <Box>
               <List>
                 {todoListsFromIndexedDB.map((list) => (
                   <ListItem
@@ -353,7 +358,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             </Box>
           </Grid>
 
-   {/*        
+          {/*        
   // currentListFromIndexedDB
   // {
   //     listId: 1,
@@ -371,23 +376,36 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     */}
 
           <Grid size={{ xs: 11, sm: 10, md: 9 }}>
-            <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
+            <Box
+              component="main"
+              sx={{
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                pl: 2,
+                pr: 2,
+
+                // pl: { xs: 0, sm: 1, md: 6 },
+                //   // lg: 6, xl: 6
+                //   pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
+              }}
+            >
               <Toolbar />
 
-                <TodoList
-                      listId={currentListFromIndexedDB?.listId}
-                      listName={currentListFromIndexedDB?.listName}
-                      listIconName={currentListFromIndexedDB?.listIconName}
-
-                      deleteList={handleDeleteList}
-                      todos={currentTodosFromIndexedDB ?? []}
-                      removeTodo={handleRemoveTodo}
-                      toggleTodo={handleToggleTodo}
-                      reviseTodo={handleReviseTodo}
-                      addTodo={handleAddTodo}
-                      AllMuiIcons={AllMuiIcons}
-                    />
-
+              <TodoList
+                listId={currentListFromIndexedDB?.listId}
+                listName={currentListFromIndexedDB?.listName}
+                listIconName={currentListFromIndexedDB?.listIconName}
+                deleteList={handleDeleteList}
+                todos={currentTodosFromIndexedDB ?? []}
+                removeTodo={handleRemoveTodo}
+                toggleTodo={handleToggleTodo}
+                reviseTodo={handleReviseTodo}
+                addTodo={handleAddTodo}
+                AllMuiIcons={AllMuiIcons}
+              />
             </Box>
           </Grid>
 
@@ -459,7 +477,8 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   );
 }
 
- {/* {todoLists.map(
+{
+  /* {todoLists.map(
                 (list) =>
                   list.listId === activeListId && (
                     <TodoList
@@ -475,4 +494,5 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                       AllMuiIcons={AllMuiIcons}
                     />
                   ),
-              )}  */}
+              )}  */
+}
