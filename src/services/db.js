@@ -2,146 +2,172 @@ import { Dexie } from "dexie";
 
 export const db = new Dexie("TodoListsDatabase");
 
-db.version(1).stores({
-  todoLists: "listId, listName",
-  todos: "todoId, todoListId, todoCompleted",
+// The empty space before the first comma in the table schemas means "outbound keys"
+// i.e. The tables have outbound keys as their primary keys.
+// Using outbound keys allows to explicitly pass the key as a separate argument when adding or updating data.
+
+db.version(2).stores({
+  todoLists: ", listName",
+  todos: ", todoListId, todoCompleted",
 });
 
 db.on("populate", async (trans) => {
-  await trans.table("todoLists").bulkAdd([
+
+  const todoListsData = [
     {
-      listId: 1,
-      listName: "Healthy Grocery Shopping",
-      listIconName: "ShoppingCart",
-    },
-    {
-      listId: 2,
       listName: "Yoga & Fitness Routine",
       listIconName: "LocalFlorist",
     },
     {
-      listId: 3,
       listName: "Toronto Travel Checklist",
       listIconName: "LocationCity",
     },
-  ]);
+    {
+      listName: "Healthy Grocery Shopping",
+      listIconName: "ShoppingCart",
+    },
+  ];
 
-  await trans.table("todos").bulkAdd([
+  const todoListKeysData = [1,2,3];
+
+   const todosData = [
     {
-      todoId: 11,
       todoListId: 1,
-      todoText: "Buy fresh spinach",
-      todoCompleted: false,
-    },
-    {
-      todoId: 12,
-      todoListId: 1,
-      todoText: "Get blueberries and bananas",
-      todoCompleted: true,
-    },
-    {
-      todoId: 13,
-      todoListId: 1,
-      todoText: "Purchase salmon fillets",
-      todoCompleted: true,
-    },
-    {
-      todoId: 14,
-      todoListId: 1,
-      todoText: "Buy almonds and mixed nuts",
-      todoCompleted: false,
-    },
-    {
-      todoId: 15,
-      todoListId: 1,
-      todoText: "Pick up Greek yogurt",
-      todoCompleted: false,
-    },
-    {
-      todoId: 16,
-      todoListId: 1,
-      todoText: "Get whole grain bread",
-      todoCompleted: true,
-    },
-    {
-      todoId: 17,
-      todoListId: 1,
-      todoText: "Buy avocados",
-      todoCompleted: true,
-    },
-    {
-      todoId: 18,
-      todoListId: 1,
-      todoText: "Get broccoli and carrots",
-      todoCompleted: true,
-    },
-    {
-      todoId: 21,
-      todoListId: 2,
       todoText: "Morning stretching session",
       todoCompleted: true,
     },
     {
-      todoId: 22,
-      todoListId: 2,
+      todoListId: 1,
       todoText: "Practice Sun Salutation",
       todoCompleted: true,
     },
     {
-      todoId: 23,
-      todoListId: 2,
+      todoListId: 1,
       todoText: "Complete 30-minute yoga flow",
       todoCompleted: false,
     },
     {
-      todoId: 24,
-      todoListId: 2,
+      todoListId: 1,
       todoText: "Work on breathing exercises",
       todoCompleted: false,
     },
     {
-      todoId: 25,
-      todoListId: 2,
+      todoListId: 1,
       todoText: "Go for a light evening walk",
       todoCompleted: true,
     },
     {
-      todoId: 26,
-      todoListId: 2,
+      todoListId: 1,
       todoText: "Drink enough water after workout",
       todoCompleted: false,
     },
     {
-      todoId: 31,
-      todoListId: 3,
+      todoListId: 2,
       todoText: "Visit the CN Tower",
       todoCompleted: false,
     },
     {
-      todoId: 32,
-      todoListId: 3,
+      todoListId: 2,
       todoText: "Explore Royal Ontario Museum",
       todoCompleted: true,
     },
     {
-      todoId: 33,
-      todoListId: 3,
+      todoListId: 2,
       todoText: "Walk around the Distillery Historic District",
       todoCompleted: true,
     },
     {
-      todoId: 34,
-      todoListId: 3,
+      todoListId: 2,
       todoText: "Visit Toronto Islands",
       todoCompleted: false,
     },
     {
-      todoId: 35,
-      todoListId: 3,
+      todoListId: 2,
       todoText: "Try local food at St. Lawrence Market",
       todoCompleted: true,
     },
-  ]);
+    {
+      todoListId: 3,
+      todoText: "Buy fresh spinach",
+      todoCompleted: false,
+    },
+    {
+      todoListId: 3,
+      todoText: "Get blueberries and bananas",
+      todoCompleted: true,
+    },
+    {
+      todoListId: 3,
+      todoText: "Purchase salmon fillets",
+      todoCompleted: true,
+    },
+    {
+      todoListId: 3,
+      todoText: "Buy almonds and mixed nuts",
+      todoCompleted: false,
+    },
+    {
+      todoListId: 3,
+      todoText: "Get whole grain bread",
+      todoCompleted: true,
+    },
+    {
+      todoListId: 3,
+      todoText: "Buy avocados",
+      todoCompleted: true,
+    },
+    {
+      todoListId: 3,
+      todoText: "Get broccoli and carrots",
+      todoCompleted: true,
+    },
+    {
+      todoListId: 3,
+      todoText: "Purchase eggs",
+      todoCompleted: true,
+    },
+    {
+      todoListId: 3,
+      todoText: "Pick up oatmeal",
+      todoCompleted: true,
+    },
+    {
+      todoListId: 3,
+      todoText: "Buy sweet potatoes",
+      todoCompleted: false,
+    },
+    {
+      todoListId: 3,
+      todoText: "Get fresh tomatoes",
+      todoCompleted: true,
+    },
+    {
+      todoListId: 3,
+      todoText: "Purchase chia seeds",
+      todoCompleted: true,
+    },
+  ];
+
+  const todosKeysData = [11,12,13,14,15,16,  21,22,23,24,25,  31,32,33,34,35,36,37,38,39,310,311,312];
+
+  try {
+    // Pass the data array first, and the keys array second (outbound keys)
+    // Explicitly tell the db what keys we want our data to have
+    await trans.table("todoLists").bulkAdd(todoListsData, todoListKeysData);
+    console.log('TodoLists successfully added!');
+  } catch (error) {
+    console.error('Failed to add todoLists:', error);
+  }
+
+  try {
+    // Pass the data array first, and the keys array second (outbound keys)
+    // Explicitly tell the db what keys we want our data to have
+    await trans.table("todos").bulkAdd(todosData, todosKeysData);
+    console.log('Todos successfully added!');
+  } catch (error) {
+    console.error('Failed to add todos:', error);
+  }
+
 });
 
 db.open().catch((err) => {
