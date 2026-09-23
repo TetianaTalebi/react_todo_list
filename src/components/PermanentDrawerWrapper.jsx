@@ -16,6 +16,7 @@ export default function PermanentDrawerWrapper() {
     // Fetch todoLists data (without primary keys) from the db
     const todoListsInDB = await db.todoLists.toArray();
 
+    // The todo list's primary key value allows us to track the active list and target the specific list intended for deletion
 
     // Build array of objects that includes both outbound primary keys and data for todoLists
     const todoListsWithOutboundPrimaryKeys = todoListsOutboundPrimaryKeys.map((todoListKey, index)=>{
