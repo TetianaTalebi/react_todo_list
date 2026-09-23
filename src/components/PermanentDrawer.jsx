@@ -148,12 +148,36 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     [activeListId],
   );
 
+  console.log("currentListFromIndexedDB today is", currentListFromIndexedDB);
+
   // Fetch todos from the IndexedDB that belong to the current active List
+
+  // [activeListId] is a dependancy array
+  // Whenever any value inside this dependency array changes, 
+  // the useLiveQuery hook will automatically re-run table.get query with the new value.
 
   const currentTodosFromIndexedDB = useLiveQuery(
     () => db.todos.where({ todoListId: activeListId }).toArray(),
     [activeListId],
   );
+
+  // const dataWithKeys = useLiveQuery(async () => {
+  //   // Get all keys and all objects simultaneously
+  //   const keys = await db.friends.toCollection().keys();
+  //   const values = await db.friends.toArray();
+
+  //   // Combine them into a key-value structure
+  //   return keys.map((key, index) => ({
+  //     key,
+  //     value: values[index]
+  //   }));
+  // }, []);
+
+  // if (!dataWithKeys) return <div>Loading...</div>;
+
+
+
+
 
   // open variable defines whether the dialog window opened or closed
   // (i.e. the dialog window for creating a new list)
@@ -224,6 +248,43 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
       });
     });
   };
+
+
+//   async function addProduct() {
+//   try {
+//     // 3. Prepare your data object
+//     // Notice this object does NOT contain an 'id' or primary key property.
+//     const productData = {
+//       name: 'Wireless Mouse',
+//       price: 29.99
+//     };
+
+//     // 4. Use table.add(item, key)
+//     // The second argument ('prod-1024') is the outbound primary key.
+//     const assignedKey = await db.products.add(productData, 'prod-1024');
+    
+//     console.log(`Successfully added! Stored under key: ${assignedKey}`);
+    
+//     // 5. Retrieve the object
+//     const fetchedProduct = await db.products.get('prod-1024');
+//     console.log('Fetched object:', fetchedProduct); 
+//     // Output: { name: 'Wireless Mouse', price: 29.99 } 
+//     // Note: The key is NOT injected into the object automatically.
+
+//   } catch (error) {
+//     console.error('Error adding product:', error);
+//   }
+// }
+
+// addProduct();
+
+
+
+
+
+
+
+
 
   const handleReviseTodo = (id, text) => {
     setTodoLists((prevTodoLists) => {
@@ -340,7 +401,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                     >
                       <ListItemIcon>
                         <DynamicIcon
-                          value={list.listIconName}
+                          value={list.listData.listIconName}
                           AllMuiIcons={AllMuiIcons}
                           iconFontSize={24}
                           iconColor={grey[700]}
@@ -348,7 +409,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                       </ListItemIcon>
 
                       <ListItemText
-                        primary={list.listName}
+                        primary={list.listData.listName}
                         sx={{ display: { xs: "none", md: "inline" } }}
                       />
                     </ListItemButton>
@@ -358,17 +419,28 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             </Box>
           </Grid>
 
-          {/*        
-  // currentListFromIndexedDB
+          {/* 
+          
+  // CURRENT todoListsFromIndexedDB
   // {
-  //     listId: 1,
+  //     listId: 1, ---- replaced with outbound keys in IndexedDB,
+  //     listData: {
+  //                  listName: "Healthy Grocery Shopping",
+  //                  listIconName: "ShoppingCart",
+  //                },
+  //   },
+
+
+  // OLD todoListsFromIndexedDB
+  // {
+  //     listId: 1, ---- replaced with outbound keys in IndexedDB
   //     listName: "Healthy Grocery Shopping",
   //     listIconName: "ShoppingCart",
   //   },
 
-  // currentTodosFromIndexedDB
+  // OLD todosFromIndexedDB
   // {
-    //   todoId: 11,
+    //   todoId: 11, ---- replaced with outbound keys in IndexedDB
     //   todoListId: 1,
     //   todoText: "Buy fresh spinach",
     //   todoCompleted: false,
@@ -395,7 +467,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
               <Toolbar />
 
               <TodoList
-                listId={currentListFromIndexedDB?.listId}
+                listId={activeListId}
                 listName={currentListFromIndexedDB?.listName}
                 listIconName={currentListFromIndexedDB?.listIconName}
                 deleteList={handleDeleteList}
