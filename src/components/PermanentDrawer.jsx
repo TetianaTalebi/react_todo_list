@@ -125,6 +125,15 @@ const myLists = [
   },
 ];
 
+  // CURRENT todoListsFromIndexedDB
+  // {
+  //     listId: 1, ---- replaced with outbound keys in IndexedDB,
+  //     listData: {
+  //                  listName: "Healthy Grocery Shopping",
+  //                  listIconName: "ShoppingCart",
+  //                },
+  //   },
+
 export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   // useEffect(() => {
   //   localStorage.setItem("todos", JSON.stringify(todos));
@@ -141,14 +150,10 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     todoListsFromIndexedDB[0].listId,
   );
 
-  // Fetch a list data from the IndexedDB that belongs to the currently active list
-
-  const currentListFromIndexedDB = useLiveQuery(
-    () => db.todoLists.get(activeListId),
-    [activeListId],
-  );
-
-  console.log("currentListFromIndexedDB today is", currentListFromIndexedDB);
+  const findCurrentListDataFromIndexedDB = () => {
+    const activeList = todoListsFromIndexedDB.find(x=>x.listId === activeListId);
+    return activeList ? activeList.listData : null;
+  };
 
   // Fetch todos from the IndexedDB that belong to the current active List
 
@@ -468,8 +473,8 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
               <TodoList
                 listId={activeListId}
-                listName={currentListFromIndexedDB?.listName}
-                listIconName={currentListFromIndexedDB?.listIconName}
+                listName={findCurrentListDataFromIndexedDB()?.listName}
+                listIconName={findCurrentListDataFromIndexedDB()?.listIconName}
                 deleteList={handleDeleteList}
                 todos={currentTodosFromIndexedDB ?? []}
                 removeTodo={handleRemoveTodo}
