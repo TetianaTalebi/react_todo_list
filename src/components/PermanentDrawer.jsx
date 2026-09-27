@@ -32,98 +32,7 @@ import { grey } from "@mui/material/colors";
 
 import * as AllMuiIcons from "@mui/icons-material";
 
-// const getInitialData = () => {
-//   const data = JSON.parse(localStorage.getItem("todos"));
-//   if (!data) {
-//     return [];
-//   }
-//   return data;
-// };
 
-// hardcoded inintial todo lists in myLists object
-
-const myLists = [
-  {
-    listId: 1,
-    listName: "Healthy Grocery Shopping",
-    listIcon: <AllMuiIcons.ShoppingCart />,
-    listContent: [
-      // { todoId: 11, todoText: "Buy fresh spinach", todoCompleted: false },
-      // {
-      //   todoId: 12,
-      //   todoText: "Get blueberries and bananas",
-      //   todoCompleted: true,
-      // },
-      // { todoId: 13, todoText: "Purchase salmon fillets", todoCompleted: true },
-      {
-        todoId: 14,
-        todoText: "Buy almonds and mixed nuts",
-        todoCompleted: false,
-      },
-      { todoId: 15, todoText: "Pick up Greek yogurt", todoCompleted: false },
-      { todoId: 16, todoText: "Get whole grain bread", todoCompleted: true },
-      { todoId: 17, todoText: "Buy avocados", todoCompleted: true },
-      { todoId: 18, todoText: "Get broccoli and carrots", todoCompleted: true },
-    ],
-  },
-  {
-    listId: 2,
-    listName: "Yoga & Fitness Routine",
-    listIcon: <AllMuiIcons.LocalFlorist />,
-    listContent: [
-      {
-        todoId: 21,
-        todoText: "Morning stretching session",
-        todoCompleted: true,
-      },
-      { todoId: 22, todoText: "Practice Sun Salutation", todoCompleted: true },
-      {
-        todoId: 23,
-        todoText: "Complete 30-minute yoga flow",
-        todoCompleted: false,
-      },
-      {
-        todoId: 24,
-        todoText: "Work on breathing exercises",
-        todoCompleted: false,
-      },
-      {
-        todoId: 25,
-        todoText: "Go for a light evening walk",
-        todoCompleted: true,
-      },
-      {
-        todoId: 26,
-        todoText: "Drink enough water after workout",
-        todoCompleted: false,
-      },
-    ],
-  },
-  {
-    listId: 3,
-    listName: "Toronto Travel Checklist",
-    listIcon: <AllMuiIcons.LocationCity />,
-    listContent: [
-      { todoId: 31, todoText: "Visit the CN Tower", todoCompleted: false },
-      {
-        todoId: 32,
-        todoText: "Explore Royal Ontario Museum",
-        todoCompleted: true,
-      },
-      {
-        todoId: 33,
-        todoText: "Walk around the Distillery Historic District",
-        todoCompleted: true,
-      },
-      { todoId: 34, todoText: "Visit Toronto Islands", todoCompleted: false },
-      {
-        todoId: 35,
-        todoText: "Try local food at St. Lawrence Market",
-        todoCompleted: true,
-      },
-    ],
-  },
-];
 
   // CURRENT todoListsFromIndexedDB
   // {
@@ -135,16 +44,9 @@ const myLists = [
   //   },
 
 export default function PermanentDrawer({ todoListsFromIndexedDB }) {
-  // useEffect(() => {
-  //   localStorage.setItem("todos", JSON.stringify(todos));
-  // }, [todos]);
-
-  // This state manages all todo lists and their contents
-
-  const [todoLists, setTodoLists] = useState(myLists);
-
+ 
   // This state defines which list is active at present moment
-  // By default the first list in myLists object is active (e.g. when the app loads the first time)
+  // By default the first list in todoListsFromIndexedDB array of objects is active (e.g. when the app loads the first time)
 
   const [activeListId, setActiveListId] = useState(
     todoListsFromIndexedDB[0].listId,
@@ -554,22 +456,3 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   );
 }
 
-{
-  /* {todoLists.map(
-                (list) =>
-                  list.listId === activeListId && (
-                    <TodoList
-                      listId={list.listId}
-                      listName={list.listName}
-                      ListIconElement={list.listIcon}
-                      deleteList={handleDeleteList}
-                      todos={list.listContent}
-                      removeTodo={handleRemoveTodo}
-                      toggleTodo={handleToggleTodo}
-                      reviseTodo={handleReviseTodo}
-                      addTodo={handleAddTodo}
-                      AllMuiIcons={AllMuiIcons}
-                    />
-                  ),
-              )}  */
-}
