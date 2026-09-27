@@ -71,7 +71,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
             onChange={toggle}
             disabled={!isTodoTextValid}
             edge="start"
-            checked={todo.todoCompleted}
+            checked={todo.todoData.todoCompleted}
             tabIndex={-1}
             disableRipple
             inputProps={{ "aria-labelledby": labelId }}
@@ -81,7 +81,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
         <TextField
           inputRef={(el)=>{myRefs.current.textFieldDOMElement = el}}
           error={!isTodoTextValid}
-          disabled={todo.todoCompleted ? true : false}
+          disabled={todo.todoData.todoCompleted ? true : false}
           label={isTodoTextValid ? "" : "Error"}
           id={
             isTodoTextValid ? "standard-textarea" : "standard-error-helper-text"
@@ -91,12 +91,12 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
               ? ""
               : "The todo text can not be less than 3 characters long or empty string"
           }
-          value={todo.todoText}
+          value={todo.todoData.todoText}
           multiline
           variant="standard"
           size="small"
           fullWidth
-          className={todo.todoCompleted ? "crossed-out" : ""}
+          className={todo.todoData.todoCompleted ? "crossed-out" : ""}
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}
           onBlur={handleOnBlur}
