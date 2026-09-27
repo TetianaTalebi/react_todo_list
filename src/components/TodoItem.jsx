@@ -30,8 +30,8 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
 
   useEffect(()=>{
     setCursor();
-    handleIsTodoTextValid(todo.todoText, isTodoValidUtils);
-  }, [todo.todoText]);
+    handleIsTodoTextValid(todo.todoData.todoText, isTodoValidUtils);
+  }, [todo.todoData.todoText]);
   
   const handleOnChange = (e) => {
     revise(todo.todoId, e.target.value);
@@ -50,7 +50,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
       handleOnBlur(ev);
     }
     if((ev.key === 'Enter')&&(ev.altKey === true)){
-      revise(todo.todoId, setTextWithAlt(todo.todoText));
+      revise(todo.todoId, setTextWithAlt(todo.todoData.todoText));
     } 
   }
 
