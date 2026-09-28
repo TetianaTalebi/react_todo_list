@@ -65,8 +65,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     [activeListId],
   );
 
-  console.log("currentTodosFromIndexedDB today is", currentTodosFromIndexedDB);
-
+  
   // open variable defines whether the dialog window opened or closed
   // (i.e. the dialog window for creating a new list)
 
@@ -85,24 +84,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   };
 
  
-  const handleToggleTodo = (id) => {
-    setTodoLists((prevTodoLists) => {
-      return prevTodoLists.map((list) => {
-        if (list.listId === activeListId) {
-          const newListContent = list.listContent.map((todo) => {
-            if (todo.todoId === id) {
-              return { ...todo, todoCompleted: !todo.todoCompleted };
-            } else {
-              return todo;
-            }
-          });
-          return { ...list, listContent: newListContent };
-        }
-        return list;
-      });
-    });
-  };
-
   //  CURRENT currentTodosFromIndexedDB
   // {
   //     todoId: 11,
@@ -111,7 +92,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   //     todoCompleted: false,
   // },
 
-  
+
   // Add todo to the currently active list
 
   const handleAddTodoToIndexedDB = async (text) => {
@@ -125,10 +106,8 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
       // Use table.add from Dexie library for adding new todo
 
-      const assignedKey = await db.todos.add(newTodoData);
-      console.log(
-        `New todos has been added successfully with the outbound key ${assignedKey}`,
-      );
+      await db.todos.add(newTodoData);
+      
     } catch (e) {
       console.log("Whoops, sth went wrong with add!");
       console.error("Error", e);
@@ -142,6 +121,21 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     try {
 
       await db.todos.where({ todoId }).delete();
+
+    } catch (e) {
+      console.log("Whoops, sth went wrong with delete!");
+      console.error("Error", e);
+    }
+  };
+
+  const handleToggleTodoInIndexedDB = async (todoId) => {
+    try {
+
+      const myTodo = await db.todos.get(todoId);
+
+      if (myTodo){
+        await db.todos.update(todoId, {todoCompleted: !myTodo.todoCompleted});
+      }
 
     } catch (e) {
       console.log("Whoops, sth went wrong with delete!");
@@ -330,7 +324,8 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                 todos={currentTodosFromIndexedDB ?? []}
                 removeTodo={handleRemoveTodoFromIndexedDB}
                 addTodo={handleAddTodoToIndexedDB}
-                toggleTodo={handleToggleTodo}
+                toggleTodo={handleToggleTodoInIndexedDB}
+
                 reviseTodo={handleReviseTodo}
                 deleteList={handleDeleteList}
                 AllMuiIcons={AllMuiIcons}
