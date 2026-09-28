@@ -61,7 +61,6 @@ export default function TodoList({
             remove={removeTodo}
             toggle={() => toggleTodo(todo.todoId)}
             revise={reviseTodo}
-            addTodo={addTodo}
           />
         ))}
         <TodoForm addTodo={addTodo} />
