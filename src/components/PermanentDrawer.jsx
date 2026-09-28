@@ -138,60 +138,60 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     });
   };
 
-  const handleAddTodo = (text) => {
-    setTodoLists((prevTodoLists) => {
-      return prevTodoLists.map((list) => {
-        if (list.listId === activeListId) {
-          const newListContent = [
-            ...list.listContent,
-            {
-              todoId: uuidv4(),
-              todoText: text.trim() || "",
-              todoCompleted: false,
-            },
-          ];
-          return { ...list, listContent: newListContent };
-        }
-        return list;
-      });
-    });
+  //  CURRENT currentTodosFromIndexedDB
+  // { 
+  //     todoId: 11,
+  //     todoData: {
+  //                 todoListId: 1,
+  //                 todoText: "Buy fresh spinach",
+  //                 todoCompleted: false,
+  //               },
+  //  },
+
+  // const handleAddTodo = (text) => {
+  //   setTodoLists((prevTodoLists) => {
+  //     return prevTodoLists.map((list) => {
+  //       if (list.listId === activeListId) {
+  //         const newListContent = [
+  //           ...list.listContent,
+  //           {
+  //             todoId: uuidv4(),
+  //             todoText: text.trim() || "",
+  //             todoCompleted: false,
+  //           },
+  //         ];
+  //         return { ...list, listContent: newListContent };
+  //       }
+  //       return list;
+  //     });
+  //   });
+  // };
+
+  const handleAddTodoToIndexedDB = async (text) => {
+    try {
+      // Prepare todoData object
+      const newTodoData = {
+        todoListId: activeListId,
+        todoText: text.trim() || "",
+        todoCompleted: false,
+      };
+
+      console.log("newTodoData is ", newTodoData);
+
+      const newTodoKey = uuidv4();
+
+      console.log("newTodoKey is ", newTodoKey);
+
+      // Use table.add from Dexie library for adding new todo
+      // uuidv4() generates value for outbound key for new todo
+      const assignedKey = await db.todos.add(newTodoData, newTodoKey);
+      console.log(`New todos has been added successfully with the outbound key ${assignedKey}`);
+
+    } catch(e) {
+      console.log("Whoops, sth went wrong!");
+      console.error("Error", e);
+    }
   };
-
-
-//   async function addProduct() {
-//   try {
-//     // 3. Prepare your data object
-//     // Notice this object does NOT contain an 'id' or primary key property.
-//     const productData = {
-//       name: 'Wireless Mouse',
-//       price: 29.99
-//     };
-
-//     // 4. Use table.add(item, key)
-//     // The second argument ('prod-1024') is the outbound primary key.
-//     const assignedKey = await db.products.add(productData, 'prod-1024');
-    
-//     console.log(`Successfully added! Stored under key: ${assignedKey}`);
-    
-//     // 5. Retrieve the object
-//     const fetchedProduct = await db.products.get('prod-1024');
-//     console.log('Fetched object:', fetchedProduct); 
-//     // Output: { name: 'Wireless Mouse', price: 29.99 } 
-//     // Note: The key is NOT injected into the object automatically.
-
-//   } catch (error) {
-//     console.error('Error adding product:', error);
-//   }
-// }
-
-// addProduct();
-
-
-
-
-
-
-
 
 
   const handleReviseTodo = (id, text) => {
@@ -393,7 +393,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
 
                 removeTodo={handleRemoveTodo}
-                addTodo={handleAddTodo}
+                addTodo={handleAddTodoToIndexedDB}
                 toggleTodo={handleToggleTodo}
                 reviseTodo={handleReviseTodo}
 
