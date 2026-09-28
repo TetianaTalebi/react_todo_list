@@ -148,24 +148,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   //               },
   //  },
 
-  // const handleAddTodo = (text) => {
-  //   setTodoLists((prevTodoLists) => {
-  //     return prevTodoLists.map((list) => {
-  //       if (list.listId === activeListId) {
-  //         const newListContent = [
-  //           ...list.listContent,
-  //           {
-  //             todoId: uuidv4(),
-  //             todoText: text.trim() || "",
-  //             todoCompleted: false,
-  //           },
-  //         ];
-  //         return { ...list, listContent: newListContent };
-  //       }
-  //       return list;
-  //     });
-  //   });
-  // };
 
   const handleAddTodoToIndexedDB = async (text) => {
     try {
