@@ -30,8 +30,8 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
 
   useEffect(()=>{
     setCursor();
-    handleIsTodoTextValid(todo.todoData.todoText, isTodoValidUtils);
-  }, [todo.todoData.todoText]);
+    handleIsTodoTextValid(todo.todoText, isTodoValidUtils);
+  }, [todo.todoText]);
   
   const handleOnChange = (e) => {
     revise(todo.todoId, e.target.value);
@@ -50,7 +50,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
       handleOnBlur(ev);
     }
     if((ev.key === 'Enter')&&(ev.altKey === true)){
-      revise(todo.todoId, setTextWithAlt(todo.todoData.todoText));
+      revise(todo.todoId, setTextWithAlt(todo.todoText));
     } 
   }
 
@@ -71,7 +71,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
             onChange={toggle}
             disabled={!isTodoTextValid}
             edge="start"
-            checked={todo.todoData.todoCompleted}
+            checked={todo.todoCompleted}
             tabIndex={-1}
             disableRipple
             inputProps={{ "aria-labelledby": labelId }}
@@ -81,7 +81,7 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
         <TextField
           inputRef={(el)=>{myRefs.current.textFieldDOMElement = el}}
           error={!isTodoTextValid}
-          disabled={todo.todoData.todoCompleted ? true : false}
+          disabled={todo.todoCompleted ? true : false}
           label={isTodoTextValid ? "" : "Error"}
           id={
             isTodoTextValid ? "standard-textarea" : "standard-error-helper-text"
@@ -91,12 +91,12 @@ export default function TodoItem({ todo, remove, toggle, revise}) {
               ? ""
               : "The todo text can not be less than 3 characters long or empty string"
           }
-          value={todo.todoData.todoText}
+          value={todo.todoText}
           multiline
           variant="standard"
           size="small"
           fullWidth
-          className={todo.todoData.todoCompleted ? "crossed-out" : ""}
+          className={todo.todoCompleted ? "crossed-out" : ""}
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}
           onBlur={handleOnBlur}

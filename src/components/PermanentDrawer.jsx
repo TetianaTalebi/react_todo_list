@@ -32,19 +32,14 @@ import { grey } from "@mui/material/colors";
 
 import * as AllMuiIcons from "@mui/icons-material";
 
-
-
-  // CURRENT todoListsFromIndexedDB
-  // {
-  //     listId: 1, ---- replaced with outbound keys in IndexedDB,
-  //     listData: {
-  //                  listName: "Healthy Grocery Shopping",
-  //                  listIconName: "ShoppingCart",
-  //                },
-  //   },
+// CURRENT todoListsFromIndexedDB
+// {
+//     listId: 1,
+//     listName: "Healthy Grocery Shopping",
+//     listIconName: "ShoppingCart",
+// },
 
 export default function PermanentDrawer({ todoListsFromIndexedDB }) {
- 
   // This state defines which list is active at present moment
   // By default the first list in todoListsFromIndexedDB array of objects is active (e.g. when the app loads the first time)
 
@@ -53,39 +48,21 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   );
 
   const findCurrentListDataFromIndexedDB = () => {
-    const activeList = todoListsFromIndexedDB.find(x=>x.listId === activeListId);
-    return activeList ? activeList.listData : null;
+    const activeList = todoListsFromIndexedDB.find(
+      (x) => x.listId === activeListId,
+    );
+    return activeList ? activeList : null;
   };
 
   // Fetch todos from the IndexedDB that belong to the current active List
 
   // [activeListId] is a dependancy array
-  // Whenever any value inside this dependency array changes, 
+  // Whenever any value inside this dependency array changes,
   // the useLiveQuery hook will automatically re-run table.get query with the new value.
 
-  const currentTodosFromIndexedDB = useLiveQuery(
-    async () => {
-      // Get values of outbound keys for currentTodosFromIndexedDB
-      const todoKeys = await db.todos.where({ todoListId: activeListId }).primaryKeys();
+  const currentTodosFromIndexedDB = useLiveQuery(() => db.todos.where({ todoListId: activeListId }).toArray(), [activeListId]);
 
-      const todoData = await db.todos.where({ todoListId: activeListId }).toArray();
-
-      // Build array of objects that includes both outbound primary keys and data for the current todos
-      return todoKeys.map((key, index) => {
-        return {
-          todoId: key,
-          todoData: todoData[index],
-        }
-      });
-
-    }, [activeListId]
-  );
-
-  
   console.log("currentTodosFromIndexedDB today is", currentTodosFromIndexedDB);
-
-
-
 
   // open variable defines whether the dialog window opened or closed
   // (i.e. the dialog window for creating a new list)
@@ -139,15 +116,12 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   };
 
   //  CURRENT currentTodosFromIndexedDB
-  // { 
+  // {
   //     todoId: 11,
-  //     todoData: {
-  //                 todoListId: 1,
-  //                 todoText: "Buy fresh spinach",
-  //                 todoCompleted: false,
-  //               },
-  //  },
-
+  //     todoListId: 1,
+  //     todoText: "Buy fresh spinach",
+  //     todoCompleted: false,
+  // },
 
   const handleAddTodoToIndexedDB = async (text) => {
     try {
@@ -160,21 +134,18 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
       console.log("newTodoData is ", newTodoData);
 
-      const newTodoKey = uuidv4();
-
-      console.log("newTodoKey is ", newTodoKey);
-
+      
       // Use table.add from Dexie library for adding new todo
-      // uuidv4() generates value for outbound key for new todo
-      const assignedKey = await db.todos.add(newTodoData, newTodoKey);
-      console.log(`New todos has been added successfully with the outbound key ${assignedKey}`);
-
-    } catch(e) {
+      
+      const assignedKey = await db.todos.add(newTodoData);
+      console.log(
+        `New todos has been added successfully with the outbound key ${assignedKey}`,
+      );
+    } catch (e) {
       console.log("Whoops, sth went wrong!");
       console.error("Error", e);
     }
   };
-
 
   const handleReviseTodo = (id, text) => {
     setTodoLists((prevTodoLists) => {
@@ -291,7 +262,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                     >
                       <ListItemIcon>
                         <DynamicIcon
-                          value={list.listData.listIconName}
+                          value={list.listIconName}
                           AllMuiIcons={AllMuiIcons}
                           iconFontSize={24}
                           iconColor={grey[700]}
@@ -299,7 +270,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                       </ListItemIcon>
 
                       <ListItemText
-                        primary={list.listData.listName}
+                        primary={list.listName}
                         sx={{ display: { xs: "none", md: "inline" } }}
                       />
                     </ListItemButton>
@@ -312,40 +283,23 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
           {/* 
           
   CURRENT todoListsFromIndexedDB
+ 
   {
-      listId: 1, ---- replaced with outbound keys in IndexedDB,
-      listData: {
-                   listName: "Healthy Grocery Shopping",
-                   listIconName: "ShoppingCart",
-                 },
-    },
-
-
-  OLD todoListsFromIndexedDB
-  {
-      listId: 1, ---- replaced with outbound keys in IndexedDB
+      listId: 1,
       listName: "Healthy Grocery Shopping",
       listIconName: "ShoppingCart",
-    },
+  },
 
 
-  CURRENT currentTodosFromIndexedDB
-  { 
-      todoId: 11,
-      todoData: {
-                  todoListId: 1,
-                  todoText: "Buy fresh spinach",
-                  todoCompleted: false,
-                },
-   },
+   CURRENT currentTodosFromIndexedDB
 
-  OLD todosFromIndexedDB
   {
-      todoId: 11, ---- replaced with outbound keys in IndexedDB
+      todoId: 11,
       todoListId: 1,
       todoText: "Buy fresh spinach",
       todoCompleted: false,
-    },
+  },
+
     */}
 
           <Grid size={{ xs: 11, sm: 10, md: 9 }}>
@@ -372,15 +326,11 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                 listName={findCurrentListDataFromIndexedDB()?.listName}
                 listIconName={findCurrentListDataFromIndexedDB()?.listIconName}
                 todos={currentTodosFromIndexedDB ?? []}
-
-
                 removeTodo={handleRemoveTodo}
                 addTodo={handleAddTodoToIndexedDB}
                 toggleTodo={handleToggleTodo}
                 reviseTodo={handleReviseTodo}
-
                 deleteList={handleDeleteList}
-                
                 AllMuiIcons={AllMuiIcons}
               />
             </Box>
@@ -453,4 +403,3 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     </>
   );
 }
-

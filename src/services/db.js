@@ -6,9 +6,9 @@ export const db = new Dexie("TodoListsDatabase");
 // i.e. The tables have outbound keys as their primary keys.
 // Using outbound keys allows to explicitly pass the key as a separate argument when adding or updating data.
 
-db.version(2).stores({
-  todoLists: ", listName",
-  todos: ", todoListId, todoCompleted",
+db.version(3).stores({
+  todoLists: "++listId, listName",
+  todos: "++todoId, todoListId, todoCompleted",
 });
 
 db.on("populate", async (trans) => {
@@ -27,8 +27,6 @@ db.on("populate", async (trans) => {
       listIconName: "ShoppingCart",
     },
   ];
-
-  const todoListKeysData = [1,2,3];
 
    const todosData = [
     {
@@ -148,21 +146,15 @@ db.on("populate", async (trans) => {
     },
   ];
 
-  const todosKeysData = [11,12,13,14,15,16,  21,22,23,24,25,  31,32,33,34,35,36,37,38,39,310,311,312];
-
   try {
-    // Pass the data array first, and the keys array second (outbound keys)
-    // Explicitly tell the db what keys we want our data to have
-    await trans.table("todoLists").bulkAdd(todoListsData, todoListKeysData);
+    await trans.table("todoLists").bulkAdd(todoListsData);
     console.log('TodoLists successfully added!');
   } catch (error) {
     console.error('Failed to add todoLists:', error);
   }
 
   try {
-    // Pass the data array first, and the keys array second (outbound keys)
-    // Explicitly tell the db what keys we want our data to have
-    await trans.table("todos").bulkAdd(todosData, todosKeysData);
+    await trans.table("todos").bulkAdd(todosData);
     console.log('Todos successfully added!');
   } catch (error) {
     console.error('Failed to add todos:', error);
