@@ -60,7 +60,10 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   // Whenever any value inside this dependency array changes,
   // the useLiveQuery hook will automatically re-run table.get query with the new value.
 
-  const currentTodosFromIndexedDB = useLiveQuery(() => db.todos.where({ todoListId: activeListId }).toArray(), [activeListId]);
+  const currentTodosFromIndexedDB = useLiveQuery(
+    () => db.todos.where({ todoListId: activeListId }).toArray(),
+    [activeListId],
+  );
 
   console.log("currentTodosFromIndexedDB today is", currentTodosFromIndexedDB);
 
@@ -81,22 +84,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     setActiveListId(listId);
   };
 
-  // Remove todo for the currently active list
-
-  const handleRemoveTodo = (id) => {
-    setTodoLists((prevTodoLists) => {
-      return prevTodoLists.map((list) => {
-        if (list.listId === activeListId) {
-          const newListContent = list.listContent.filter(
-            (todo) => todo.todoId !== id,
-          );
-          return { ...list, listContent: newListContent };
-        }
-        return list;
-      });
-    });
-  };
-
+ 
   const handleToggleTodo = (id) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.map((list) => {
@@ -123,6 +111,9 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   //     todoCompleted: false,
   // },
 
+  
+  // Add todo to the currently active list
+
   const handleAddTodoToIndexedDB = async (text) => {
     try {
       // Prepare todoData object
@@ -132,17 +123,28 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
         todoCompleted: false,
       };
 
-      console.log("newTodoData is ", newTodoData);
-
-      
       // Use table.add from Dexie library for adding new todo
-      
+
       const assignedKey = await db.todos.add(newTodoData);
       console.log(
         `New todos has been added successfully with the outbound key ${assignedKey}`,
       );
     } catch (e) {
-      console.log("Whoops, sth went wrong!");
+      console.log("Whoops, sth went wrong with add!");
+      console.error("Error", e);
+    }
+  };
+
+  // Delete todo from the currently active list
+  // Use collection.delete() from Dexie library
+
+  const handleRemoveTodoFromIndexedDB = async (todoId) => {
+    try {
+
+      await db.todos.where({ todoId }).delete();
+
+    } catch (e) {
+      console.log("Whoops, sth went wrong with delete!");
       console.error("Error", e);
     }
   };
@@ -326,7 +328,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                 listName={findCurrentListDataFromIndexedDB()?.listName}
                 listIconName={findCurrentListDataFromIndexedDB()?.listIconName}
                 todos={currentTodosFromIndexedDB ?? []}
-                removeTodo={handleRemoveTodo}
+                removeTodo={handleRemoveTodoFromIndexedDB}
                 addTodo={handleAddTodoToIndexedDB}
                 toggleTodo={handleToggleTodo}
                 reviseTodo={handleReviseTodo}
