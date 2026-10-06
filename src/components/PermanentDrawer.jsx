@@ -143,24 +143,23 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     }
   };
 
-  const handleReviseTodo = (id, text) => {
-    setTodoLists((prevTodoLists) => {
-      return prevTodoLists.map((list) => {
-        if (list.listId === activeListId) {
-          const newListContent = list.listContent.map((todo) => {
-            if (todo.todoId === id) {
-              return { ...todo, todoText: text || "" };
-            } else {
-              return todo;
-            }
-          });
-          return { ...list, listContent: newListContent };
-        }
-        return list;
-      });
-    });
+  const handleReviseTodoInIndexedDB = async (id, text) => {
+    try {
+      const updated = await db.todos.update(id, {todoText: text || ""}); 
+
+      if (updated){
+        console.log (`Todos with id: ${id} was updated successfully`);
+      } else {
+        console.log (`Nothing was updated - there was no todos with id: ${id}`);
+      }
+
+    } catch (e) {
+      console.log("Whoops, revise todo failed!");
+      console.error("Error", e);
+    }
   };
 
+  
   const handleDeleteList = (listKey) => {
     setTodoLists((prevTodoLists) => {
       return prevTodoLists.filter((list) => list.listId !== listKey);
@@ -325,8 +324,8 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                 removeTodo={handleRemoveTodoFromIndexedDB}
                 addTodo={handleAddTodoToIndexedDB}
                 toggleTodo={handleToggleTodoInIndexedDB}
-
-                reviseTodo={handleReviseTodo}
+                reviseTodo={handleReviseTodoInIndexedDB}
+                
                 deleteList={handleDeleteList}
                 AllMuiIcons={AllMuiIcons}
               />
