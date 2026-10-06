@@ -123,7 +123,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
       await db.todos.where({ todoId }).delete();
 
     } catch (e) {
-      console.log("Whoops, sth went wrong with delete!");
+      console.log("Whoops, sth went wrong with todo delete!");
       console.error("Error", e);
     }
   };
@@ -160,12 +160,24 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   };
 
   
-  const handleDeleteList = (listKey) => {
-    setTodoLists((prevTodoLists) => {
-      return prevTodoLists.filter((list) => list.listId !== listKey);
-    });
+
+  const handleDeleteListFromIndexedDB = async (listKey) => {
+    try {
+
+      const deletedTodos = await db.todos.where({todoListId: listKey}).delete();
+      const deletedList = await db.todoLists.where({listId: listKey}).delete();
+
+      console.log(deletedTodos, "todos were deleted successfully!");
+
+      console.log(deletedList, "list was deleted successfully!");
+
+    } catch(e) {
+      console.log("Whoops, sth went wrong with todo list delete!");
+      console.error("Error", e);
+    }
   };
 
+  
   const handleCreateNewList = (listName, ListIcon) => {
     const newListId = uuidv4();
     setTodoLists((prevTodoLists) => {
@@ -317,7 +329,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
               <Toolbar />
 
               <TodoList
-                listId={currentTodosFromIndexedDB?.todoId}
+                listId={findCurrentListDataFromIndexedDB()?.listId}
                 listName={findCurrentListDataFromIndexedDB()?.listName}
                 listIconName={findCurrentListDataFromIndexedDB()?.listIconName}
                 todos={currentTodosFromIndexedDB ?? []}
@@ -326,7 +338,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                 toggleTodo={handleToggleTodoInIndexedDB}
                 reviseTodo={handleReviseTodoInIndexedDB}
                 
-                deleteList={handleDeleteList}
+                deleteList={handleDeleteListFromIndexedDB}
                 AllMuiIcons={AllMuiIcons}
               />
             </Box>
