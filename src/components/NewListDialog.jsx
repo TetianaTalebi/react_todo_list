@@ -15,7 +15,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import GridItem from "./GridItem.jsx";
 import TextField from "@mui/material/TextField";
-import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 import { MUI_ICONS_KEY_WORDS } from "../constants/constants.js";
@@ -24,6 +23,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
   // keyWords is a string
   const [keyWords, setKeyWords] = useState("");
 
+  // "Checklist" is a default icon for a new todo list if no icons are selected
   const [newListIcon, setNewListIcon] = useState("Checklist");
 
   const {
@@ -84,7 +84,10 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
   const arrayOfIcons36 = findIconsByKeyWords(keyWords);
   // console.log(arrayOfIcons36);
 
-  const handleNewListIcon = (e, newListIconName) => {
+
+  // Without event parameter in handleNewListIcon function, 
+  // ToggleButtonGroup cannot grab the selected value
+  const handleNewListIcon = (event, newListIconName) => {
     setNewListIcon(newListIconName);
   }
 
@@ -98,7 +101,15 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
-    addNewList(newListName, AllMuiIcons[newListIcon]);
+    // addNewList(newListName, AllMuiIcons[newListIcon]);
+
+    addNewList(newListName, newListIcon);
+
+    console.log("newListIcon is ", newListIcon);
+
+    // console.log("AllMuiIcons[newListIcon] is ", AllMuiIcons[newListIcon]);
+    
+
     onClose();
     resetNewListFormText();
     resetKeyWordsFormText();
@@ -121,6 +132,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
             Create a new list by entering a list name and selecting an icon with
             keywords.
           </DialogContentText>
+
           <form onSubmit={handleSubmitNewListForm} id="new-list-form">
             <TextField
               margin="dense"
@@ -154,6 +166,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
             />
             <Box sx={{ flexGrow: 1, marginY: 2 }}>
               <ToggleButtonGroup
+                color="secondary"
                 value={newListIcon}
                 exclusive
                 onChange={handleNewListIcon}
@@ -171,6 +184,7 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
 
             </Box>
           </form>
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
@@ -188,59 +202,3 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
   );
 }
 
-// import * as React from 'react';
-// import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-// import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
-// import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
-// import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
-// import ToggleButton from '@mui/material/ToggleButton';
-// import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-// export default function ToggleButtons() {
-//   const [alignment, setAlignment] = React.useState('left');
-
-//   const handleAlignment = (event, newAlignment) => {
-//     setAlignment(newAlignment);
-//   };
-
-//   return (
-//     <ToggleButtonGroup
-//       value={alignment}
-//       exclusive
-//       onChange={handleAlignment}
-//       aria-label="text alignment"
-//     >
-//       <ToggleButton value="left" aria-label="left aligned">
-//         <FormatAlignLeftIcon />
-//       </ToggleButton>
-//       <ToggleButton value="center" aria-label="centered">
-//         <FormatAlignCenterIcon />
-//       </ToggleButton>
-//       <ToggleButton value="right" aria-label="right aligned">
-//         <FormatAlignRightIcon />
-//       </ToggleButton>
-//       <ToggleButton value="justify" aria-label="justified" disabled>
-//         <FormatAlignJustifyIcon />
-//       </ToggleButton>
-//     </ToggleButtonGroup>
-//   );
-// }
-
-// 8888888888888888888888888888888888888888888888888888888888888888888888
-
-// <Box sx={{ flexGrow: 1 }}>
-//   <Grid container spacing={2}>
-//     <Grid size={{ xs: 6, md: 8 }}>
-//       <Item>xs=6 md=8</Item>
-//     </Grid>
-//     <Grid size={{ xs: 6, md: 4 }}>
-//       <Item>xs=6 md=4</Item>
-//     </Grid>
-//     <Grid size={{ xs: 6, md: 4 }}>
-//       <Item>xs=6 md=4</Item>
-//     </Grid>
-//     <Grid size={{ xs: 6, md: 8 }}>
-//       <Item>xs=6 md=8</Item>
-//     </Grid>
-//   </Grid>
-// </Box>

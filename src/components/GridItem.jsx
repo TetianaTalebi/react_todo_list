@@ -19,9 +19,8 @@ export default function GridItem({size=1, value="SailingIcon", AllMuiIcons}){
 
                       </ToggleButton>
                     </CustomizedTooltip>
-                </Grid>
-            
-            </>
+                </Grid>  
+            </>     
     );
 
 }

@@ -177,20 +177,28 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     }
   };
 
-  
-  const handleCreateNewList = (listName, ListIcon) => {
-    const newListId = uuidv4();
-    setTodoLists((prevTodoLists) => {
-      const newTodoList = {
-        listId: newListId,
-        listName: listName,
-        listIcon: <ListIcon />,
-        listContent: [],
+
+  const handleCreateNewListInIndexedDB = async (listName, listIconName) => {
+
+    try {
+      
+      // Prepare newList object
+      const newList = {
+        listName,
+        listIconName,
       };
-      return [...prevTodoLists, newTodoList];
-    });
-    setActiveListId(newListId);
+
+      // Use table.add from Dexie library for a new list adding
+
+      await db.todoLists.add(newList);
+
+
+    } catch (e) {
+      console.log("Whoops, sth went wrong with a new list adding!");
+      console.error("Error", e);
+    }
   };
+
 
   return (
     <>
@@ -237,7 +245,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                   AllMuiIcons={AllMuiIcons}
                   open={open}
                   onClose={handleClose}
-                  addNewList={handleCreateNewList}
+                  addNewList={handleCreateNewListInIndexedDB}
                 />
               </div>
             </Toolbar>
@@ -337,7 +345,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                 addTodo={handleAddTodoToIndexedDB}
                 toggleTodo={handleToggleTodoInIndexedDB}
                 reviseTodo={handleReviseTodoInIndexedDB}
-                
                 deleteList={handleDeleteListFromIndexedDB}
                 AllMuiIcons={AllMuiIcons}
               />
