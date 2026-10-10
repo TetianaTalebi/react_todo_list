@@ -1,36 +1,28 @@
-import "./PermanentDrawer.css";
 
-import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
 
-import CustomizedTooltip from "./CustomizedTooltip.jsx";
-
-import NewListDialog from "./NewListDialog.jsx";
-
-import GitHubIcon from "@mui/icons-material/GitHub";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-
-import TodoList from "./TodoList";
-import Box from "@mui/material/Box";
+// import { v4 as uuidv4 } from "uuid";
+import * as AllMuiIcons from "@mui/icons-material";
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import IconButton from "@mui/material/IconButton";
-
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../services/db.js";
-
-import Grid from "@mui/material/Grid";
-
-import DynamicIcon from "./DynamicIcon.jsx";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
-
-import * as AllMuiIcons from "@mui/icons-material";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useState } from "react";
+import { db } from "../services/db.js";
+import AppFooter from "./AppFooter.jsx";
+import CustomizedTooltip from "./CustomizedTooltip.jsx";
+import DynamicIcon from "./DynamicIcon.jsx";
+import NewListDialog from "./NewListDialog.jsx";
+import "./PermanentDrawer.css";
+import TodoList from "./TodoList";
 
 // CURRENT todoListsFromIndexedDB
 // {
@@ -351,65 +343,10 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             </Box>
           </Grid>
 
-          {/* Page footer: */}
+          
           <Grid size={12} sx={{ height: 200, pt: 5 }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                bgcolor: "primary.main",
-                color: "white",
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontWeight: 400,
-                  textAlign: "center",
-                  whiteSpace: "pre-line",
-                  pt: 2,
-                }}
-                component="div"
-                variant="body1"
-              >
-                {`\u00A9 2026 Tetiana Talebi\nFull-Stack Web Developer\n`}
-
-                <CustomizedTooltip
-                  title="https://github.com/TetianaTalebi"
-                  placement="top"
-                  arrow
-                >
-                  <IconButton
-                    size="small"
-                    component="a"
-                    href="https://github.com/TetianaTalebi"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <GitHubIcon sx={{ color: "common.white" }} />
-                  </IconButton>
-                </CustomizedTooltip>
-
-                <CustomizedTooltip
-                  title="https://linkedin.com/in/tetianatalebi"
-                  placement="top"
-                  arrow
-                >
-                  <IconButton
-                    size="small"
-                    component="a"
-                    href="https://linkedin.com/in/tetianatalebi"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LinkedInIcon sx={{ color: "common.white" }} />
-                  </IconButton>
-                </CustomizedTooltip>
-              </Typography>
-            </Box>
+            {/* Application footer: */}
+            <AppFooter/>
           </Grid>
 
           {/* Closing tag of the Grid container: */}
