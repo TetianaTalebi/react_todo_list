@@ -16,10 +16,16 @@ import Grid from "@mui/material/Grid";
 import GridItem from "./GridItem.jsx";
 import TextField from "@mui/material/TextField";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { grey } from "@mui/material/colors";
 
 import { MUI_ICONS_KEY_WORDS } from "../constants/constants.js";
 
-export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }) {
+export default function NewListDialog({
+  AllMuiIcons,
+  open,
+  onClose,
+  addNewList,
+}) {
   // keyWords is a string
   const [keyWords, setKeyWords] = useState("");
 
@@ -84,20 +90,20 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
   const arrayOfIcons36 = findIconsByKeyWords(keyWords);
   // console.log(arrayOfIcons36);
 
-
-  // Without event parameter in handleNewListIcon function, 
+  // Without event parameter in handleNewListIcon function,
   // ToggleButtonGroup cannot grab the selected value
   const handleNewListIcon = (event, newListIconName) => {
     setNewListIcon(newListIconName);
-  }
+  };
 
   const resetKeyWordsFormText = () => {
     setKeyWords("");
   };
 
   const resetNewListIcon = () => {
-    setNewListIcon("Checklist");
-  }
+    // Rest newListIcon to default value "Checklist"
+    handleNewListIcon(event, "Checklist");
+  };
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
@@ -108,7 +114,6 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
     console.log("newListIcon is ", newListIcon);
 
     // console.log("AllMuiIcons[newListIcon] is ", AllMuiIcons[newListIcon]);
-    
 
     onClose();
     resetNewListFormText();
@@ -164,27 +169,46 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
               value={keyWords}
               onChange={handleKeyWordsOnChange}
             />
-            <Box sx={{ flexGrow: 1, marginY: 2 }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                marginY: 2,
+                height: "210px",
+                overflowY: "auto",
+              }}
+            >
               <ToggleButtonGroup
-                color="secondary"
                 value={newListIcon}
                 exclusive
                 onChange={handleNewListIcon}
                 aria-label="new list icon"
-                sx={{ width: "100%" }}
+                sx={{
+                  width: "100%",
+                  "& .MuiToggleButton-root.Mui-selected": {
+                    backgroundColor: "primary.main",
+                  },
+                  "& .MuiToggleButton-root.Mui-selected:hover": {
+                    backgroundColor: grey[700],
+                  },
+                  "& .MuiToggleButton-root:hover": {
+                    backgroundColor: "lightgray",
+                  },
+                }}
               >
                 <Grid container spacing={1} sx={{ width: "100%", margin: 0 }}>
                   {arrayOfIcons36.map((iconNameItem) => (
-
-                    <GridItem key={uuidv4()} size={{md:2}} value={iconNameItem} AllMuiIcons={AllMuiIcons}/>
-
+                    <GridItem
+                      key={uuidv4()}
+                      size={{ md: 2 }}
+                      value={iconNameItem}
+                      AllMuiIcons={AllMuiIcons}
+                      iconColor={iconNameItem === newListIcon ? "white" : ""}
+                    />
                   ))}
                 </Grid>
               </ToggleButtonGroup>
-
             </Box>
           </form>
-
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
@@ -201,4 +225,3 @@ export default function NewListDialog({ AllMuiIcons, open, onClose, addNewList }
     </>
   );
 }
-
