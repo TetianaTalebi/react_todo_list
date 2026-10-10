@@ -66,17 +66,17 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   );
 
   
-  // open variable defines whether the dialog window opened or closed
+  // openDialog variable defines whether the dialog window opened or closed
   // (i.e. the dialog window for creating a new list)
 
-  const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenDialog(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenDialog(false);
   };
 
   const handleListOnClick = (listId) => {
@@ -243,7 +243,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
                 <NewListDialog
                   AllMuiIcons={AllMuiIcons}
-                  open={open}
+                  open={openDialog}
                   onClose={handleClose}
                   addNewList={handleCreateNewListInIndexedDB}
                 />
