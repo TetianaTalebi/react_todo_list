@@ -86,7 +86,7 @@ export default function NewListDialog({
   // const arrayOfIcons36 = findIconsByKeyWords(keyWords).slice(-36);
   // console.log(arrayOfIcons36);
 
-  const arrayOfIcons36 = findIconsByKeyWords(keyWords);
+  const arrayOfIconsFoundByKeyWords = findIconsByKeyWords(keyWords);
 
 
   // Without event parameter in handleNewListIcon function,
@@ -211,7 +211,7 @@ export default function NewListDialog({
                 }}
               >
                 <Grid container spacing={1} sx={{ width: "100%", margin: 0 }}>
-                  {arrayOfIcons36.map((iconNameItem) => (
+                  {arrayOfIconsFoundByKeyWords.map((iconNameItem) => (
                     <GridItem
                       key={uuidv4()}
                       size={{ md: 2 }}
