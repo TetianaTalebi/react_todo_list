@@ -16,6 +16,8 @@ import Grid from "@mui/material/Grid";
 import GridItem from "./GridItem.jsx";
 import TextField from "@mui/material/TextField";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { grey } from "@mui/material/colors";
 
 import { MUI_ICONS_KEY_WORDS } from "../constants/constants.js";
@@ -132,6 +134,20 @@ export default function NewListDialog({
     <>
       <Dialog open={open} onClose={handleDialogClose} disableAutoFocus>
         <DialogTitle>Create a new list</DialogTitle>
+
+        <IconButton
+          aria-label="close"
+          onClick={handleDialogClose}
+          sx={(theme) => ({
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[700],
+          })}
+        >
+          <CloseIcon />
+        </IconButton>
+
         <DialogContent>
           <DialogContentText>
             Create a new list by entering a list name and selecting an icon with
