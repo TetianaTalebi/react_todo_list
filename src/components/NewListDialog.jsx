@@ -58,7 +58,6 @@ export default function NewListDialog({
       // Turn myString into a regular expression that is used for finding matching icons
       let myRegexString = "\\b(" + keyWordsStringRevised + ")(e?s)?\\b";
       const keyWordsRegex = new RegExp(myRegexString, "i");
-      // console.log(keyWordsRegex);
 
       // Loop over keyword arrays for each iconName
       // and find the iconNames whose keywords match a user's keywords
@@ -70,11 +69,9 @@ export default function NewListDialog({
           }
         }
       }
-      // console.log(matchedIconsArray);
 
       // Remove dublicates form matchedIconsArray
       const matchedIconsArrayFinalResult = [...new Set(matchedIconsArray)];
-      // console.log(matchedIconsArrayFinalResult);
       return matchedIconsArrayFinalResult;
     } else {
       return [];
@@ -90,32 +87,33 @@ export default function NewListDialog({
   // console.log(arrayOfIcons36);
 
   const arrayOfIcons36 = findIconsByKeyWords(keyWords);
-  // console.log(arrayOfIcons36);
+
 
   // Without event parameter in handleNewListIcon function,
   // ToggleButtonGroup cannot grab the selected value
+ 
   const handleNewListIcon = (event, newListIconName) => {
-    setNewListIcon(newListIconName);
+    
+    // When newListIconName === null, use default value "Checklist"
+    setNewListIcon(newListIconName || "Checklist" );
+
   };
+
 
   const resetKeyWordsFormText = () => {
     setKeyWords("");
   };
 
+  // Reset the newListIconName to default value "Checklist", 
+  // even if newListIconName is not equal to null
   const resetNewListIcon = () => {
-    // Rest newListIcon to default value "Checklist"
     handleNewListIcon(event, "Checklist");
   };
 
   const handleSubmitNewListForm = (e) => {
     e.preventDefault();
-    // addNewList(newListName, AllMuiIcons[newListIcon]);
-
+  
     addNewList(newListName, newListIcon);
-
-    console.log("newListIcon is ", newListIcon);
-
-    // console.log("AllMuiIcons[newListIcon] is ", AllMuiIcons[newListIcon]);
 
     onClose();
     resetNewListFormText();
@@ -127,6 +125,7 @@ export default function NewListDialog({
     onClose();
     resetNewListFormText();
     resetKeyWordsFormText();
+    resetNewListIcon();
     resetNewListFormValid();
   };
 
