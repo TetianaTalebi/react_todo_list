@@ -153,7 +153,10 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
       // Use table.add from Dexie library for a new list adding
 
-      await db.todoLists.add(newList);
+      const newListId = await db.todoLists.add(newList);
+      // console.log(`A new list with id = ${newListId} was successfully created!`);
+      setActiveListId(newListId);
+
     } catch (e) {
       console.error("Whoops, sth went wrong with a new list adding!");
       console.error("Error", e);
