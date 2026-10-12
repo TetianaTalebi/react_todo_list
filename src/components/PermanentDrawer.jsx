@@ -1,5 +1,3 @@
-
-
 // import { v4 as uuidv4 } from "uuid";
 import * as AllMuiIcons from "@mui/icons-material";
 import Box from "@mui/material/Box";
@@ -31,9 +29,11 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   // This state defines which list is active at present moment
   // By default the first list in todoListsFromIndexedDB array of objects is active (e.g. when the app loads the first time)
 
-  const [activeListId, setActiveListId] = useState(
-    todoListsFromIndexedDB[0].listId,
-  );
+  // Use lazy initial state - pass function callback into useState (lazy initialization)
+  // to make this callback to run only once when the component mounts
+  const [activeListId, setActiveListId] = useState(() => {
+    return todoListsFromIndexedDB?.[0]?.listId ?? null;
+  });
 
   const findCurrentListDataFromIndexedDB = () => {
     const activeList = todoListsFromIndexedDB.find(
@@ -53,12 +53,10 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
     [activeListId],
   );
 
-  
   const handleListOnClick = (listId) => {
     setActiveListId(listId);
   };
 
- 
   //  CURRENT currentTodosFromIndexedDB
   // {
   //     todoId: 11,
@@ -66,7 +64,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   //     todoText: "Buy fresh spinach",
   //     todoCompleted: false,
   // },
-
 
   // Add todo to the currently active list
 
@@ -82,9 +79,8 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
       // Use table.add from Dexie library for adding new todo
 
       await db.todos.add(newTodoData);
-      
     } catch (e) {
-      console.log("Whoops, sth went wrong with add!");
+      console.error("Whoops, sth went wrong with add!");
       console.error("Error", e);
     }
   };
@@ -94,68 +90,61 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
   const handleRemoveTodoFromIndexedDB = async (todoId) => {
     try {
-
       await db.todos.where({ todoId }).delete();
-
     } catch (e) {
-      console.log("Whoops, sth went wrong with todo delete!");
+      console.error("Whoops, sth went wrong with todo delete!");
       console.error("Error", e);
     }
   };
 
   const handleToggleTodoInIndexedDB = async (todoId) => {
     try {
-
       const myTodo = await db.todos.get(todoId);
 
-      if (myTodo){
-        await db.todos.update(todoId, {todoCompleted: !myTodo.todoCompleted});
+      if (myTodo) {
+        await db.todos.update(todoId, { todoCompleted: !myTodo.todoCompleted });
       }
-
     } catch (e) {
-      console.log("Whoops, sth went wrong with delete!");
+      console.error("Whoops, sth went wrong with delete!");
       console.error("Error", e);
     }
   };
 
   const handleReviseTodoInIndexedDB = async (id, text) => {
     try {
-      const updated = await db.todos.update(id, {todoText: text || ""}); 
+      const updated = await db.todos.update(id, { todoText: text || "" });
 
-      if (updated){
-        console.log (`Todos with id: ${id} was updated successfully`);
+      if (updated) {
+        console.log(`Todos with id: ${id} was updated successfully`);
       } else {
-        console.log (`Nothing was updated - there was no todos with id: ${id}`);
+        console.log(`Nothing was updated - there was no todos with id: ${id}`);
       }
-
     } catch (e) {
-      console.log("Whoops, revise todo failed!");
+      console.error("Whoops, revise todo failed!");
       console.error("Error", e);
     }
   };
 
-  
   const handleDeleteListFromIndexedDB = async (listKey) => {
     try {
-
-      const deletedTodos = await db.todos.where({todoListId: listKey}).delete();
-      const deletedList = await db.todoLists.where({listId: listKey}).delete();
+      const deletedTodos = await db.todos
+        .where({ todoListId: listKey })
+        .delete();
+      const deletedList = await db.todoLists
+        .where({ listId: listKey })
+        .delete();
 
       console.log(deletedTodos, "todos were deleted successfully!");
 
       console.log(deletedList, "list was deleted successfully!");
-
-    } catch(e) {
-      console.log("Whoops, sth went wrong with todo list delete!");
+    } catch (e) {
+      console.error("Whoops, sth went wrong with todo list delete!");
       console.error("Error", e);
     }
   };
 
-
   const handleCreateNewListInIndexedDB = async (listName, listIconName) => {
-
     try {
-      
       // Prepare newList object
       const newList = {
         listName,
@@ -165,14 +154,11 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
       // Use table.add from Dexie library for a new list adding
 
       await db.todoLists.add(newList);
-
-
     } catch (e) {
-      console.log("Whoops, sth went wrong with a new list adding!");
+      console.error("Whoops, sth went wrong with a new list adding!");
       console.error("Error", e);
     }
   };
-
 
   return (
     <>
@@ -190,7 +176,10 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             alignContent: "space-between",
           }}
         >
-          <AppNavbar AllMuiIcons={AllMuiIcons} addNewList={handleCreateNewListInIndexedDB}/>
+          <AppNavbar
+            AllMuiIcons={AllMuiIcons}
+            addNewList={handleCreateNewListInIndexedDB}
+          />
 
           <Grid size={{ xs: 1, sm: 2, md: 3 }}>
             <Toolbar />
@@ -292,10 +281,9 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             </Box>
           </Grid>
 
-          
           <Grid size={12} sx={{ height: 200, pt: 5 }}>
             {/* Application footer: */}
-            <AppFooter/>
+            <AppFooter />
           </Grid>
 
           {/* Closing tag of the Grid container: */}
