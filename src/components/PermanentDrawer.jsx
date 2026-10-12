@@ -2,27 +2,23 @@
 
 // import { v4 as uuidv4 } from "uuid";
 import * as AllMuiIcons from "@mui/icons-material";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 import { db } from "../services/db.js";
 import AppFooter from "./AppFooter.jsx";
-import CustomizedTooltip from "./CustomizedTooltip.jsx";
 import DynamicIcon from "./DynamicIcon.jsx";
-import NewListDialog from "./NewListDialog.jsx";
 import "./PermanentDrawer.css";
 import TodoList from "./TodoList";
+import AppNavbar from "./AppNavbar.jsx";
 
 // CURRENT todoListsFromIndexedDB
 // {
@@ -58,19 +54,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   );
 
   
-  // openDialog variable defines whether the dialog window opened or closed
-  // (i.e. the dialog window for creating a new list)
-
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpenDialog(true);
-  };
-
-  const handleClose = () => {
-    setOpenDialog(false);
-  };
-
   const handleListOnClick = (listId) => {
     setActiveListId(listId);
   };
@@ -152,7 +135,6 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   };
 
   
-
   const handleDeleteListFromIndexedDB = async (listKey) => {
     try {
 
@@ -208,40 +190,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             alignContent: "space-between",
           }}
         >
-          <AppBar
-            elevation={8}
-            position="fixed"
-            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          >
-            <Toolbar>
-              <Typography
-                sx={{ flexGrow: 1, fontWeight: 500, textAlign: "start" }}
-                variant="h4"
-                noWrap
-                component="div"
-              >
-                React Todos
-              </Typography>
-              <div>
-                <CustomizedTooltip title="Create new list" arrow>
-                  <IconButton
-                    size="large"
-                    color="inherit"
-                    onClick={handleClickOpen}
-                  >
-                    <AllMuiIcons.AddCircleOutlined fontSize="large" />
-                  </IconButton>
-                </CustomizedTooltip>
-
-                <NewListDialog
-                  AllMuiIcons={AllMuiIcons}
-                  open={openDialog}
-                  onClose={handleClose}
-                  addNewList={handleCreateNewListInIndexedDB}
-                />
-              </div>
-            </Toolbar>
-          </AppBar>
+          <AppNavbar AllMuiIcons={AllMuiIcons} addNewList={handleCreateNewListInIndexedDB}/>
 
           <Grid size={{ xs: 1, sm: 2, md: 3 }}>
             <Toolbar />
