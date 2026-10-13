@@ -8,15 +8,18 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 import { db } from "../services/db.js";
 import AppFooter from "./AppFooter.jsx";
+import AppNavbar from "./AppNavbar.jsx";
 import DynamicIcon from "./DynamicIcon.jsx";
 import "./PermanentDrawer.css";
 import TodoList from "./TodoList";
-import AppNavbar from "./AppNavbar.jsx";
+
+const appFooterHeight = "150px";
 
 // CURRENT todoListsFromIndexedDB
 // {
@@ -32,14 +35,16 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
   // Use lazy initial state - pass function callback into useState (lazy initialization)
   // to make this callback to run only once when the component mounts
   const [activeListId, setActiveListId] = useState(() => {
-    return todoListsFromIndexedDB?.[0]?.listId ?? null;
+    return todoListsFromIndexedDB?.[0]?.listId ?? -1;
   });
 
   const findCurrentListDataFromIndexedDB = () => {
-    const activeList = todoListsFromIndexedDB.find(
-      (x) => x.listId === activeListId,
-    );
-    return activeList ? activeList : null;
+    if (activeListId >= 0) {
+      const activeList = todoListsFromIndexedDB.find(
+        (x) => x.listId === activeListId,
+      );
+      return activeList ? activeList : {};
+    }
   };
 
   // Fetch todos from the IndexedDB that belong to the current active List
@@ -134,6 +139,8 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
         .where({ listId: listKey })
         .delete();
 
+      // setActiveListId(-1);
+
       console.log(deletedTodos, "todos were deleted successfully!");
 
       console.log(deletedList, "list was deleted successfully!");
@@ -156,7 +163,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
       const newListId = await db.todoLists.add(newList);
       // console.log(`A new list with id = ${newListId} was successfully created!`);
       setActiveListId(newListId);
-
+      // console.log("A new list id type is ", typeof(newListId));
     } catch (e) {
       console.error("Whoops, sth went wrong with a new list adding!");
       console.error("Error", e);
@@ -184,51 +191,139 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             addNewList={handleCreateNewListInIndexedDB}
           />
 
-          <Grid size={{ xs: 1, sm: 2, md: 3 }}>
-            <Toolbar />
-            <Box>
-              <List>
-                {todoListsFromIndexedDB.map((list) => (
-                  <ListItem
-                    key={list.listId}
-                    disablePadding
-                    sx={{
-                      ...(list.listId === activeListId && {
-                        backgroundColor: "lightgray",
-                        boxShadow: "0px 3px 10px darkgray",
-                      }),
-                    }}
-                  >
-                    <ListItemButton
-                      onClick={() => handleListOnClick(list.listId)}
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <ListItemIcon>
-                        <DynamicIcon
-                          value={list.listIconName}
-                          AllMuiIcons={AllMuiIcons}
-                          iconFontSize={24}
-                          iconColor={grey[700]}
-                        />
-                      </ListItemIcon>
+          {activeListId === -1 ? (
+            <Grid
+              size={12}
+              sx={{
+                background: `linear-gradient(${grey[50]}, ${grey[300]})`,
+                height: `calc(100% - ${appFooterHeight})`,
+              }}
+            >
+              <Toolbar />
 
-                      <ListItemText
-                        primary={list.listName}
-                        sx={{ display: { xs: "none", md: "inline" } }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: {
+                    // 56px is the height of <Toolbar/> component on screens < 600px
+                    xs: "calc(100% - 56px)",
+                    // 64px is the height of <Toolbar/> component on screens > 600px
+                    sm: "calc(100% - 64px)"
+                  },
+                }}
+              >
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    color="primary"
+                    align="center"
+                    sx={{ p: 2 }}
+                  >
+                    Click the '+' button to create your first to-do list.
+                  </Typography>
+              </Box>
+            </Grid>
+          ) : (
+            <>
+              <Grid size={{ xs: 1, sm: 2, md: 3 }}>
+                <Toolbar />
+                <Box>
+                  <List>
+                    {todoListsFromIndexedDB.map((list) => (
+                      <ListItem
+                        key={list.listId}
+                        disablePadding
+                        sx={{
+                          ...(list.listId === activeListId && {
+                            backgroundColor: "lightgray",
+                            boxShadow: "0px 3px 10px darkgray",
+                          }),
+                        }}
+                      >
+                        <ListItemButton
+                          onClick={() => handleListOnClick(list.listId)}
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <ListItemIcon>
+                            <DynamicIcon
+                              value={list.listIconName}
+                              AllMuiIcons={AllMuiIcons}
+                              iconFontSize={24}
+                              iconColor={grey[700]}
+                            />
+                          </ListItemIcon>
+
+                          <ListItemText
+                            primary={list.listName}
+                            sx={{ display: { xs: "none", md: "inline" } }}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              </Grid>
+
+              <Grid size={{ xs: 11, sm: 10, md: 9 }}>
+                <Box
+                  component="main"
+                  sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                    pl: 2,
+                    pr: 2,
+
+                    // pl: { xs: 0, sm: 1, md: 6 },
+                    //   // lg: 6, xl: 6
+                    //   pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
+                  }}
+                >
+                  <Toolbar />
+
+                  <TodoList
+                    listId={findCurrentListDataFromIndexedDB()?.listId}
+                    listName={findCurrentListDataFromIndexedDB()?.listName}
+                    listIconName={
+                      findCurrentListDataFromIndexedDB()?.listIconName
+                    }
+                    todos={currentTodosFromIndexedDB ?? []}
+                    removeTodo={handleRemoveTodoFromIndexedDB}
+                    addTodo={handleAddTodoToIndexedDB}
+                    toggleTodo={handleToggleTodoInIndexedDB}
+                    reviseTodo={handleReviseTodoInIndexedDB}
+                    deleteList={handleDeleteListFromIndexedDB}
+                    AllMuiIcons={AllMuiIcons}
+                  />
+                </Box>
+              </Grid>
+            </>
+          )}
+
+          <Grid size={12} sx={{ height: appFooterHeight }}>
+            {/* Application footer: */}
+            <AppFooter />
           </Grid>
 
-          {/* 
+          {/* Closing tag of the Grid container: */}
+        </Grid>
+      </Box>
+    </>
+  );
+}
+
+/* 
           
   CURRENT todoListsFromIndexedDB
  
@@ -248,50 +343,4 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
       todoCompleted: false,
   },
 
-    */}
-
-          <Grid size={{ xs: 11, sm: 10, md: 9 }}>
-            <Box
-              component="main"
-              sx={{
-                flexGrow: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-                pl: 2,
-                pr: 2,
-
-                // pl: { xs: 0, sm: 1, md: 6 },
-                //   // lg: 6, xl: 6
-                //   pr: { xs: 0.8, sm: 1, md: 10, lg: 40, xl: 60 },
-              }}
-            >
-              <Toolbar />
-
-              <TodoList
-                listId={findCurrentListDataFromIndexedDB()?.listId}
-                listName={findCurrentListDataFromIndexedDB()?.listName}
-                listIconName={findCurrentListDataFromIndexedDB()?.listIconName}
-                todos={currentTodosFromIndexedDB ?? []}
-                removeTodo={handleRemoveTodoFromIndexedDB}
-                addTodo={handleAddTodoToIndexedDB}
-                toggleTodo={handleToggleTodoInIndexedDB}
-                reviseTodo={handleReviseTodoInIndexedDB}
-                deleteList={handleDeleteListFromIndexedDB}
-                AllMuiIcons={AllMuiIcons}
-              />
-            </Box>
-          </Grid>
-
-          <Grid size={12} sx={{ height: 200, pt: 5 }}>
-            {/* Application footer: */}
-            <AppFooter />
-          </Grid>
-
-          {/* Closing tag of the Grid container: */}
-        </Grid>
-      </Box>
-    </>
-  );
-}
+    */
