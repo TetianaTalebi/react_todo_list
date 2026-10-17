@@ -23,7 +23,6 @@ const appFooterHeight = "150px";
 //     listIconName: "ShoppingCart",
 // },
 
-// export default function PermanentDrawer({ fetchedTodoListsFromIndexedDB }) {
 
 export default function PermanentDrawer() {
   // Fetch todoLists data from the db
@@ -33,17 +32,15 @@ export default function PermanentDrawer() {
 
   // This useLiveQuery has [] as a 2nd argument, so this useLiveQuery runs when the component mounts and each time when todoLists table is updated
 
-  // Passing an empty array [] as the 3rd argument to useLiveQuery sets the defaultResult (the fallback value returned on the initial render while the query is still loading) to an empty array [].
-
   const fetchedTodoListsFromIndexedDB = useLiveQuery(
     () => db.todoLists.toArray(),
     []
   );
 
-  // console.log("fetchedTodoListsFromIndexedDB = ", fetchedTodoListsFromIndexedDB);
-
+  // todoListsAndActive.activeListId defines which list is active at present moment
+  // By default when the app loads the first time, the first list is active
+  // The todo list's primary key value allows us to track the active list (todoListsAndActive.activeListId) and target the specific list intended for deletion
   // todoListsAndActive.activeListId === undefined on the first load
-
   const [todoListsAndActive, setTodoListsAndActive] = useState({
     todoLists: [],
     activeListId: undefined,
@@ -95,32 +92,16 @@ export default function PermanentDrawer() {
     }
   }, [currentTodosFromIndexedDB]);
 
-  // useEffect(()=>{
-  //    const findCurrentListDataFromIndexedDB = () => {
+  const findCurrentListData = () => {
+    if(todoListsAndActive.activeListId!==null && todoListsAndActive.activeListId!==undefined ){
+      const activeList = todoListsAndActive.todoLists.find((x)=>x.listId === todoListsAndActive.activeListId);
+      return activeList ? activeList : {};
+    }
+  };
 
-  //       if (activeListId >= 0) {
-  //         const activeList = fetchedTodoListsFromIndexedDB.find(
-  //           (x) => x.listId === activeListId,
-  //         );
-  //         return activeList ? activeList : {};
-  //       };
-  //    };
-  //    const currentListData = findCurrentListDataFromIndexedDB();
-
-  // }, [activeListId]);
-
-  // This state defines which list is active at present moment
-  // By default the first list in fetchedTodoListsFromIndexedDB array of objects is active (e.g. when the app loads the first time)
-  // The todo list's primary key value allows us to track the active list (activeListId) and target the specific list intended for deletion
-
-  // Use lazy initial state - pass function callback into useState (lazy initialization)
-  // to make this callback to run only once when the component mounts
-  // const [activeListId, setActiveListId] = useState(() => {
-  //   return fetchedTodoListsFromIndexedDB?.[0]?.listId ?? -1;
-  // });
+  const currentList = findCurrentListData();
 
   const handleListOnClick = (listId) => {
-    // setActiveListId(listId);
     setTodoListsAndActive({ ...todoListsAndActive, activeListId: listId });
   };
 
@@ -206,8 +187,6 @@ export default function PermanentDrawer() {
         activeListId: todoListsAndActive.todoLists?.[0]?.listId ?? null,
       });
 
-      // setActiveListId(fetchedTodoListsFromIndexedDB?.[0]?.listId ?? -1);
-
       console.log(deletedTodos, "todos were deleted successfully!");
 
       console.log(deletedList, "list was deleted successfully!");
@@ -235,7 +214,6 @@ export default function PermanentDrawer() {
       const newListId = await db.todoLists.add(newList);
       // console.log(`A new list with id = ${newListId} was successfully created!`);
 
-      // setActiveListId(newListId);
       setTodoListsAndActive({ ...todoListsAndActive, activeListId: newListId });
 
       // console.log("A new list id type is ", typeof(newListId));
@@ -310,9 +288,9 @@ export default function PermanentDrawer() {
                   <Toolbar />
 
                   <TodoList
-                    listId={todoListsAndActive.activeListId.listId}
-                    listName={todoListsAndActive.activeListId.listName}
-                    listIconName={todoListsAndActive.activeListId.listIconName}
+                    listId={currentList.listId}
+                    listName={currentList.listName}
+                    listIconName={currentList.listIconName}
                     todos={currentTodos ?? []}
                     removeTodo={handleRemoveTodoFromIndexedDB}
                     addTodo={handleAddTodoToIndexedDB}
