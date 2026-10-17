@@ -2,64 +2,126 @@
 import * as AllMuiIcons from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
 import { useLiveQuery } from "dexie-react-hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../services/db.js";
 import AppFooter from "./AppFooter.jsx";
 import AppNavbar from "./AppNavbar.jsx";
-import DynamicIcon from "./DynamicIcon.jsx";
+import AppSideBar from "./AppSideBar.jsx";
 import "./PermanentDrawer.css";
 import TodoList from "./TodoList";
 
 const appFooterHeight = "150px";
 
-// CURRENT todoListsFromIndexedDB
+// CURRENT fetchedTodoListsFromIndexedDB
 // {
 //     listId: 1,
 //     listName: "Healthy Grocery Shopping",
 //     listIconName: "ShoppingCart",
 // },
 
-export default function PermanentDrawer({ todoListsFromIndexedDB }) {
+// export default function PermanentDrawer({ fetchedTodoListsFromIndexedDB }) {
+
+export default function PermanentDrawer() {
+  // Fetch todoLists data from the db
+  // Dexie's useLiveQuery hook automatically updates
+  // whenever a committed write transaction (such as add, put, delete, or clear)
+  // modifies data in the IndexedDB tables that the query depends on
+
+  // This useLiveQuery has [] as a 2nd argument, so this useLiveQuery runs when the component mounts and each time when todoLists table is updated
+
+  // Passing an empty array [] as the 3rd argument to useLiveQuery sets the defaultResult (the fallback value returned on the initial render while the query is still loading) to an empty array [].
+
+  const fetchedTodoListsFromIndexedDB = useLiveQuery(
+    () => db.todoLists.toArray(),
+    []
+  );
+
+  // console.log("fetchedTodoListsFromIndexedDB = ", fetchedTodoListsFromIndexedDB);
+
+  // todoListsAndActive.activeListId === undefined on the first load
+
+  const [todoListsAndActive, setTodoListsAndActive] = useState({
+    todoLists: [],
+    activeListId: undefined,
+  });
+
+  useEffect(() => {
+    if (fetchedTodoListsFromIndexedDB) {
+      if (
+        todoListsAndActive.activeListId === undefined &&
+        fetchedTodoListsFromIndexedDB.length > 0
+      ) {
+        setTodoListsAndActive({
+          todoLists: fetchedTodoListsFromIndexedDB,
+          activeListId: fetchedTodoListsFromIndexedDB?.[0]?.listId,
+        });
+      } else if (fetchedTodoListsFromIndexedDB.length === 0) {
+        setTodoListsAndActive({
+          todoLists: [],
+          activeListId: null,
+        });
+      } else if (todoListsAndActive.activeListId !== undefined) {
+        setTodoListsAndActive({
+          ...todoListsAndActive,
+          todoLists: fetchedTodoListsFromIndexedDB,
+        });
+      }
+    }
+  }, [fetchedTodoListsFromIndexedDB]);
+
+  // Fetch todos from the IndexedDB that belong to the current active List
+  // [todoListsAndActive.activeListId] is a dependancy array
+
+  const currentTodosFromIndexedDB = useLiveQuery(() => {
+    if (!todoListsAndActive.activeListId) {
+      return null;
+    }
+    return db.todos
+      .where({ todoListId: todoListsAndActive.activeListId })
+      .toArray();
+  }, [todoListsAndActive.activeListId]);
+
+  const [currentTodos, setCurrentTodos] = useState(null);
+
+  useEffect(() => {
+    if (currentTodosFromIndexedDB) {
+      setCurrentTodos(currentTodosFromIndexedDB);
+    } else {
+      setCurrentTodos(null);
+    }
+  }, [currentTodosFromIndexedDB]);
+
+  // useEffect(()=>{
+  //    const findCurrentListDataFromIndexedDB = () => {
+
+  //       if (activeListId >= 0) {
+  //         const activeList = fetchedTodoListsFromIndexedDB.find(
+  //           (x) => x.listId === activeListId,
+  //         );
+  //         return activeList ? activeList : {};
+  //       };
+  //    };
+  //    const currentListData = findCurrentListDataFromIndexedDB();
+
+  // }, [activeListId]);
+
   // This state defines which list is active at present moment
-  // By default the first list in todoListsFromIndexedDB array of objects is active (e.g. when the app loads the first time)
+  // By default the first list in fetchedTodoListsFromIndexedDB array of objects is active (e.g. when the app loads the first time)
+  // The todo list's primary key value allows us to track the active list (activeListId) and target the specific list intended for deletion
 
   // Use lazy initial state - pass function callback into useState (lazy initialization)
   // to make this callback to run only once when the component mounts
-  const [activeListId, setActiveListId] = useState(() => {
-    return todoListsFromIndexedDB?.[0]?.listId ?? -1;
-  });
-
-  const findCurrentListDataFromIndexedDB = () => {
-    if (activeListId >= 0) {
-      const activeList = todoListsFromIndexedDB.find(
-        (x) => x.listId === activeListId,
-      );
-      return activeList ? activeList : {};
-    }
-  };
-
-  // Fetch todos from the IndexedDB that belong to the current active List
-
-  // [activeListId] is a dependancy array
-  // Whenever any value inside this dependency array changes,
-  // the useLiveQuery hook will automatically re-run table.get query with the new value.
-
-  const currentTodosFromIndexedDB = useLiveQuery(
-    () => db.todos.where({ todoListId: activeListId }).toArray(),
-    [activeListId],
-  );
+  // const [activeListId, setActiveListId] = useState(() => {
+  //   return fetchedTodoListsFromIndexedDB?.[0]?.listId ?? -1;
+  // });
 
   const handleListOnClick = (listId) => {
-    setActiveListId(listId);
+    // setActiveListId(listId);
+    setTodoListsAndActive({ ...todoListsAndActive, activeListId: listId });
   };
 
   //  CURRENT currentTodosFromIndexedDB
@@ -139,7 +201,12 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
         .where({ listId: listKey })
         .delete();
 
-      // setActiveListId(-1);
+      setTodoListsAndActive({
+        ...todoListsAndActive,
+        activeListId: todoListsAndActive.todoLists?.[0]?.listId ?? null,
+      });
+
+      // setActiveListId(fetchedTodoListsFromIndexedDB?.[0]?.listId ?? -1);
 
       console.log(deletedTodos, "todos were deleted successfully!");
 
@@ -149,6 +216,11 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
       console.error("Error", e);
     }
   };
+
+  // const [todoListsAndActive, setTodoListsAndActive] = useState({
+  //   todoLists: [],
+  //   activeListId: undefined,
+  // });
 
   const handleCreateNewListInIndexedDB = async (listName, listIconName) => {
     try {
@@ -162,13 +234,23 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
       const newListId = await db.todoLists.add(newList);
       // console.log(`A new list with id = ${newListId} was successfully created!`);
-      setActiveListId(newListId);
+
+      // setActiveListId(newListId);
+      setTodoListsAndActive({ ...todoListsAndActive, activeListId: newListId });
+
       // console.log("A new list id type is ", typeof(newListId));
     } catch (e) {
       console.error("Whoops, sth went wrong with a new list adding!");
       console.error("Error", e);
     }
   };
+
+  // const [todoListsAndActive, setTodoListsAndActive] = useState({
+  //   todoLists: [],
+  //   activeListId: undefined,
+  // });
+
+  //  const [currentTodos, setCurrentTodos] = useState(null);
 
   return (
     <>
@@ -191,86 +273,21 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
             addNewList={handleCreateNewListInIndexedDB}
           />
 
-          {activeListId === -1 ? (
-            <Grid
-              size={12}
-              sx={{
-                background: `linear-gradient(${grey[50]}, ${grey[300]})`,
-                height: `calc(100% - ${appFooterHeight})`,
-              }}
-            >
-              <Toolbar />
-
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  height: {
-                    // 56px is the height of <Toolbar/> component on screens < 600px
-                    xs: "calc(100% - 56px)",
-                    // 64px is the height of <Toolbar/> component on screens > 600px
-                    sm: "calc(100% - 64px)"
-                  },
-                }}
-              >
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    color="primary"
-                    align="center"
-                    sx={{ p: 2 }}
-                  >
-                    Click the '+' button to create your first to-do list.
-                  </Typography>
-              </Box>
-            </Grid>
-          ) : (
+          {todoListsAndActive.activeListId !== null &&
+          todoListsAndActive.activeListId !== undefined &&
+          todoListsAndActive.todoLists.length > 0 ? (
             <>
               <Grid size={{ xs: 1, sm: 2, md: 3 }}>
                 <Toolbar />
-                <Box>
-                  <List>
-                    {todoListsFromIndexedDB.map((list) => (
-                      <ListItem
-                        key={list.listId}
-                        disablePadding
-                        sx={{
-                          ...(list.listId === activeListId && {
-                            backgroundColor: "lightgray",
-                            boxShadow: "0px 3px 10px darkgray",
-                          }),
-                        }}
-                      >
-                        <ListItemButton
-                          onClick={() => handleListOnClick(list.listId)}
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <ListItemIcon>
-                            <DynamicIcon
-                              value={list.listIconName}
-                              AllMuiIcons={AllMuiIcons}
-                              iconFontSize={24}
-                              iconColor={grey[700]}
-                            />
-                          </ListItemIcon>
 
-                          <ListItemText
-                            primary={list.listName}
-                            sx={{ display: { xs: "none", md: "inline" } }}
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    ))}
-                  </List>
-                </Box>
+                {todoListsAndActive.todoLists.length > 0 && (
+                  <AppSideBar
+                    todoLists={todoListsAndActive.todoLists}
+                    activeListId={todoListsAndActive.activeListId}
+                    handleListOnClick={handleListOnClick}
+                    AllMuiIcons={AllMuiIcons}
+                  />
+                )}
               </Grid>
 
               <Grid size={{ xs: 11, sm: 10, md: 9 }}>
@@ -293,12 +310,10 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                   <Toolbar />
 
                   <TodoList
-                    listId={findCurrentListDataFromIndexedDB()?.listId}
-                    listName={findCurrentListDataFromIndexedDB()?.listName}
-                    listIconName={
-                      findCurrentListDataFromIndexedDB()?.listIconName
-                    }
-                    todos={currentTodosFromIndexedDB ?? []}
+                    listId={todoListsAndActive.activeListId.listId}
+                    listName={todoListsAndActive.activeListId.listName}
+                    listIconName={todoListsAndActive.activeListId.listIconName}
+                    todos={currentTodos ?? []}
                     removeTodo={handleRemoveTodoFromIndexedDB}
                     addTodo={handleAddTodoToIndexedDB}
                     toggleTodo={handleToggleTodoInIndexedDB}
@@ -309,6 +324,45 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
                 </Box>
               </Grid>
             </>
+          ) : (
+            <Grid
+              size={12}
+              sx={{
+                background: `linear-gradient(${grey[50]}, ${grey[300]})`,
+                height: `calc(100% - ${appFooterHeight})`,
+              }}
+            >
+              <Toolbar />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: {
+                    // 56px is the height of <Toolbar/> component on screens < 600px
+                    xs: "calc(100% - 56px)",
+                    // 64px is the height of <Toolbar/> component on screens > 600px
+                    sm: "calc(100% - 64px)",
+                  },
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  component="div"
+                  color="primary"
+                  align="center"
+                  sx={{ p: 2 }}
+                >
+                  {todoListsAndActive.activeListId === null &&
+                    "Click the plus '+' button to create your first to-do list."}
+                  {todoListsAndActive.activeListId === undefined &&
+                    "Loading..."}
+                </Typography>
+              </Box>
+            </Grid>
           )}
 
           <Grid size={12} sx={{ height: appFooterHeight }}>
@@ -325,7 +379,7 @@ export default function PermanentDrawer({ todoListsFromIndexedDB }) {
 
 /* 
           
-  CURRENT todoListsFromIndexedDB
+  CURRENT fetchedTodoListsFromIndexedDB
  
   {
       listId: 1,
