@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
 import { useLiveQuery } from "dexie-react-hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { db } from "../services/db.js";
 import AppFooter from "./AppFooter.jsx";
 import AppNavbar from "./AppNavbar.jsx";
@@ -23,23 +23,26 @@ const appFooterHeight = "150px";
 //     listIconName: "ShoppingCart",
 // },
 
-
 export default function PermanentDrawer() {
+  let listDeleted = useRef(false);
+
   // Fetch todoLists data from the db
   // Dexie's useLiveQuery hook automatically updates
   // whenever a committed write transaction (such as add, put, delete, or clear)
   // modifies data in the IndexedDB tables that the query depends on
 
-  // This useLiveQuery has [] as a 2nd argument, so this useLiveQuery runs when the component mounts and each time when todoLists table is updated
+  // This useLiveQuery has [] as a 2nd argument,
+  // so this useLiveQuery runs when the component mounts and each time when todoLists table is updated
 
   const fetchedTodoListsFromIndexedDB = useLiveQuery(
     () => db.todoLists.toArray(),
-    []
+    [],
   );
 
   // todoListsAndActive.activeListId defines which list is active at present moment
   // By default when the app loads the first time, the first list is active
-  // The todo list's primary key value allows us to track the active list (todoListsAndActive.activeListId) and target the specific list intended for deletion
+  // The todo list's primary key value allows us to track the active list (todoListsAndActive.activeListId)
+  // and target the specific list intended for deletion
   // todoListsAndActive.activeListId === undefined on the first load
   const [todoListsAndActive, setTodoListsAndActive] = useState({
     todoLists: [],
@@ -48,23 +51,38 @@ export default function PermanentDrawer() {
 
   useEffect(() => {
     if (fetchedTodoListsFromIndexedDB) {
-      if (
-        todoListsAndActive.activeListId === undefined &&
-        fetchedTodoListsFromIndexedDB.length > 0
+      // After todolist deletion, select the first todolist as active (if available)
+      if (listDeleted.current === true) {
+        listDeleted.current = false;
+        console.log("listDeleted.current in useEffect is ", listDeleted.current );
+        setTodoListsAndActive((x) => {
+          return {
+            ...x,
+            todoLists: fetchedTodoListsFromIndexedDB,
+            activeListId: fetchedTodoListsFromIndexedDB?.[0]?.listId || null,
+          };
+        });
+      } else if (
+        // todoListsAndActive.activeListId is undefined on the first render
+        // Select the 1st list as active on the first render (if available)
+        todoListsAndActive.activeListId === undefined
       ) {
         setTodoListsAndActive({
           todoLists: fetchedTodoListsFromIndexedDB,
-          activeListId: fetchedTodoListsFromIndexedDB?.[0]?.listId,
+          activeListId: fetchedTodoListsFromIndexedDB?.[0]?.listId || null,
         });
       } else if (fetchedTodoListsFromIndexedDB.length === 0) {
         setTodoListsAndActive({
           todoLists: [],
           activeListId: null,
         });
-      } else if (todoListsAndActive.activeListId !== undefined) {
-        setTodoListsAndActive({
-          ...todoListsAndActive,
-          todoLists: fetchedTodoListsFromIndexedDB,
+      } else {
+        // All other situations keep activeListId without changes (update only todoLists)
+        setTodoListsAndActive((x) => {
+          return {
+            ...x,
+            todoLists: fetchedTodoListsFromIndexedDB,
+          };
         });
       }
     }
@@ -93,8 +111,13 @@ export default function PermanentDrawer() {
   }, [currentTodosFromIndexedDB]);
 
   const findCurrentListData = () => {
-    if(todoListsAndActive.activeListId!==null && todoListsAndActive.activeListId!==undefined ){
-      const activeList = todoListsAndActive.todoLists.find((x)=>x.listId === todoListsAndActive.activeListId);
+    if (
+      todoListsAndActive.activeListId !== null &&
+      todoListsAndActive.activeListId !== undefined
+    ) {
+      const activeList = todoListsAndActive.todoLists.find(
+        (x) => x.listId === todoListsAndActive.activeListId,
+      );
       return activeList ? activeList : {};
     }
   };
@@ -175,17 +198,15 @@ export default function PermanentDrawer() {
 
   const handleDeleteListFromIndexedDB = async (listKey) => {
     try {
+      listDeleted.current = true;
+      console.log("listDeleted.current in handleDeleteListFromIndexedDB is ", listDeleted.current );
+
       const deletedTodos = await db.todos
         .where({ todoListId: listKey })
         .delete();
       const deletedList = await db.todoLists
         .where({ listId: listKey })
         .delete();
-
-      setTodoListsAndActive({
-        ...todoListsAndActive,
-        activeListId: todoListsAndActive.todoLists?.[0]?.listId ?? null,
-      });
 
       console.log(deletedTodos, "todos were deleted successfully!");
 
@@ -196,6 +217,7 @@ export default function PermanentDrawer() {
     }
   };
 
+  
   // const [todoListsAndActive, setTodoListsAndActive] = useState({
   //   todoLists: [],
   //   activeListId: undefined,
@@ -214,7 +236,10 @@ export default function PermanentDrawer() {
       const newListId = await db.todoLists.add(newList);
       // console.log(`A new list with id = ${newListId} was successfully created!`);
 
-      setTodoListsAndActive({ ...todoListsAndActive, activeListId: newListId });
+      // setTodoListsAndActive({ ...todoListsAndActive, activeListId: newListId });
+      setTodoListsAndActive((x) => {
+        return { ...x, activeListId: newListId };
+      });
 
       // console.log("A new list id type is ", typeof(newListId));
     } catch (e) {

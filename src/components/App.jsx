@@ -1,6 +1,7 @@
 import './App.css'
 import CssBaseline from '@mui/material/CssBaseline';
-import PermanentDrawerWrapper from './PermanentDrawerWrapper';
+// import PermanentDrawerWrapper from './PermanentDrawerWrapper';
+import PermanentDrawer from './PermanentDrawer';
 
 function App() {
   
@@ -8,7 +9,7 @@ function App() {
   return (
     <>
         <CssBaseline />
-        <PermanentDrawerWrapper />
+        <PermanentDrawer />
     </>
   );
 }
