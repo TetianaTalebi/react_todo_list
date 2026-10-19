@@ -142,7 +142,7 @@ export default function PermanentDrawer() {
     try {
       // Prepare todoData object
       const newTodoData = {
-        todoListId: activeListId,
+        todoListId: todoListsAndActive.activeListId,
         todoText: text.trim() || "",
         todoCompleted: false,
       };
