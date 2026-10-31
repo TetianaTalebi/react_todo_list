@@ -7,53 +7,70 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DynamicIcon from "./DynamicIcon.jsx";
 
+export default function AppSideBar({
+  todoLists,
+  activeListId,
+  handleListOnClick,
+  AllMuiIcons,
+  appFooterHeight,
+}) {
+  return (
+    <>
+      <Box
+        sx={{
+          //   hight: "100vh",
+          overflowY: "auto",
+          scrollbarWidth: "none", // For Firefox
+          "&::-webkit-scrollbar": {
+            display: "none", // For Chrome, Safari, and Opera
+          },
+          height: {
+            // 56px is the height of <Toolbar/> component on screens < 600px
+            xs: `calc(100vh - 56px - ${appFooterHeight})`,
+            // 64px is the height of <Toolbar/> component on screens > 600px
+            sm: `calc(100vh - 64px - ${appFooterHeight})`,
+          },
+        }}
+      >
+        <List>
+          {todoLists.map((list) => (
+            <ListItem
+              key={list.listId}
+              disablePadding
+              sx={{
+                ...(list.listId === activeListId && {
+                  backgroundColor: "lightgray",
+                  boxShadow: "0px 3px 10px darkgray",
+                }),
+              }}
+            >
+              <ListItemButton
+                onClick={() => handleListOnClick(list.listId)}
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <ListItemIcon>
+                  <DynamicIcon
+                    value={list.listIconName}
+                    AllMuiIcons={AllMuiIcons}
+                    iconFontSize={24}
+                    iconColor={grey[700]}
+                  />
+                </ListItemIcon>
 
-
-export default function AppSideBar({todoLists, activeListId, handleListOnClick, AllMuiIcons}){
-    
-    return (
-        <>
-            <Box>
-                <List>
-                {todoLists.map((list) => (
-                    <ListItem
-                    key={list.listId}
-                    disablePadding
-                    sx={{
-                        ...(list.listId ===
-                        activeListId && {
-                        backgroundColor: "lightgray",
-                        boxShadow: "0px 3px 10px darkgray",
-                        }),
-                    }}
-                    >
-                    <ListItemButton
-                        onClick={() => handleListOnClick(list.listId)}
-                        sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        }}
-                    >
-                        <ListItemIcon>
-                        <DynamicIcon
-                            value={list.listIconName}
-                            AllMuiIcons={AllMuiIcons}
-                            iconFontSize={24}
-                            iconColor={grey[700]}
-                        />
-                        </ListItemIcon>
-
-                        <ListItemText
-                        primary={list.listName}
-                        sx={{ display: { xs: "none", md: "inline" } }}
-                        />
-                    </ListItemButton>
-                    </ListItem>
-                ))}
-                </List>
-            </Box>
-        </>
-    );
+                <ListItemText
+                  primary={list.listName}
+                  sx={{ display: { xs: "none", md: "inline" } }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </>
+  );
 }
