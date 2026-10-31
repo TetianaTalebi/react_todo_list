@@ -27,13 +27,13 @@ export default function AppFooter(){
                 sx={{
                   fontWeight: 400,
                   textAlign: "center",
-                  whiteSpace: "pre-line",
-                  pt: 2,
+                  whiteSpace: "pre-wrap",
                 }}
                 component="div"
-                variant="body1"
+                variant="subtitle2"
               >
-                {`\u00A9 2026 Tetiana Talebi\nFull-Stack Web Developer\n`}
+                <Box component="span">{`\u00A9 2026   Tetiana Talebi  `}</Box>
+                <Box component="span" sx={{display:{xs: "none", sm: "inline"}}}>{` Full-Stack Web Developer  `}</Box>
 
                 <CustomizedTooltip
                   title="https://github.com/TetianaTalebi"
@@ -47,7 +47,7 @@ export default function AppFooter(){
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <GitHubIcon sx={{ color: "common.white" }} />
+                    <GitHubIcon fontSize="inherit" sx={{ color: "common.white" }} />
                   </IconButton>
                 </CustomizedTooltip>
 
@@ -63,7 +63,7 @@ export default function AppFooter(){
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <LinkedInIcon sx={{ color: "common.white" }} />
+                    <LinkedInIcon fontSize="inherit" sx={{ color: "common.white" }} />
                   </IconButton>
                 </CustomizedTooltip>
               </Typography>
