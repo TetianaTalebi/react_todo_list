@@ -14,7 +14,7 @@ import AppSideBar from "./AppSideBar.jsx";
 import "./PermanentDrawer.css";
 import TodoList from "./TodoList";
 
-const appFooterHeight = "150px";
+const appFooterHeight = "25px";
 
 // CURRENT fetchedTodoListsFromIndexedDB
 // {
@@ -261,14 +261,17 @@ export default function PermanentDrawer() {
         sx={{
           display: "flex",
           minHeight: "100vh",
+          overflow: "hidden",
         }}
       >
         <Grid
           container
+          disableEqualOverflow
           sx={{
-            minHeight: "100vh",
+            height: "100%",
             width: "100%",
             alignContent: "space-between",
+            mb: 0,
           }}
         >
           <AppNavbar
@@ -289,6 +292,7 @@ export default function PermanentDrawer() {
                     activeListId={todoListsAndActive.activeListId}
                     handleListOnClick={handleListOnClick}
                     AllMuiIcons={AllMuiIcons}
+                    appFooterHeight={appFooterHeight}
                   />
                 )}
               </Grid>
@@ -368,7 +372,7 @@ export default function PermanentDrawer() {
             </Grid>
           )}
 
-          <Grid size={12} sx={{ height: appFooterHeight }}>
+          <Grid size={12} sx={{ height: appFooterHeight,}}>
             {/* Application footer: */}
             <AppFooter />
           </Grid>
