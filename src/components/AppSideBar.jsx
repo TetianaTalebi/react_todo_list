@@ -18,12 +18,11 @@ export default function AppSideBar({
     <>
       <Box
         sx={{
-          //   hight: "100vh",
           overflowY: "auto",
-          scrollbarWidth: "none", // For Firefox
-          "&::-webkit-scrollbar": {
-            display: "none", // For Chrome, Safari, and Opera
-          },
+          // scrollbarWidth: "none", // For Firefox
+          // "&::-webkit-scrollbar": {
+          //   display: "none", // For Chrome, Safari, and Opera
+          // },
           height: {
             // 56px is the height of <Toolbar/> component on screens < 600px
             xs: `calc(100vh - 56px - ${appFooterHeight})`,
