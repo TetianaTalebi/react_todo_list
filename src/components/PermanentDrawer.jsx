@@ -266,6 +266,8 @@ export default function PermanentDrawer() {
       >
         <Grid
           container
+          spacing={0.5}
+          columns={24}
           disableEqualOverflow
           sx={{
             height: "100%",
@@ -283,7 +285,7 @@ export default function PermanentDrawer() {
           todoListsAndActive.activeListId !== undefined &&
           todoListsAndActive.todoLists.length > 0 ? (
             <>
-              <Grid size={{ xs: 1, sm: 2, md: 3 }}>
+              <Grid size={{ xs: 3, md: 6 }}>
                 <Toolbar />
 
                 {todoListsAndActive.todoLists.length > 0 && (
@@ -297,7 +299,7 @@ export default function PermanentDrawer() {
                 )}
               </Grid>
 
-              <Grid size={{ xs: 11, sm: 10, md: 9 }}>
+              <Grid size={{ xs: 21, md: 18 }}>
                 <Box
                   component="main"
                   sx={{
@@ -333,7 +335,7 @@ export default function PermanentDrawer() {
             </>
           ) : (
             <Grid
-              size={12}
+              size={24}
               sx={{
                 background: `linear-gradient(${grey[50]}, ${grey[300]})`,
                 height: `calc(100% - ${appFooterHeight})`,
@@ -372,7 +374,7 @@ export default function PermanentDrawer() {
             </Grid>
           )}
 
-          <Grid size={12} sx={{ height: appFooterHeight,}}>
+          <Grid size={24} sx={{ height: appFooterHeight,}}>
             {/* Application footer: */}
             <AppFooter />
           </Grid>
